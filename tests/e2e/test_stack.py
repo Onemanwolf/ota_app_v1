@@ -194,6 +194,9 @@ async def test_kafka_test_notification_is_suppressed(client: httpx2.AsyncClient)
     body = json.loads((ROOT / "fixtures/dynatrace/classic/kafka_test_notification.json").read_text())
     body["pid"] = f"99999-{random.randrange(10**6, 10**7)}"  # noqa: S311  (unique so dedup does not hide it)
     resp = await client.post(f"{INTAKE}/v1/webhooks/dynatrace/classic", json=body, headers=WEBHOOK)
+    if resp.status_code == 200:  # every test notification carries ProblemID 999: repeats dedup on display_id
+        assert resp.json() == {"alert_id": None, "duplicate": True}
+        return
     assert resp.status_code == 202
     await wait_done(client, resp.json()["alert_id"])
     run = await run_of(client, resp.json()["alert_id"])

@@ -36,6 +36,7 @@ def map_problem(p: dict[str, Any], observed_at: datetime) -> ProblemEvent:
         observed_at=ended or observed_at,  # the API has no last-update field
         impact_levels=dynatrace.impact_levels(p.get("impactLevel")),
         evidence=dynatrace.v2_evidence(p.get("evidenceDetails")),
+        is_duplicate=bool(p.get("linkedProblemInfo")),  # v2 marks a merged problem with its link
     )
 
 

@@ -886,7 +886,9 @@ def v2_problem(s: Scenario) -> dict[str, Any]:
         "problemFilters": [{"id": "c1b2a3d4-0000-4000-8000-000000000001", "name": "Kafka on-call"}],
         "evidenceDetails": {"totalCount": len(s.events) + len(s.metrics), "details": evidence_v2(s)},
         "impactAnalysis": {"impacts": []},
-        "linkedProblemInfo": None,
+        "linkedProblemInfo": {"displayId": "P-261012107", "problemId": "-4417092361180924518_1791814020000V2"}
+        if s.duplicate
+        else None,
         "k8s.cluster.name": [CLUSTER["k8s.cluster.name"]],
         "k8s.cluster.uid": [],
         "k8s.namespace.name": [CLUSTER["k8s.namespace.name"]],

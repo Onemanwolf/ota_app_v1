@@ -38,6 +38,7 @@ class _ProblemDetails(BaseModel):
     severityLevel: str | None = None  # a category: AVAILABILITY, ERROR, PERFORMANCE, ...
     impactLevel: str | None = None  # APPLICATION, ENVIRONMENT, INFRASTRUCTURE, SERVICES
     evidenceDetails: dict[str, Any] | None = None
+    linkedProblemInfo: dict[str, Any] | None = None  # set when merged into another problem
     affectedEntities: list[_ClassicEntity] = Field(default_factory=list)
     rootCauseEntity: _ClassicEntity | None = None
 
@@ -97,4 +98,5 @@ def to_problem_event(body: dict[str, Any], *, now: datetime | None = None) -> Pr
         problem_url=p.url,
         impact_levels=dynatrace.impact_levels(p.details.impactLevel or p.impact),
         evidence=dynatrace.v2_evidence(p.details.evidenceDetails),
+        is_duplicate=p.details.linkedProblemInfo is not None,
     )
