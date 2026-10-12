@@ -7,12 +7,14 @@ from dataclasses import dataclass
 from datetime import timedelta
 from pathlib import Path
 
+import httpx2
 import yaml
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 
 from opstriage_shared.clock import SystemClock
 from opstriage_shared.db import Pool, migrate, open_pool
 from opstriage_triage.adapters.approvals_pg import PostgresApprovalStore
+from opstriage_triage.adapters.auth_headers import entra, no_auth, static_bearer
 from opstriage_triage.adapters.fake_context import FakeProblemContextSource
 from opstriage_triage.adapters.inbox_pg import PostgresInbox
 from opstriage_triage.adapters.mcp_tools import (
@@ -25,6 +27,7 @@ from opstriage_triage.adapters.mcp_tools import (
 )
 from opstriage_triage.adapters.rules_decision import RulesOnlyDecisionModel
 from opstriage_triage.adapters.runs_pg import PostgresRunRepository
+from opstriage_triage.adapters.systemone import SystemOneDecisionModel
 from opstriage_triage.adapters.template_summarizer import TemplateSummarizer
 from opstriage_triage.domain.policy import Policy
 from opstriage_triage.entrypoints.worker import TriageWorker
@@ -40,16 +43,31 @@ def load_policy(path: Path) -> Policy:
     return Policy.model_validate(yaml.safe_load(path.read_text(encoding="utf-8")))
 
 
-def build_decision_model(settings: Settings) -> DecisionModel:
-    if settings.triage.decision.provider == "rules":
+def build_decision_model(settings: Settings, http: httpx2.AsyncClient) -> DecisionModel:
+    d = settings.triage.decision
+    if d.provider == "rules":
         return RulesOnlyDecisionModel()
-    raise ValueError("TRIAGE__DECISION__PROVIDER=systemone (Kev) is wired in Module 3")
+    if d.auth_mode == "bearer" and d.api_key is not None:
+        auth = static_bearer(d.api_key.get_secret_value())
+    elif d.auth_mode == "entra":
+        auth = entra()
+    else:
+        auth = no_auth()
+    return SystemOneDecisionModel(
+        http,
+        url=f"{d.base_url.rstrip('/')}{d.path}",
+        model=d.model,
+        auth_header=auth,
+        timeout_seconds=d.timeout_seconds,
+        shuffle_options=d.shuffle_options,
+    )
 
 
 @dataclass(slots=True)
 class Container:
     pool: Pool
     checkpoint_pool: Pool
+    http: httpx2.AsyncClient
     inbox: PostgresInbox
     graph: TriageGraph
     deps: TriageDeps
@@ -57,6 +75,7 @@ class Container:
 
     async def close(self) -> None:
         await self.inbox.close()
+        await self.http.aclose()
         await self.checkpoint_pool.close()
         await self.pool.close()
 
@@ -88,8 +107,9 @@ async def build_container(settings: Settings) -> Container:
         t.mcp.timeout_seconds,
     )
     clock = SystemClock()
+    http = httpx2.AsyncClient()
     deps = TriageDeps(
-        decision_model=build_decision_model(settings),
+        decision_model=build_decision_model(settings, http),
         context_source=FakeProblemContextSource(t.context.fixtures_dir, inbox, t.context.max_log_lines),
         notifications=McpNotificationGateway(invoker),
         tickets=McpTicketingGateway(invoker),
@@ -115,4 +135,4 @@ async def build_container(settings: Settings) -> Container:
         approval_ttl=timedelta(minutes=t.approval.ttl_minutes),
         sweep_interval_s=t.approval.sweep_interval_seconds,
     )
-    return Container(pool, checkpoint_pool, inbox, graph, deps, worker)
+    return Container(pool, checkpoint_pool, http, inbox, graph, deps, worker)

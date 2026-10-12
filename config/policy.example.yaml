@@ -5,7 +5,9 @@ rules:                          # evaluated in order by pre_route; first match w
     action: suppress
 thresholds:
   restart_container:
-    min_action_confidence: 0.90        # placeholder until evals set it
+    # Kev eval (evals/reports/kev-4b-2026-10-12.md, ADR 0006): no threshold reaches the 0.98 precision target on
+    # meaningful coverage, so the placeholder stays: with Kev, restart proposals escalate to a person.
+    min_action_confidence: 0.90        # placeholder until evals on reviewed data set it
     min_auto_remediable: 0.80
     max_noise: 0.20
     max_severity_score: 2.5            # an outage (3) goes to a human first

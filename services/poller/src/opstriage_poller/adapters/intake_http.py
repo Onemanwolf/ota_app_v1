@@ -32,7 +32,7 @@ class HttpIntakeClient:
         async for attempt in AsyncRetrying(
             retry=retry_if_exception(_retryable),
             reraise=True,
-            wait=wait_exponential_jitter(initial=0.5, max=10),
+            wait=wait_exponential_jitter(multiplier=0.5, max=10),
             stop=stop_after_attempt(self._attempts),
         ):
             with attempt:

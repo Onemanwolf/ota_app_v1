@@ -1,0 +1,32 @@
+# DEMO-ONLY policy for Kev-4B on the DGX Spark (Module 3). See ADR 0006 and evals/reports/kev-4b-2026-10-12.md.
+#
+# Kev's `confidence` is chance-normalised: (max(p) - 1/K) / (1 - 1/K). On the synthetic eval set its restart
+# decisions score 0.07-0.30, so the spec's 0.90 placeholder never lets a restart through (policy.example.yaml
+# keeps it, which is the safe default). These lower values let Kev PROPOSE restarts so the remediation path can
+# be exercised locally. At min_action_confidence 0.10 the eval measured restart precision 0.76 (coverage 0.79):
+# far below the 0.98 acceptance target. That is acceptable ONLY because every proposal still needs a human
+# approval (target autonomy approval_required, REMEDIATION__MAX_AUTONOMY=approval_required) and the remediation
+# server keeps its dry-run default. Never use this file with an `autonomous` target or ceiling.
+version: 1
+rules:                          # evaluated in order by pre_route; first match wins
+  - id: maintenance-suppress
+    when: { tag_equals: { maintenance: "true" } }
+    action: suppress
+thresholds:
+  restart_container:
+    min_action_confidence: 0.10        # Kev chance-normalised confidence (ADR 0006)
+    min_auto_remediable: 0.40          # observed 0.44-0.75 on correct restarts; NOT discriminative on this set
+    max_noise: 0.30                    # observed 0.17-0.26 on correct restarts
+    max_severity_score: 2.6            # Kev rates single-container outages 1.7-2.5 on the 0-3 scale
+  open_ticket:
+    min_action_confidence: 0.05
+escalation:
+  on_cannot_tell: true
+  on_threshold_failure: true
+  severity_score_at_least: 2.7         # Kev's scores sit higher than the spec's placeholder 2.5 assumed
+ticket:
+  open_when_severity_score_at_least: 2.0
+remediation:
+  verify_delay_seconds: 30
+  execute_poll_max_seconds: 420
+  request_dry_run: false

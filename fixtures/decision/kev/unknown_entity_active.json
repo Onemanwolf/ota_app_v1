@@ -1,0 +1,90 @@
+{
+  "request": {
+    "model": "kev-latest",
+    "state": "Problem: Container legacy-reports unavailable\nStatus: ACTIVE\nCategory: AVAILABILITY\nDynatrace severity (1-5): 3\nStarted: 2026-10-12T11:30:00+00:00\nRoot cause entity: container legacy-reports (CONTAINER-FFEE00112233AA44)\nAffected entities: container legacy-reports; host vm-legacy-01\nTags: app=reports\nRestart target registered: yes (eval-target, autonomy approval_required)\nRestarts of this target in the last 24 hours: 0\nRecent error and warning logs (newest first):\n2026-10-12T10:00:01Z ERROR orders-api container exited with code 137 (OOMKilled)\n2026-10-12T10:00:02Z WARN orders-api health check failed: connection refused",
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "You triage an infrastructure problem detected by Dynatrace. Choose the single most appropriate next action. Prefer automated restart only when the evidence shows one container is down or crash-looping and nothing suggests a dependency, data or capacity problem.",
+        "criteria": {
+          "notify_only": "Inform on-call. No automated change. Default for most problems.",
+          "restart_container": "A single container is unhealthy or down and a restart is the standard, low-risk fix.",
+          "open_ticket": "Needs follow-up work but no immediate action, for example a slow degradation.",
+          "escalate_human": "High impact, unclear cause, or several components affected. A person must look now.",
+          "suppress": "Known noise, test or maintenance activity. Nothing to do.",
+          "cannot_tell": "The information is insufficient to choose."
+        }
+      },
+      "severity": {
+        "type": "score",
+        "instructions": "Rate the user-facing severity of this problem right now.",
+        "criteria": [
+          "noise",
+          "warning",
+          "degraded",
+          "outage"
+        ]
+      },
+      "auto_remediable": {
+        "type": "noul",
+        "instructions": "Would restarting the root-cause container most likely resolve this problem?",
+        "criteria": {
+          "true": "A restart is likely to fix it.",
+          "false": "A restart is unlikely to fix it or is risky."
+        }
+      },
+      "is_noise": {
+        "type": "noul",
+        "instructions": "Is this problem expected noise (test, maintenance, known flapping) rather than a real issue?"
+      }
+    }
+  },
+  "response": {
+    "model": "kev-latest",
+    "answers": {
+      "action": {
+        "type": "choice",
+        "choice": "restart_container",
+        "confidence": 0.1094,
+        "probabilities": {
+          "notify_only": 0.2104,
+          "restart_container": 0.2578,
+          "open_ticket": 0.1094,
+          "escalate_human": 0.1814,
+          "suppress": 0.0401,
+          "cannot_tell": 0.2008
+        }
+      },
+      "severity": {
+        "type": "score",
+        "score": 2.0905,
+        "legend": {
+          "0": "noise",
+          "1": "warning",
+          "2": "degraded",
+          "3": "outage"
+        },
+        "probabilities": {
+          "0": 0.0899,
+          "1": 0.2076,
+          "2": 0.2246,
+          "3": 0.4779
+        },
+        "confidence": 0.6968
+      },
+      "auto_remediable": {
+        "type": "noul",
+        "noul": 0.4661
+      },
+      "is_noise": {
+        "type": "noul",
+        "noul": 0.2782
+      }
+    },
+    "usage": {
+      "input_tokens": 475,
+      "output_tokens": 260
+    },
+    "latency_ms": 589.8
+  }
+}

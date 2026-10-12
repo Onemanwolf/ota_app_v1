@@ -1,0 +1,12 @@
+{
+  "_note": "NOT a recorded response. Built from Microsoft's documented shape (answers keyed by question name with a type and, for choice, a choice). Replace with a recorded Microsoft-Decision-1 response when a Foundry deployment exists (spec 12.4.1 task 1).",
+  "response": {
+    "model": "decision-1",
+    "answers": {
+      "action": {"type": "choice", "choice": "escalate_human"},
+      "severity": {"type": "score", "score": 2.7},
+      "auto_remediable": {"type": "noul", "noul": 0.31},
+      "is_noise": {"type": "noul", "noul": 0.04}
+    }
+  }
+}

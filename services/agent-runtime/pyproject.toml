@@ -16,6 +16,7 @@ dependencies = [
 
 [project.scripts]
 opstriage-triage = "opstriage_triage.entrypoints.main:main"
+opstriage-evals = "opstriage_triage.entrypoints.evals:main"
 
 [tool.uv.sources]
 opstriage-contracts = { workspace = true }

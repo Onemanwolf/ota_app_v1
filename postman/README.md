@@ -23,10 +23,11 @@ being a duplicate. Folders 2 and 3 re-use folder 1's IDs on purpose (dedup and t
 | 3 Lifecycle (CLOSED) | run after 1 | CLOSED routes to `resolve`, ticket resolved |
 | 4 Classic webhook | | OPEN maps to ACTIVE, RESOLVED to the resolve path |
 | 5 Routing scenarios | `TRIAGE__DECISION__PROVIDER=rules` | plan per scenario (spec 13.2) |
+| 6 Kev decisions | `docker compose -f compose.yaml -f compose.kev.yaml up -d agent-runtime`, Kev reachable from Docker at `KEV_BASE_URL` (ADR 0006 section 5) | decisions come from `kev-latest` with all six probabilities; outage and no-target never remediate; injection only touches the registry target; maintenance is suppressed before Kev |
 | 7 Security and negative | | 401, 422, 413, prompt injection does not widen the plan |
 | 8 Manual approval | `docker compose -f compose.yaml -f compose.manual-approval.yaml up -d agent-runtime` | interrupt, approve, resume, second decision 409 |
 
-Folder 6 (Kev decisions) arrives in Module 3, folder 9 (real restarts and guard rails) in Module 4.
+Folder 9 (real restarts and guard rails) arrives in Module 4.
 
 ## Headless (newman)
 ```bash

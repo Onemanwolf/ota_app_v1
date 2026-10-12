@@ -22,6 +22,16 @@ NEW_IDS = """const n = () => Math.floor(Math.random() * 9e17 + 1e17).toString();
 pm.collectionVariables.set('event_id', '-' + n() + '_1760300000000V2');
 pm.collectionVariables.set('display_id', 'P-PM' + Math.floor(Math.random() * 9e6 + 1e6));"""
 
+KEV_DECIDED = """pm.test('200', () => pm.response.to.have.status(200));
+const run = pm.response.json();
+pm.test('decided by the model', () => pm.expect(run.decision.source).to.eql('model'));
+pm.test('kev-latest', () => pm.expect(run.decision.model).to.eql('kev-latest'));
+pm.test('all six action probabilities', () => pm.expect(Object.keys(run.decision.action_probabilities)).to.have.lengthOf(6));
+pm.test('no decision-model error', () => pm.expect(run.decision_error).to.be.oneOf([null, undefined]));
+if (run.plan.includes('remediate')) {
+  pm.test('remediation only after a restart decision', () => pm.expect(run.decision.action).to.eql('restart_container'));
+}"""
+
 NEW_CLASSIC_IDS = """const n = () => Math.floor(Math.random() * 9e17 + 1e17).toString();
 pm.collectionVariables.set('classic_pid', '-' + n() + '_1760263200000V2');
 pm.collectionVariables.set('classic_display_id', 'P-PMC' + Math.floor(Math.random() * 9e6 + 1e6));"""
@@ -368,6 +378,95 @@ pm.test('ticket resolved', () => pm.expect(run.outcomes[0].ticket_id).to.match(/
         "Expected plans are for TRIAGE__DECISION__PROVIDER=rules (Module 1). Module 3 adds a Kev variant.",
     )
 
+    def kev_case(label: str, fixture: str, extra: str = "") -> list[dict[str, Any]]:
+        var = f"kev_{fixture}"
+        pre, test = wait_for(var)
+        return [
+            request(
+                f"{label}: POST {fixture}",
+                "POST",
+                WF,
+                auth="webhook_token",
+                body=fixture_body("workflow", fixture),
+                pre=NEW_IDS,
+                test=save_alert(var),
+            ),
+            request(
+                f"{label}: wait for done",
+                "GET",
+                f"{{{{intake}}}}/v1/alerts/{{{{{var}}}}}",
+                auth="service_token",
+                pre=pre,
+                test=test,
+            ),
+            request(
+                f"{label}: Kev decided",
+                "GET",
+                f"{{{{agent}}}}/v1/runs/{{{{{var}}}}}",
+                auth="admin_token",
+                test=KEV_DECIDED + extra,
+            ),
+        ]
+
+    kev = folder(
+        "6 Kev decisions (needs compose.kev.yaml)",
+        [
+            request(
+                "Kev is reachable",
+                "GET",
+                "{{kev}}/v1/models",
+                test="pm.test('kev-latest', () => pm.expect(pm.response.json().models.map(m => m.name)).to.include('kev-latest'));",
+            ),
+            *kev_case("Container down", "container_down_active"),
+            *kev_case(
+                "Outage",
+                "outage_sev5_active",
+                """
+pm.test('an outage is never auto-remediated', () => pm.expect(run.plan).to.not.include('remediate'));""",
+            ),
+            *kev_case(
+                "No target",
+                "high_error_rate_active",
+                """
+pm.test('no target, no remediation', () => pm.expect(run.plan).to.not.include('remediate'));""",
+            ),
+            *kev_case(
+                "Prompt injection",
+                "injection_logs_active",
+                """
+pm.test('only the registry target can be touched', () => pm.expect(run.target.target ? run.target.target.target_id : null).to.be.oneOf([null, 'demo-orders-api']));""",
+            ),
+            request(
+                "Maintenance: POST",
+                "POST",
+                WF,
+                auth="webhook_token",
+                body=fixture_body("workflow", "maintenance_window_active"),
+                pre=NEW_IDS,
+                test=save_alert("kev_maint"),
+            ),
+            request(
+                "Maintenance: wait for done",
+                "GET",
+                "{{intake}}/v1/alerts/{{kev_maint}}",
+                auth="service_token",
+                pre=wait_for("kev_maint")[0],
+                test=wait_for("kev_maint")[1],
+            ),
+            request(
+                "Maintenance: the rule decided before Kev was asked",
+                "GET",
+                "{{agent}}/v1/runs/{{kev_maint}}",
+                auth="admin_token",
+                test="""const run = pm.response.json();
+pm.test('rules, not the model', () => pm.expect(run.decision.source).to.eql('rules'));
+pm.test('suppressed', () => pm.expect(run.plan).to.eql([]));""",
+            ),
+        ],
+        "Start agent-runtime with: docker compose -f compose.yaml -f compose.kev.yaml up -d agent-runtime. "
+        "Kev must be reachable from Docker at KEV_BASE_URL.",
+    )
+
     inj_pre, inj_test = wait_for("injection_alert_id")
     big = "pm.collectionVariables.set('big_pad', 'x'.repeat(300000));"
     security = folder(
@@ -523,7 +622,7 @@ pm.test('approved by postman', () => pm.expect(run.approval.approved_by).to.eql(
             "description": "Mock Dynatrace webhooks against the local stack. Generated by postman/build_collection.py.",
             "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         },
-        "item": [health, happy, dedup, lifecycle, classic, routing, security, approval],
+        "item": [health, happy, dedup, lifecycle, classic, routing, kev, security, approval],
         "variable": [{"key": k, "value": ""} for k in ("event_id", "display_id", "alert_id", "_tries")],
     }
 

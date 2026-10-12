@@ -24,7 +24,7 @@ class WorkflowsWebhookTeamsSender:
             async for attempt in AsyncRetrying(
                 retry=retry_if_exception(_retryable),
                 reraise=True,
-                wait=wait_exponential_jitter(initial=1, max=20),
+                wait=wait_exponential_jitter(multiplier=1, max=20),
                 stop=stop_after_attempt(5),
             ):
                 with attempt:

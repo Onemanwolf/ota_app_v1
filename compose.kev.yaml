@@ -1,0 +1,12 @@
+# Kev on the DGX Spark as the decision model (Module 3).
+# Usage: docker compose -f compose.yaml -f compose.kev.yaml up -d agent-runtime
+# KEV_BASE_URL can be set in .env (compose interpolation); containers cannot resolve spark-337a.local (mDNS).
+services:
+  agent-runtime:
+    environment:
+      TRIAGE__DECISION__PROVIDER: systemone
+      TRIAGE__DECISION__BASE_URL: ${KEV_BASE_URL:-http://192.168.5.147:8003}
+      TRIAGE__DECISION__PATH: /v1/systemone
+      TRIAGE__DECISION__MODEL: kev-latest
+      TRIAGE__DECISION__AUTH_MODE: none
+      TRIAGE__POLICY_FILE: /app/config/policy.local-kev.yaml

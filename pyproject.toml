@@ -31,6 +31,9 @@ known-first-party = ["opstriage_contracts", "opstriage_shared", "opstriage_*"]
 [tool.ruff.lint.per-file-ignores]
 "**/tests/**" = ["S101", "S105", "S106"]
 "postman/build_collection.py" = ["E501"]   # embedded Postman JavaScript test scripts
+"evals/generate_dataset.py" = ["E501"]     # scenario text
+"**/domain/questions.py" = ["E501"]         # decision-model prompts, verbatim from spec 12.4.2
+"**/entrypoints/evals.py" = ["E501"]        # Markdown report rows
 
 [tool.mypy]
 strict = true

@@ -1,0 +1,90 @@
+{
+  "request": {
+    "model": "kev-latest",
+    "state": "Problem: Containers demo-orders-api and demo-orders-worker unavailable\nStatus: ACTIVE\nCategory: AVAILABILITY\nDynatrace severity (1-5): 4\nStarted: 2026-10-12T11:15:00+00:00\nAffected entities: container demo-orders-api; container demo-orders-worker; host vm-local-demo\nTags: app=orders, env=local\nRestart target registered: no\nRecent error and warning logs (newest first):\n2026-10-12T10:00:01Z ERROR orders-api container exited with code 137 (OOMKilled)\n2026-10-12T10:00:02Z WARN orders-api health check failed: connection refused",
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "You triage an infrastructure problem detected by Dynatrace. Choose the single most appropriate next action. Prefer automated restart only when the evidence shows one container is down or crash-looping and nothing suggests a dependency, data or capacity problem.",
+        "criteria": {
+          "notify_only": "Inform on-call. No automated change. Default for most problems.",
+          "restart_container": "A single container is unhealthy or down and a restart is the standard, low-risk fix.",
+          "open_ticket": "Needs follow-up work but no immediate action, for example a slow degradation.",
+          "escalate_human": "High impact, unclear cause, or several components affected. A person must look now.",
+          "suppress": "Known noise, test or maintenance activity. Nothing to do.",
+          "cannot_tell": "The information is insufficient to choose."
+        }
+      },
+      "severity": {
+        "type": "score",
+        "instructions": "Rate the user-facing severity of this problem right now.",
+        "criteria": [
+          "noise",
+          "warning",
+          "degraded",
+          "outage"
+        ]
+      },
+      "auto_remediable": {
+        "type": "noul",
+        "instructions": "Would restarting the root-cause container most likely resolve this problem?",
+        "criteria": {
+          "true": "A restart is likely to fix it.",
+          "false": "A restart is unlikely to fix it or is risky."
+        }
+      },
+      "is_noise": {
+        "type": "noul",
+        "instructions": "Is this problem expected noise (test, maintenance, known flapping) rather than a real issue?"
+      }
+    }
+  },
+  "response": {
+    "model": "kev-latest",
+    "answers": {
+      "action": {
+        "type": "choice",
+        "choice": "escalate_human",
+        "confidence": 0.2046,
+        "probabilities": {
+          "notify_only": 0.2367,
+          "restart_container": 0.091,
+          "open_ticket": 0.097,
+          "escalate_human": 0.3371,
+          "suppress": 0.0359,
+          "cannot_tell": 0.2024
+        }
+      },
+      "severity": {
+        "type": "score",
+        "score": 2.6603,
+        "legend": {
+          "0": "noise",
+          "1": "warning",
+          "2": "degraded",
+          "3": "outage"
+        },
+        "probabilities": {
+          "0": 0.0411,
+          "1": 0.0718,
+          "2": 0.0727,
+          "3": 0.8144
+        },
+        "confidence": 0.8868
+      },
+      "auto_remediable": {
+        "type": "noul",
+        "noul": 0.4981
+      },
+      "is_noise": {
+        "type": "noul",
+        "noul": 0.2716
+      }
+    },
+    "usage": {
+      "input_tokens": 434,
+      "output_tokens": 259
+    },
+    "latency_ms": 2427.3
+  }
+}

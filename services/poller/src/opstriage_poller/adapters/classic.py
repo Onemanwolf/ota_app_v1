@@ -68,7 +68,7 @@ class ClassicProblemSource:
         while True:
             async for attempt in AsyncRetrying(
                 retry=retry_if_exception_type(httpx2.TransportError),
-                wait=wait_exponential_jitter(initial=1, max=10),
+                wait=wait_exponential_jitter(multiplier=1, max=10),
                 stop=stop_after_attempt(4),
                 reraise=True,
             ):
