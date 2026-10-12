@@ -1,0 +1,185 @@
+{
+  "pid": "-4417092361181447172_1791817560000V2",
+  "problem_id": "P-261012166",
+  "state": "OPEN",
+  "title": "Multiple infrastructure problems",
+  "severity": "AVAILABILITY",
+  "impact": "INFRASTRUCTURE",
+  "url": "https://abc12345.live.dynatrace.com/#problems/problemdetails;pid=-4417092361181447172_1791817560000V2",
+  "tags": "team:streaming, app:kafka",
+  "impacted_entities": [
+    {
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-0)",
+      "entity": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+    },
+    {
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-1)",
+      "entity": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11"
+    },
+    {
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-2)",
+      "entity": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    }
+  ],
+  "details": {
+    "problemId": "-4417092361181447172_1791817560000V2",
+    "displayId": "P-261012166",
+    "title": "Multiple infrastructure problems",
+    "status": "OPEN",
+    "severityLevel": "AVAILABILITY",
+    "impactLevel": "INFRASTRUCTURE",
+    "startTime": 1791817560000,
+    "endTime": -1,
+    "affectedEntities": [
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-0)"
+      },
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-1)"
+      },
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-2)"
+      }
+    ],
+    "impactedEntities": [
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-0)"
+      },
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-1)"
+      },
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-2)"
+      }
+    ],
+    "rootCauseEntity": null,
+    "managementZones": [
+      {
+        "id": "4567890123456789012",
+        "name": "Kafka Prod"
+      }
+    ],
+    "entityTags": [
+      {
+        "context": "CONTEXTLESS",
+        "key": "team",
+        "value": "streaming",
+        "stringRepresentation": "team:streaming"
+      },
+      {
+        "context": "CONTEXTLESS",
+        "key": "app",
+        "value": "kafka",
+        "stringRepresentation": "app:kafka"
+      }
+    ],
+    "problemFilters": [
+      {
+        "id": "c1b2a3d4-0000-4000-8000-000000000001",
+        "name": "Kafka on-call"
+      }
+    ],
+    "evidenceDetails": {
+      "totalCount": 3,
+      "details": [
+        {
+          "evidenceType": "EVENT",
+          "displayName": "Process unavailable",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "kafka-broker (kafka-0)"
+          },
+          "groupingEntity": {
+            "entityId": {
+              "id": "PROCESS_GROUP-3D7A1C0E9B2F4A65",
+              "type": "PROCESS_GROUP"
+            },
+            "name": "kafka-broker"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791817560000,
+          "endTime": -1,
+          "eventId": "8302664511948770210_1791817560000",
+          "eventType": "PGI_UNAVAILABLE"
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Kafka Controller - Active cluster controllers",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "kafka-broker (kafka-0)"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791817620000,
+          "metricId": "kafka.controller.KafkaController.ActiveControllerCount.Value",
+          "unit": "Count",
+          "valueBeforeChangePoint": 1,
+          "valueAfterChangePoint": 0,
+          "endTime": null
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Current leader",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "kafka-broker (kafka-1)"
+          },
+          "rootCauseRelevant": false,
+          "startTime": 1791817620000,
+          "metricId": "kafka.raft.current-leader",
+          "unit": "Count",
+          "valueBeforeChangePoint": 3000,
+          "valueAfterChangePoint": -1,
+          "endTime": null
+        }
+      ]
+    },
+    "impactAnalysis": {
+      "impacts": []
+    },
+    "linkedProblemInfo": null,
+    "k8s.cluster.name": [
+      "prod-aks-weu"
+    ],
+    "k8s.cluster.uid": [],
+    "k8s.namespace.name": [
+      "streaming"
+    ]
+  }
+}

@@ -1,0 +1,4532 @@
+{
+  "n": 150,
+  "errors": 0,
+  "accuracy": 0.44666666666666666,
+  "macro_f1": 0.3614411230341225,
+  "per_class": {
+    "notify_only": {
+      "precision": 0.29310344827586204,
+      "recall": 0.9444444444444444,
+      "f1": 0.44736842105263147,
+      "support": 18.0
+    },
+    "restart_container": {
+      "precision": 1.0,
+      "recall": 0.06666666666666667,
+      "f1": 0.125,
+      "support": 30.0
+    },
+    "open_ticket": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 30.0
+    },
+    "escalate_human": {
+      "precision": 0.5147058823529411,
+      "recall": 1.0,
+      "f1": 0.6796116504854368,
+      "support": 35.0
+    },
+    "suppress": {
+      "precision": 1.0,
+      "recall": 0.14285714285714285,
+      "f1": 0.25,
+      "support": 28.0
+    },
+    "cannot_tell": {
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "support": 9.0
+    }
+  },
+  "confusion": {
+    "notify_only": {
+      "notify_only": 17,
+      "restart_container": 0,
+      "open_ticket": 0,
+      "escalate_human": 0,
+      "suppress": 0,
+      "cannot_tell": 1
+    },
+    "restart_container": {
+      "notify_only": 7,
+      "restart_container": 2,
+      "open_ticket": 0,
+      "escalate_human": 21,
+      "suppress": 0,
+      "cannot_tell": 0
+    },
+    "open_ticket": {
+      "notify_only": 23,
+      "restart_container": 0,
+      "open_ticket": 0,
+      "escalate_human": 5,
+      "suppress": 0,
+      "cannot_tell": 2
+    },
+    "escalate_human": {
+      "notify_only": 0,
+      "restart_container": 0,
+      "open_ticket": 0,
+      "escalate_human": 35,
+      "suppress": 0,
+      "cannot_tell": 0
+    },
+    "suppress": {
+      "notify_only": 11,
+      "restart_container": 0,
+      "open_ticket": 0,
+      "escalate_human": 7,
+      "suppress": 4,
+      "cannot_tell": 6
+    },
+    "cannot_tell": {
+      "notify_only": 0,
+      "restart_container": 0,
+      "open_ticket": 0,
+      "escalate_human": 0,
+      "suppress": 0,
+      "cannot_tell": 9
+    }
+  },
+  "brier": 0.8058491490666669,
+  "latency_p50": 674.0,
+  "latency_p95": 858.65,
+  "confident_error_rate": {
+    "confidence": 0.0,
+    "top_probability": 0.0
+  },
+  "sweeps": {
+    "confidence": [
+      {
+        "threshold": 0.0,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.01,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.02,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.03,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.04,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.05,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.06,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.07,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.08,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.09,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.1,
+        "automated": 1,
+        "correct": 1,
+        "precision": 1.0,
+        "coverage": 0.03333333333333333
+      },
+      {
+        "threshold": 0.11,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.12,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.13,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.14,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.15,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.16,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.17,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.18,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.19,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.2,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.21,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.22,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.23,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.24,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.25,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.26,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.27,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.28,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.29,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.3,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.31,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.32,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.33,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.34,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.35,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.36,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.37,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.38,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.39,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.4,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.41,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.42,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.43,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.44,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.45,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.46,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.47,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.48,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.49,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.5,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.51,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.52,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.53,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.54,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.55,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.56,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.57,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.58,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.59,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.6,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.61,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.62,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.63,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.64,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.65,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.66,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.67,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.68,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.69,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.7,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.71,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.72,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.73,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.74,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.75,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.76,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.77,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.78,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.79,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.8,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.81,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.82,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.83,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.84,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.85,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.86,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.87,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.88,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.89,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.9,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.91,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.92,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.93,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.94,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.95,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.96,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.97,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.98,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.99,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      }
+    ],
+    "top_probability": [
+      {
+        "threshold": 0.0,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.01,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.02,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.03,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.04,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.05,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.06,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.07,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.08,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.09,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.1,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.11,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.12,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.13,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.14,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.15,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.16,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.17,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.18,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.19,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.2,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.21,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.22,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.23,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.24,
+        "automated": 2,
+        "correct": 2,
+        "precision": 1.0,
+        "coverage": 0.06666666666666667
+      },
+      {
+        "threshold": 0.25,
+        "automated": 1,
+        "correct": 1,
+        "precision": 1.0,
+        "coverage": 0.03333333333333333
+      },
+      {
+        "threshold": 0.26,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.27,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.28,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.29,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.3,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.31,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.32,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.33,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.34,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.35,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.36,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.37,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.38,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.39,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.4,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.41,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.42,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.43,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.44,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.45,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.46,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.47,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.48,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.49,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.5,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.51,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.52,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.53,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.54,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.55,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.56,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.57,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.58,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.59,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.6,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.61,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.62,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.63,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.64,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.65,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.66,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.67,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.68,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.69,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.7,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.71,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.72,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.73,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.74,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.75,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.76,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.77,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.78,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.79,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.8,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.81,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.82,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.83,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.84,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.85,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.86,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.87,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.88,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.89,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.9,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.91,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.92,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.93,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.94,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.95,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.96,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.97,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.98,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      },
+      {
+        "threshold": 0.99,
+        "automated": 0,
+        "correct": 0,
+        "precision": null,
+        "coverage": 0.0
+      }
+    ]
+  },
+  "recommendation": {
+    "confidence": {
+      "threshold": 0.0,
+      "precision": 1.0,
+      "coverage": 0.06666666666666667
+    },
+    "top_probability": {
+      "threshold": 0.0,
+      "precision": 1.0,
+      "coverage": 0.06666666666666667
+    }
+  },
+  "order_sensitivity": 0.29333333333333333,
+  "extra": {},
+  "provider": "systemone",
+  "model": "kev-latest",
+  "endpoint": "http://192.168.5.147:8003",
+  "dataset": "evals/datasets/triage_kafka_v2.jsonl",
+  "acceptance": {
+    "restart_precision_target": 0.98,
+    "min_restart_coverage": 0.0
+  },
+  "generated_at": "2026-10-12T20:08:47.986136+00:00",
+  "predictions": [
+    {
+      "case_id": "k-104",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2783,
+        "restart_container": 0.0248,
+        "open_ticket": 0.1394,
+        "escalate_human": 0.2929,
+        "suppress": 0.03,
+        "cannot_tell": 0.2347
+      },
+      "confidence": 0.1514,
+      "auto_remediable": 0.2444,
+      "noise": 0.1897,
+      "severity_score": 1.6321,
+      "latency_ms": 723,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-063",
+      "label": "open_ticket",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2823,
+        "restart_container": 0.0184,
+        "open_ticket": 0.2435,
+        "escalate_human": 0.1054,
+        "suppress": 0.0678,
+        "cannot_tell": 0.2826
+      },
+      "confidence": 0.1392,
+      "auto_remediable": 0.2872,
+      "noise": 0.3356,
+      "severity_score": 1.1783,
+      "latency_ms": 1436,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-107",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2756,
+        "restart_container": 0.0267,
+        "open_ticket": 0.1403,
+        "escalate_human": 0.2965,
+        "suppress": 0.0311,
+        "cannot_tell": 0.2298
+      },
+      "confidence": 0.1558,
+      "auto_remediable": 0.2261,
+      "noise": 0.1897,
+      "severity_score": 1.6578,
+      "latency_ms": 643,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-137",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2564,
+        "restart_container": 0.0347,
+        "open_ticket": 0.1252,
+        "escalate_human": 0.2596,
+        "suppress": 0.0405,
+        "cannot_tell": 0.2836
+      },
+      "confidence": 0.1404,
+      "auto_remediable": 0.2589,
+      "noise": 0.2241,
+      "severity_score": 1.4573,
+      "latency_ms": 704,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-059",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3049,
+        "restart_container": 0.0177,
+        "open_ticket": 0.1418,
+        "escalate_human": 0.2633,
+        "suppress": 0.0352,
+        "cannot_tell": 0.2371
+      },
+      "confidence": 0.1659,
+      "auto_remediable": 0.2593,
+      "noise": 0.1743,
+      "severity_score": 1.5872,
+      "latency_ms": 641,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-094",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2157,
+        "restart_container": 0.0317,
+        "open_ticket": 0.1118,
+        "escalate_human": 0.3744,
+        "suppress": 0.0457,
+        "cannot_tell": 0.2207
+      },
+      "confidence": 0.2493,
+      "auto_remediable": 0.387,
+      "noise": 0.2291,
+      "severity_score": 1.7685,
+      "latency_ms": 599,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-037",
+      "label": "suppress",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2324,
+        "restart_container": 0.0358,
+        "open_ticket": 0.1439,
+        "escalate_human": 0.2396,
+        "suppress": 0.0956,
+        "cannot_tell": 0.2527
+      },
+      "confidence": 0.1032,
+      "auto_remediable": 0.2889,
+      "noise": 0.5527,
+      "severity_score": 1.5732,
+      "latency_ms": 639,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-025",
+      "label": "restart_container",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2744,
+        "restart_container": 0.0729,
+        "open_ticket": 0.143,
+        "escalate_human": 0.2568,
+        "suppress": 0.0313,
+        "cannot_tell": 0.2216
+      },
+      "confidence": 0.1293,
+      "auto_remediable": 0.5115,
+      "noise": 0.1866,
+      "severity_score": 1.6365,
+      "latency_ms": 847,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-004",
+      "label": "restart_container",
+      "predicted": "restart_container",
+      "probabilities": {
+        "notify_only": 0.2031,
+        "restart_container": 0.2418,
+        "open_ticket": 0.0988,
+        "escalate_human": 0.2391,
+        "suppress": 0.0383,
+        "cannot_tell": 0.179
+      },
+      "confidence": 0.0901,
+      "auto_remediable": 0.6695,
+      "noise": 0.2312,
+      "severity_score": 2.2906,
+      "latency_ms": 831,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-044",
+      "label": "suppress",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2702,
+        "restart_container": 0.0275,
+        "open_ticket": 0.1746,
+        "escalate_human": 0.202,
+        "suppress": 0.0484,
+        "cannot_tell": 0.2773
+      },
+      "confidence": 0.1328,
+      "auto_remediable": 0.3549,
+      "noise": 0.2715,
+      "severity_score": 1.3891,
+      "latency_ms": 668,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-055",
+      "label": "open_ticket",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2529,
+        "restart_container": 0.0244,
+        "open_ticket": 0.1334,
+        "escalate_human": 0.3185,
+        "suppress": 0.032,
+        "cannot_tell": 0.2387
+      },
+      "confidence": 0.1822,
+      "auto_remediable": 0.2136,
+      "noise": 0.189,
+      "severity_score": 1.6927,
+      "latency_ms": 668,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-132",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2863,
+        "restart_container": 0.0245,
+        "open_ticket": 0.1304,
+        "escalate_human": 0.2814,
+        "suppress": 0.034,
+        "cannot_tell": 0.2434
+      },
+      "confidence": 0.1436,
+      "auto_remediable": 0.3089,
+      "noise": 0.1881,
+      "severity_score": 1.9559,
+      "latency_ms": 622,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-080",
+      "label": "open_ticket",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2681,
+        "restart_container": 0.0367,
+        "open_ticket": 0.1312,
+        "escalate_human": 0.3049,
+        "suppress": 0.0335,
+        "cannot_tell": 0.2256
+      },
+      "confidence": 0.1658,
+      "auto_remediable": 0.3571,
+      "noise": 0.1856,
+      "severity_score": 2.1302,
+      "latency_ms": 679,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-028",
+      "label": "restart_container",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2513,
+        "restart_container": 0.0833,
+        "open_ticket": 0.1439,
+        "escalate_human": 0.2376,
+        "suppress": 0.04,
+        "cannot_tell": 0.2438
+      },
+      "confidence": 0.1016,
+      "auto_remediable": 0.6031,
+      "noise": 0.221,
+      "severity_score": 1.523,
+      "latency_ms": 723,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-006",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2441,
+        "restart_container": 0.1421,
+        "open_ticket": 0.1007,
+        "escalate_human": 0.298,
+        "suppress": 0.0356,
+        "cannot_tell": 0.1795
+      },
+      "confidence": 0.1576,
+      "auto_remediable": 0.5921,
+      "noise": 0.1751,
+      "severity_score": 2.4665,
+      "latency_ms": 823,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-083",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2778,
+        "restart_container": 0.0208,
+        "open_ticket": 0.0985,
+        "escalate_human": 0.3973,
+        "suppress": 0.0245,
+        "cannot_tell": 0.181
+      },
+      "confidence": 0.2768,
+      "auto_remediable": 0.2255,
+      "noise": 0.0715,
+      "severity_score": 2.151,
+      "latency_ms": 665,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-072",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3005,
+        "restart_container": 0.0151,
+        "open_ticket": 0.1677,
+        "escalate_human": 0.2494,
+        "suppress": 0.0418,
+        "cannot_tell": 0.2255
+      },
+      "confidence": 0.1606,
+      "auto_remediable": 0.139,
+      "noise": 0.1646,
+      "severity_score": 1.5541,
+      "latency_ms": 595,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-133",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.285,
+        "restart_container": 0.0249,
+        "open_ticket": 0.1313,
+        "escalate_human": 0.2799,
+        "suppress": 0.0345,
+        "cannot_tell": 0.2445
+      },
+      "confidence": 0.142,
+      "auto_remediable": 0.3117,
+      "noise": 0.1876,
+      "severity_score": 1.9534,
+      "latency_ms": 614,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-130",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2795,
+        "restart_container": 0.0313,
+        "open_ticket": 0.1795,
+        "escalate_human": 0.1871,
+        "suppress": 0.0646,
+        "cannot_tell": 0.2581
+      },
+      "confidence": 0.1354,
+      "auto_remediable": 0.3213,
+      "noise": 0.2989,
+      "severity_score": 1.4095,
+      "latency_ms": 613,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-022",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2473,
+        "restart_container": 0.0732,
+        "open_ticket": 0.1351,
+        "escalate_human": 0.2877,
+        "suppress": 0.0291,
+        "cannot_tell": 0.2276
+      },
+      "confidence": 0.1452,
+      "auto_remediable": 0.5389,
+      "noise": 0.1761,
+      "severity_score": 1.6536,
+      "latency_ms": 804,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-015",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.228,
+        "restart_container": 0.1356,
+        "open_ticket": 0.1089,
+        "escalate_human": 0.292,
+        "suppress": 0.0321,
+        "cannot_tell": 0.2034
+      },
+      "confidence": 0.1504,
+      "auto_remediable": 0.4549,
+      "noise": 0.1844,
+      "severity_score": 1.9708,
+      "latency_ms": 685,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-082",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2709,
+        "restart_container": 0.0203,
+        "open_ticket": 0.1048,
+        "escalate_human": 0.3827,
+        "suppress": 0.0274,
+        "cannot_tell": 0.1938
+      },
+      "confidence": 0.2593,
+      "auto_remediable": 0.2141,
+      "noise": 0.117,
+      "severity_score": 1.9947,
+      "latency_ms": 656,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-078",
+      "label": "open_ticket",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2696,
+        "restart_container": 0.036,
+        "open_ticket": 0.1302,
+        "escalate_human": 0.3046,
+        "suppress": 0.0337,
+        "cannot_tell": 0.2258
+      },
+      "confidence": 0.1655,
+      "auto_remediable": 0.345,
+      "noise": 0.1885,
+      "severity_score": 2.1123,
+      "latency_ms": 683,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-145",
+      "label": "suppress",
+      "predicted": "suppress",
+      "probabilities": {
+        "notify_only": 0.2535,
+        "restart_container": 0.0161,
+        "open_ticket": 0.0712,
+        "escalate_human": 0.1703,
+        "suppress": 0.2863,
+        "cannot_tell": 0.2026
+      },
+      "confidence": 0.1436,
+      "auto_remediable": 0.3529,
+      "noise": 0.9302,
+      "severity_score": 0.9782,
+      "latency_ms": 538,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-103",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2507,
+        "restart_container": 0.0359,
+        "open_ticket": 0.1183,
+        "escalate_human": 0.3058,
+        "suppress": 0.0325,
+        "cannot_tell": 0.2569
+      },
+      "confidence": 0.1669,
+      "auto_remediable": 0.3515,
+      "noise": 0.1985,
+      "severity_score": 1.796,
+      "latency_ms": 589,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-064",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3056,
+        "restart_container": 0.0184,
+        "open_ticket": 0.1528,
+        "escalate_human": 0.2356,
+        "suppress": 0.0373,
+        "cannot_tell": 0.2503
+      },
+      "confidence": 0.1667,
+      "auto_remediable": 0.2611,
+      "noise": 0.182,
+      "severity_score": 1.537,
+      "latency_ms": 613,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-115",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.249,
+        "restart_container": 0.0242,
+        "open_ticket": 0.1204,
+        "escalate_human": 0.3767,
+        "suppress": 0.0314,
+        "cannot_tell": 0.1983
+      },
+      "confidence": 0.2521,
+      "auto_remediable": 0.395,
+      "noise": 0.1907,
+      "severity_score": 1.8598,
+      "latency_ms": 765,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-057",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2803,
+        "restart_container": 0.0271,
+        "open_ticket": 0.1666,
+        "escalate_human": 0.2295,
+        "suppress": 0.0391,
+        "cannot_tell": 0.2573
+      },
+      "confidence": 0.1364,
+      "auto_remediable": 0.2102,
+      "noise": 0.2159,
+      "severity_score": 1.5617,
+      "latency_ms": 665,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-118",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2881,
+        "restart_container": 0.0184,
+        "open_ticket": 0.1575,
+        "escalate_human": 0.28,
+        "suppress": 0.0393,
+        "cannot_tell": 0.2167
+      },
+      "confidence": 0.1458,
+      "auto_remediable": 0.375,
+      "noise": 0.1901,
+      "severity_score": 1.5996,
+      "latency_ms": 611,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-017",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2261,
+        "restart_container": 0.1413,
+        "open_ticket": 0.1186,
+        "escalate_human": 0.2963,
+        "suppress": 0.0281,
+        "cannot_tell": 0.1897
+      },
+      "confidence": 0.1556,
+      "auto_remediable": 0.6073,
+      "noise": 0.1681,
+      "severity_score": 2.1584,
+      "latency_ms": 676,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-008",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2332,
+        "restart_container": 0.1597,
+        "open_ticket": 0.1135,
+        "escalate_human": 0.274,
+        "suppress": 0.0342,
+        "cannot_tell": 0.1853
+      },
+      "confidence": 0.1288,
+      "auto_remediable": 0.5108,
+      "noise": 0.1676,
+      "severity_score": 2.2864,
+      "latency_ms": 819,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-124",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2865,
+        "restart_container": 0.0185,
+        "open_ticket": 0.1772,
+        "escalate_human": 0.2651,
+        "suppress": 0.0367,
+        "cannot_tell": 0.2161
+      },
+      "confidence": 0.1438,
+      "auto_remediable": 0.2988,
+      "noise": 0.188,
+      "severity_score": 1.51,
+      "latency_ms": 618,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-105",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2535,
+        "restart_container": 0.0394,
+        "open_ticket": 0.119,
+        "escalate_human": 0.3005,
+        "suppress": 0.033,
+        "cannot_tell": 0.2546
+      },
+      "confidence": 0.1606,
+      "auto_remediable": 0.3435,
+      "noise": 0.2028,
+      "severity_score": 1.8044,
+      "latency_ms": 571,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-077",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2981,
+        "restart_container": 0.0385,
+        "open_ticket": 0.1899,
+        "escalate_human": 0.1507,
+        "suppress": 0.057,
+        "cannot_tell": 0.2657
+      },
+      "confidence": 0.1577,
+      "auto_remediable": 0.3456,
+      "noise": 0.2712,
+      "severity_score": 1.4584,
+      "latency_ms": 681,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-018",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2128,
+        "restart_container": 0.2148,
+        "open_ticket": 0.1039,
+        "escalate_human": 0.2606,
+        "suppress": 0.0276,
+        "cannot_tell": 0.1803
+      },
+      "confidence": 0.1128,
+      "auto_remediable": 0.6221,
+      "noise": 0.1486,
+      "severity_score": 2.0732,
+      "latency_ms": 685,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-014",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2394,
+        "restart_container": 0.1533,
+        "open_ticket": 0.1183,
+        "escalate_human": 0.2671,
+        "suppress": 0.0288,
+        "cannot_tell": 0.1931
+      },
+      "confidence": 0.1206,
+      "auto_remediable": 0.5825,
+      "noise": 0.1597,
+      "severity_score": 1.9655,
+      "latency_ms": 682,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-134",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2566,
+        "restart_container": 0.034,
+        "open_ticket": 0.1248,
+        "escalate_human": 0.2584,
+        "suppress": 0.041,
+        "cannot_tell": 0.2852
+      },
+      "confidence": 0.1422,
+      "auto_remediable": 0.2572,
+      "noise": 0.2227,
+      "severity_score": 1.4504,
+      "latency_ms": 665,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-054",
+      "label": "open_ticket",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2517,
+        "restart_container": 0.0227,
+        "open_ticket": 0.1258,
+        "escalate_human": 0.3339,
+        "suppress": 0.0313,
+        "cannot_tell": 0.2345
+      },
+      "confidence": 0.2007,
+      "auto_remediable": 0.1963,
+      "noise": 0.1788,
+      "severity_score": 1.7301,
+      "latency_ms": 663,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-114",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2505,
+        "restart_container": 0.0297,
+        "open_ticket": 0.1176,
+        "escalate_human": 0.3727,
+        "suppress": 0.0321,
+        "cannot_tell": 0.1973
+      },
+      "confidence": 0.2473,
+      "auto_remediable": 0.3014,
+      "noise": 0.1982,
+      "severity_score": 1.8689,
+      "latency_ms": 755,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-067",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3043,
+        "restart_container": 0.0155,
+        "open_ticket": 0.1794,
+        "escalate_human": 0.2274,
+        "suppress": 0.0432,
+        "cannot_tell": 0.2301
+      },
+      "confidence": 0.1652,
+      "auto_remediable": 0.1426,
+      "noise": 0.1848,
+      "severity_score": 1.4567,
+      "latency_ms": 593,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-066",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3087,
+        "restart_container": 0.0164,
+        "open_ticket": 0.1446,
+        "escalate_human": 0.2615,
+        "suppress": 0.033,
+        "cannot_tell": 0.2358
+      },
+      "confidence": 0.1704,
+      "auto_remediable": 0.272,
+      "noise": 0.159,
+      "severity_score": 1.6004,
+      "latency_ms": 626,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-035",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2378,
+        "restart_container": 0.0614,
+        "open_ticket": 0.1373,
+        "escalate_human": 0.2358,
+        "suppress": 0.1155,
+        "cannot_tell": 0.2121
+      },
+      "confidence": 0.0854,
+      "auto_remediable": 0.3024,
+      "noise": 0.6062,
+      "severity_score": 1.7664,
+      "latency_ms": 731,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-075",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3007,
+        "restart_container": 0.0391,
+        "open_ticket": 0.1873,
+        "escalate_human": 0.1501,
+        "suppress": 0.0563,
+        "cannot_tell": 0.2666
+      },
+      "confidence": 0.1608,
+      "auto_remediable": 0.3541,
+      "noise": 0.2688,
+      "severity_score": 1.4598,
+      "latency_ms": 696,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-123",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2864,
+        "restart_container": 0.0178,
+        "open_ticket": 0.1783,
+        "escalate_human": 0.2551,
+        "suppress": 0.0399,
+        "cannot_tell": 0.2225
+      },
+      "confidence": 0.1437,
+      "auto_remediable": 0.3147,
+      "noise": 0.2029,
+      "severity_score": 1.3583,
+      "latency_ms": 595,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-117",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3055,
+        "restart_container": 0.0233,
+        "open_ticket": 0.2471,
+        "escalate_human": 0.1253,
+        "suppress": 0.0594,
+        "cannot_tell": 0.2394
+      },
+      "confidence": 0.1666,
+      "auto_remediable": 0.313,
+      "noise": 0.283,
+      "severity_score": 1.2972,
+      "latency_ms": 619,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-039",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3078,
+        "restart_container": 0.0252,
+        "open_ticket": 0.1683,
+        "escalate_human": 0.1931,
+        "suppress": 0.0532,
+        "cannot_tell": 0.2524
+      },
+      "confidence": 0.1693,
+      "auto_remediable": 0.2969,
+      "noise": 0.3097,
+      "severity_score": 1.2597,
+      "latency_ms": 663,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-120",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2716,
+        "restart_container": 0.017,
+        "open_ticket": 0.1788,
+        "escalate_human": 0.2677,
+        "suppress": 0.0405,
+        "cannot_tell": 0.2243
+      },
+      "confidence": 0.1259,
+      "auto_remediable": 0.2974,
+      "noise": 0.2051,
+      "severity_score": 1.5268,
+      "latency_ms": 639,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-001",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2418,
+        "restart_container": 0.124,
+        "open_ticket": 0.1068,
+        "escalate_human": 0.3028,
+        "suppress": 0.0353,
+        "cannot_tell": 0.1892
+      },
+      "confidence": 0.1634,
+      "auto_remediable": 0.6457,
+      "noise": 0.1801,
+      "severity_score": 2.4654,
+      "latency_ms": 791,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-060",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2829,
+        "restart_container": 0.0185,
+        "open_ticket": 0.2435,
+        "escalate_human": 0.106,
+        "suppress": 0.0673,
+        "cannot_tell": 0.2818
+      },
+      "confidence": 0.1395,
+      "auto_remediable": 0.2928,
+      "noise": 0.3331,
+      "severity_score": 1.1814,
+      "latency_ms": 548,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-021",
+      "label": "restart_container",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2684,
+        "restart_container": 0.0872,
+        "open_ticket": 0.1537,
+        "escalate_human": 0.2161,
+        "suppress": 0.0326,
+        "cannot_tell": 0.2419
+      },
+      "confidence": 0.1221,
+      "auto_remediable": 0.5803,
+      "noise": 0.197,
+      "severity_score": 1.5455,
+      "latency_ms": 848,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-131",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2785,
+        "restart_container": 0.031,
+        "open_ticket": 0.1798,
+        "escalate_human": 0.183,
+        "suppress": 0.0652,
+        "cannot_tell": 0.2624
+      },
+      "confidence": 0.1342,
+      "auto_remediable": 0.3259,
+      "noise": 0.3022,
+      "severity_score": 1.3894,
+      "latency_ms": 630,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-009",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2105,
+        "restart_container": 0.2349,
+        "open_ticket": 0.099,
+        "escalate_human": 0.239,
+        "suppress": 0.036,
+        "cannot_tell": 0.1806
+      },
+      "confidence": 0.0868,
+      "auto_remediable": 0.6545,
+      "noise": 0.2166,
+      "severity_score": 2.3453,
+      "latency_ms": 843,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-129",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2872,
+        "restart_container": 0.0244,
+        "open_ticket": 0.13,
+        "escalate_human": 0.2795,
+        "suppress": 0.0338,
+        "cannot_tell": 0.2451
+      },
+      "confidence": 0.1447,
+      "auto_remediable": 0.307,
+      "noise": 0.1913,
+      "severity_score": 1.9557,
+      "latency_ms": 642,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-141",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2657,
+        "restart_container": 0.03,
+        "open_ticket": 0.1208,
+        "escalate_human": 0.2696,
+        "suppress": 0.0357,
+        "cannot_tell": 0.2783
+      },
+      "confidence": 0.1339,
+      "auto_remediable": 0.2589,
+      "noise": 0.1974,
+      "severity_score": 1.5202,
+      "latency_ms": 641,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-051",
+      "label": "open_ticket",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2628,
+        "restart_container": 0.0326,
+        "open_ticket": 0.1689,
+        "escalate_human": 0.215,
+        "suppress": 0.0368,
+        "cannot_tell": 0.2839
+      },
+      "confidence": 0.1407,
+      "auto_remediable": 0.2938,
+      "noise": 0.2107,
+      "severity_score": 1.4703,
+      "latency_ms": 568,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-052",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3011,
+        "restart_container": 0.026,
+        "open_ticket": 0.1302,
+        "escalate_human": 0.2925,
+        "suppress": 0.0289,
+        "cannot_tell": 0.2214
+      },
+      "confidence": 0.1613,
+      "auto_remediable": 0.2673,
+      "noise": 0.1366,
+      "severity_score": 1.7032,
+      "latency_ms": 695,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-038",
+      "label": "suppress",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2515,
+        "restart_container": 0.0493,
+        "open_ticket": 0.1281,
+        "escalate_human": 0.2622,
+        "suppress": 0.1059,
+        "cannot_tell": 0.203
+      },
+      "confidence": 0.1146,
+      "auto_remediable": 0.3262,
+      "noise": 0.6616,
+      "severity_score": 2.2332,
+      "latency_ms": 713,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-098",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2551,
+        "restart_container": 0.1148,
+        "open_ticket": 0.1169,
+        "escalate_human": 0.3071,
+        "suppress": 0.0269,
+        "cannot_tell": 0.1792
+      },
+      "confidence": 0.1685,
+      "auto_remediable": 0.4197,
+      "noise": 0.1219,
+      "severity_score": 2.6605,
+      "latency_ms": 730,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-090",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2582,
+        "restart_container": 0.0382,
+        "open_ticket": 0.1041,
+        "escalate_human": 0.4105,
+        "suppress": 0.0272,
+        "cannot_tell": 0.1618
+      },
+      "confidence": 0.2926,
+      "auto_remediable": 0.2939,
+      "noise": 0.1095,
+      "severity_score": 2.4588,
+      "latency_ms": 714,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-026",
+      "label": "restart_container",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.296,
+        "restart_container": 0.0772,
+        "open_ticket": 0.1649,
+        "escalate_human": 0.1934,
+        "suppress": 0.0378,
+        "cannot_tell": 0.2307
+      },
+      "confidence": 0.1552,
+      "auto_remediable": 0.5495,
+      "noise": 0.207,
+      "severity_score": 1.5123,
+      "latency_ms": 820,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-122",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3034,
+        "restart_container": 0.0255,
+        "open_ticket": 0.256,
+        "escalate_human": 0.1174,
+        "suppress": 0.0608,
+        "cannot_tell": 0.237
+      },
+      "confidence": 0.1641,
+      "auto_remediable": 0.3175,
+      "noise": 0.3057,
+      "severity_score": 1.1687,
+      "latency_ms": 621,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-149",
+      "label": "suppress",
+      "predicted": "suppress",
+      "probabilities": {
+        "notify_only": 0.2535,
+        "restart_container": 0.0161,
+        "open_ticket": 0.0712,
+        "escalate_human": 0.1703,
+        "suppress": 0.2863,
+        "cannot_tell": 0.2026
+      },
+      "confidence": 0.1436,
+      "auto_remediable": 0.3529,
+      "noise": 0.9302,
+      "severity_score": 0.9782,
+      "latency_ms": 544,
+      "shuffled_predicted": "suppress",
+      "error": null
+    },
+    {
+      "case_id": "k-056",
+      "label": "open_ticket",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2545,
+        "restart_container": 0.027,
+        "open_ticket": 0.1336,
+        "escalate_human": 0.3086,
+        "suppress": 0.0341,
+        "cannot_tell": 0.2422
+      },
+      "confidence": 0.1704,
+      "auto_remediable": 0.1947,
+      "noise": 0.1924,
+      "severity_score": 1.6961,
+      "latency_ms": 701,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-029",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.251,
+        "restart_container": 0.0731,
+        "open_ticket": 0.1399,
+        "escalate_human": 0.2751,
+        "suppress": 0.0312,
+        "cannot_tell": 0.2295
+      },
+      "confidence": 0.1302,
+      "auto_remediable": 0.5651,
+      "noise": 0.1852,
+      "severity_score": 1.6303,
+      "latency_ms": 828,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-108",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.28,
+        "restart_container": 0.0303,
+        "open_ticket": 0.1357,
+        "escalate_human": 0.2934,
+        "suppress": 0.0316,
+        "cannot_tell": 0.229
+      },
+      "confidence": 0.152,
+      "auto_remediable": 0.2849,
+      "noise": 0.1996,
+      "severity_score": 1.6311,
+      "latency_ms": 632,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-088",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2579,
+        "restart_container": 0.039,
+        "open_ticket": 0.1051,
+        "escalate_human": 0.4079,
+        "suppress": 0.0272,
+        "cannot_tell": 0.163
+      },
+      "confidence": 0.2895,
+      "auto_remediable": 0.2915,
+      "noise": 0.1123,
+      "severity_score": 2.4479,
+      "latency_ms": 774,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-109",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2655,
+        "restart_container": 0.0273,
+        "open_ticket": 0.1247,
+        "escalate_human": 0.3436,
+        "suppress": 0.0304,
+        "cannot_tell": 0.2085
+      },
+      "confidence": 0.2124,
+      "auto_remediable": 0.268,
+      "noise": 0.1836,
+      "severity_score": 1.682,
+      "latency_ms": 736,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-069",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3058,
+        "restart_container": 0.0184,
+        "open_ticket": 0.2041,
+        "escalate_human": 0.181,
+        "suppress": 0.0513,
+        "cannot_tell": 0.2395
+      },
+      "confidence": 0.167,
+      "auto_remediable": 0.1441,
+      "noise": 0.2224,
+      "severity_score": 1.3497,
+      "latency_ms": 610,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-121",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3015,
+        "restart_container": 0.0229,
+        "open_ticket": 0.215,
+        "escalate_human": 0.1481,
+        "suppress": 0.0607,
+        "cannot_tell": 0.2517
+      },
+      "confidence": 0.1618,
+      "auto_remediable": 0.4078,
+      "noise": 0.3344,
+      "severity_score": 1.181,
+      "latency_ms": 578,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-106",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2778,
+        "restart_container": 0.0244,
+        "open_ticket": 0.1393,
+        "escalate_human": 0.2946,
+        "suppress": 0.0296,
+        "cannot_tell": 0.2345
+      },
+      "confidence": 0.1535,
+      "auto_remediable": 0.239,
+      "noise": 0.1878,
+      "severity_score": 1.6463,
+      "latency_ms": 651,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-102",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.275,
+        "restart_container": 0.1085,
+        "open_ticket": 0.1121,
+        "escalate_human": 0.3023,
+        "suppress": 0.0275,
+        "cannot_tell": 0.1747
+      },
+      "confidence": 0.1627,
+      "auto_remediable": 0.4545,
+      "noise": 0.1455,
+      "severity_score": 2.7135,
+      "latency_ms": 708,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-010",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2459,
+        "restart_container": 0.15,
+        "open_ticket": 0.1144,
+        "escalate_human": 0.2773,
+        "suppress": 0.0331,
+        "cannot_tell": 0.1794
+      },
+      "confidence": 0.1327,
+      "auto_remediable": 0.5033,
+      "noise": 0.1536,
+      "severity_score": 2.3199,
+      "latency_ms": 844,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-099",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2635,
+        "restart_container": 0.1043,
+        "open_ticket": 0.1176,
+        "escalate_human": 0.3131,
+        "suppress": 0.0274,
+        "cannot_tell": 0.1741
+      },
+      "confidence": 0.1757,
+      "auto_remediable": 0.3671,
+      "noise": 0.1098,
+      "severity_score": 2.6711,
+      "latency_ms": 558,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-023",
+      "label": "restart_container",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2731,
+        "restart_container": 0.0707,
+        "open_ticket": 0.1482,
+        "escalate_human": 0.2548,
+        "suppress": 0.0324,
+        "cannot_tell": 0.2207
+      },
+      "confidence": 0.1278,
+      "auto_remediable": 0.5169,
+      "noise": 0.1909,
+      "severity_score": 1.632,
+      "latency_ms": 813,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-095",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2572,
+        "restart_container": 0.1322,
+        "open_ticket": 0.1193,
+        "escalate_human": 0.2908,
+        "suppress": 0.0301,
+        "cannot_tell": 0.1704
+      },
+      "confidence": 0.1489,
+      "auto_remediable": 0.3531,
+      "noise": 0.1219,
+      "severity_score": 2.6713,
+      "latency_ms": 929,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-136",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2575,
+        "restart_container": 0.0342,
+        "open_ticket": 0.1243,
+        "escalate_human": 0.258,
+        "suppress": 0.0405,
+        "cannot_tell": 0.2855
+      },
+      "confidence": 0.1426,
+      "auto_remediable": 0.2578,
+      "noise": 0.2211,
+      "severity_score": 1.4547,
+      "latency_ms": 778,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-036",
+      "label": "suppress",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2431,
+        "restart_container": 0.059,
+        "open_ticket": 0.1233,
+        "escalate_human": 0.2549,
+        "suppress": 0.1177,
+        "cannot_tell": 0.202
+      },
+      "confidence": 0.1059,
+      "auto_remediable": 0.3124,
+      "noise": 0.6906,
+      "severity_score": 2.2624,
+      "latency_ms": 857,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-061",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3113,
+        "restart_container": 0.0177,
+        "open_ticket": 0.1595,
+        "escalate_human": 0.2272,
+        "suppress": 0.038,
+        "cannot_tell": 0.2464
+      },
+      "confidence": 0.1735,
+      "auto_remediable": 0.259,
+      "noise": 0.1794,
+      "severity_score": 1.5022,
+      "latency_ms": 786,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-033",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.248,
+        "restart_container": 0.0507,
+        "open_ticket": 0.1165,
+        "escalate_human": 0.1734,
+        "suppress": 0.2335,
+        "cannot_tell": 0.1778
+      },
+      "confidence": 0.0976,
+      "auto_remediable": 0.2839,
+      "noise": 0.8171,
+      "severity_score": 2.1928,
+      "latency_ms": 860,
+      "shuffled_predicted": "suppress",
+      "error": null
+    },
+    {
+      "case_id": "k-012",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2394,
+        "restart_container": 0.0815,
+        "open_ticket": 0.133,
+        "escalate_human": 0.2814,
+        "suppress": 0.0376,
+        "cannot_tell": 0.227
+      },
+      "confidence": 0.1377,
+      "auto_remediable": 0.5609,
+      "noise": 0.213,
+      "severity_score": 1.9264,
+      "latency_ms": 875,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-030",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2466,
+        "restart_container": 0.0733,
+        "open_ticket": 0.1397,
+        "escalate_human": 0.2756,
+        "suppress": 0.0319,
+        "cannot_tell": 0.233
+      },
+      "confidence": 0.1307,
+      "auto_remediable": 0.5645,
+      "noise": 0.1862,
+      "severity_score": 1.6297,
+      "latency_ms": 830,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-070",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3122,
+        "restart_container": 0.0175,
+        "open_ticket": 0.1923,
+        "escalate_human": 0.1866,
+        "suppress": 0.0507,
+        "cannot_tell": 0.2406
+      },
+      "confidence": 0.1747,
+      "auto_remediable": 0.1277,
+      "noise": 0.2306,
+      "severity_score": 1.3922,
+      "latency_ms": 600,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-126",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2857,
+        "restart_container": 0.0249,
+        "open_ticket": 0.1315,
+        "escalate_human": 0.2799,
+        "suppress": 0.0344,
+        "cannot_tell": 0.2436
+      },
+      "confidence": 0.1429,
+      "auto_remediable": 0.3107,
+      "noise": 0.188,
+      "severity_score": 1.9595,
+      "latency_ms": 592,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-089",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2423,
+        "restart_container": 0.0785,
+        "open_ticket": 0.1011,
+        "escalate_human": 0.3665,
+        "suppress": 0.0361,
+        "cannot_tell": 0.1755
+      },
+      "confidence": 0.2399,
+      "auto_remediable": 0.3588,
+      "noise": 0.1671,
+      "severity_score": 2.2403,
+      "latency_ms": 690,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-128",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2842,
+        "restart_container": 0.0254,
+        "open_ticket": 0.1313,
+        "escalate_human": 0.2807,
+        "suppress": 0.0342,
+        "cannot_tell": 0.2443
+      },
+      "confidence": 0.141,
+      "auto_remediable": 0.3069,
+      "noise": 0.1884,
+      "severity_score": 1.9638,
+      "latency_ms": 634,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-016",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2294,
+        "restart_container": 0.132,
+        "open_ticket": 0.1186,
+        "escalate_human": 0.2999,
+        "suppress": 0.0283,
+        "cannot_tell": 0.1917
+      },
+      "confidence": 0.1599,
+      "auto_remediable": 0.5711,
+      "noise": 0.1702,
+      "severity_score": 2.128,
+      "latency_ms": 672,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-150",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2799,
+        "restart_container": 0.0229,
+        "open_ticket": 0.1399,
+        "escalate_human": 0.2597,
+        "suppress": 0.0373,
+        "cannot_tell": 0.2603
+      },
+      "confidence": 0.1359,
+      "auto_remediable": 0.2368,
+      "noise": 0.2439,
+      "severity_score": 1.5016,
+      "latency_ms": 653,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-005",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.249,
+        "restart_container": 0.1479,
+        "open_ticket": 0.098,
+        "escalate_human": 0.2938,
+        "suppress": 0.0334,
+        "cannot_tell": 0.1779
+      },
+      "confidence": 0.1526,
+      "auto_remediable": 0.6351,
+      "noise": 0.1692,
+      "severity_score": 2.4881,
+      "latency_ms": 833,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-031",
+      "label": "suppress",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.251,
+        "restart_container": 0.0507,
+        "open_ticket": 0.1287,
+        "escalate_human": 0.2595,
+        "suppress": 0.1074,
+        "cannot_tell": 0.2026
+      },
+      "confidence": 0.1114,
+      "auto_remediable": 0.3227,
+      "noise": 0.6555,
+      "severity_score": 2.204,
+      "latency_ms": 678,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-003",
+      "label": "restart_container",
+      "predicted": "restart_container",
+      "probabilities": {
+        "notify_only": 0.2012,
+        "restart_container": 0.2507,
+        "open_ticket": 0.0977,
+        "escalate_human": 0.2356,
+        "suppress": 0.0376,
+        "cannot_tell": 0.1772
+      },
+      "confidence": 0.1009,
+      "auto_remediable": 0.6789,
+      "noise": 0.2291,
+      "severity_score": 2.2941,
+      "latency_ms": 835,
+      "shuffled_predicted": "restart_container",
+      "error": null
+    },
+    {
+      "case_id": "k-049",
+      "label": "suppress",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2922,
+        "restart_container": 0.057,
+        "open_ticket": 0.103,
+        "escalate_human": 0.3127,
+        "suppress": 0.0397,
+        "cannot_tell": 0.1954
+      },
+      "confidence": 0.1752,
+      "auto_remediable": 0.473,
+      "noise": 0.1876,
+      "severity_score": 2.4066,
+      "latency_ms": 600,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-146",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2814,
+        "restart_container": 0.0225,
+        "open_ticket": 0.1389,
+        "escalate_human": 0.2607,
+        "suppress": 0.0374,
+        "cannot_tell": 0.2591
+      },
+      "confidence": 0.1377,
+      "auto_remediable": 0.2288,
+      "noise": 0.2462,
+      "severity_score": 1.4956,
+      "latency_ms": 644,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-042",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3103,
+        "restart_container": 0.0277,
+        "open_ticket": 0.1701,
+        "escalate_human": 0.1771,
+        "suppress": 0.0651,
+        "cannot_tell": 0.2497
+      },
+      "confidence": 0.1724,
+      "auto_remediable": 0.274,
+      "noise": 0.3733,
+      "severity_score": 1.0732,
+      "latency_ms": 674,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-047",
+      "label": "suppress",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2958,
+        "restart_container": 0.0518,
+        "open_ticket": 0.105,
+        "escalate_human": 0.3052,
+        "suppress": 0.0413,
+        "cannot_tell": 0.2009
+      },
+      "confidence": 0.1662,
+      "auto_remediable": 0.4735,
+      "noise": 0.1882,
+      "severity_score": 2.3763,
+      "latency_ms": 604,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-125",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2852,
+        "restart_container": 0.0245,
+        "open_ticket": 0.1305,
+        "escalate_human": 0.2823,
+        "suppress": 0.0339,
+        "cannot_tell": 0.2436
+      },
+      "confidence": 0.1423,
+      "auto_remediable": 0.3029,
+      "noise": 0.1872,
+      "severity_score": 1.9675,
+      "latency_ms": 590,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-091",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2298,
+        "restart_container": 0.0571,
+        "open_ticket": 0.1026,
+        "escalate_human": 0.3952,
+        "suppress": 0.0373,
+        "cannot_tell": 0.178
+      },
+      "confidence": 0.2742,
+      "auto_remediable": 0.346,
+      "noise": 0.1723,
+      "severity_score": 2.2769,
+      "latency_ms": 679,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-045",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3089,
+        "restart_container": 0.0262,
+        "open_ticket": 0.229,
+        "escalate_human": 0.0905,
+        "suppress": 0.0768,
+        "cannot_tell": 0.2686
+      },
+      "confidence": 0.1707,
+      "auto_remediable": 0.2833,
+      "noise": 0.3872,
+      "severity_score": 1.0902,
+      "latency_ms": 675,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-084",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2643,
+        "restart_container": 0.0336,
+        "open_ticket": 0.0848,
+        "escalate_human": 0.4129,
+        "suppress": 0.024,
+        "cannot_tell": 0.1804
+      },
+      "confidence": 0.2955,
+      "auto_remediable": 0.2613,
+      "noise": 0.0857,
+      "severity_score": 2.1535,
+      "latency_ms": 689,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-138",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2639,
+        "restart_container": 0.03,
+        "open_ticket": 0.1213,
+        "escalate_human": 0.2685,
+        "suppress": 0.0351,
+        "cannot_tell": 0.2811
+      },
+      "confidence": 0.1373,
+      "auto_remediable": 0.2569,
+      "noise": 0.1987,
+      "severity_score": 1.5199,
+      "latency_ms": 456,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-116",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.288,
+        "restart_container": 0.0182,
+        "open_ticket": 0.1778,
+        "escalate_human": 0.2647,
+        "suppress": 0.0363,
+        "cannot_tell": 0.215
+      },
+      "confidence": 0.1456,
+      "auto_remediable": 0.3026,
+      "noise": 0.1863,
+      "severity_score": 1.508,
+      "latency_ms": 338,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-139",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.264,
+        "restart_container": 0.0326,
+        "open_ticket": 0.1221,
+        "escalate_human": 0.2628,
+        "suppress": 0.0366,
+        "cannot_tell": 0.282
+      },
+      "confidence": 0.1384,
+      "auto_remediable": 0.2533,
+      "noise": 0.2002,
+      "severity_score": 1.5125,
+      "latency_ms": 415,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-142",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2517,
+        "restart_container": 0.033,
+        "open_ticket": 0.1251,
+        "escalate_human": 0.2463,
+        "suppress": 0.0466,
+        "cannot_tell": 0.2973
+      },
+      "confidence": 0.1568,
+      "auto_remediable": 0.307,
+      "noise": 0.2648,
+      "severity_score": 1.3948,
+      "latency_ms": 730,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-076",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3044,
+        "restart_container": 0.0395,
+        "open_ticket": 0.1859,
+        "escalate_human": 0.1496,
+        "suppress": 0.0568,
+        "cannot_tell": 0.2639
+      },
+      "confidence": 0.1652,
+      "auto_remediable": 0.3603,
+      "noise": 0.2666,
+      "severity_score": 1.4673,
+      "latency_ms": 868,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-110",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2465,
+        "restart_container": 0.0268,
+        "open_ticket": 0.1159,
+        "escalate_human": 0.3798,
+        "suppress": 0.0311,
+        "cannot_tell": 0.1999
+      },
+      "confidence": 0.2557,
+      "auto_remediable": 0.3902,
+      "noise": 0.1848,
+      "severity_score": 1.8703,
+      "latency_ms": 951,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-112",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2729,
+        "restart_container": 0.0282,
+        "open_ticket": 0.1272,
+        "escalate_human": 0.3382,
+        "suppress": 0.0332,
+        "cannot_tell": 0.2002
+      },
+      "confidence": 0.2059,
+      "auto_remediable": 0.2845,
+      "noise": 0.1904,
+      "severity_score": 1.8041,
+      "latency_ms": 966,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-043",
+      "label": "suppress",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2761,
+        "restart_container": 0.0232,
+        "open_ticket": 0.1626,
+        "escalate_human": 0.193,
+        "suppress": 0.0579,
+        "cannot_tell": 0.2872
+      },
+      "confidence": 0.1446,
+      "auto_remediable": 0.3949,
+      "noise": 0.3236,
+      "severity_score": 1.3394,
+      "latency_ms": 785,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-081",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2656,
+        "restart_container": 0.0195,
+        "open_ticket": 0.0986,
+        "escalate_human": 0.4047,
+        "suppress": 0.0251,
+        "cannot_tell": 0.1865
+      },
+      "confidence": 0.2856,
+      "auto_remediable": 0.205,
+      "noise": 0.105,
+      "severity_score": 2.0718,
+      "latency_ms": 657,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-013",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2261,
+        "restart_container": 0.1425,
+        "open_ticket": 0.1162,
+        "escalate_human": 0.2957,
+        "suppress": 0.028,
+        "cannot_tell": 0.1915
+      },
+      "confidence": 0.1549,
+      "auto_remediable": 0.6689,
+      "noise": 0.1922,
+      "severity_score": 2.0814,
+      "latency_ms": 675,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-092",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2391,
+        "restart_container": 0.0658,
+        "open_ticket": 0.1031,
+        "escalate_human": 0.3829,
+        "suppress": 0.0361,
+        "cannot_tell": 0.173
+      },
+      "confidence": 0.2595,
+      "auto_remediable": 0.3508,
+      "noise": 0.1596,
+      "severity_score": 2.2821,
+      "latency_ms": 677,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-019",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2284,
+        "restart_container": 0.1406,
+        "open_ticket": 0.1156,
+        "escalate_human": 0.2941,
+        "suppress": 0.0287,
+        "cannot_tell": 0.1926
+      },
+      "confidence": 0.153,
+      "auto_remediable": 0.6646,
+      "noise": 0.1938,
+      "severity_score": 2.0494,
+      "latency_ms": 666,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-079",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2848,
+        "restart_container": 0.0459,
+        "open_ticket": 0.1784,
+        "escalate_human": 0.1434,
+        "suppress": 0.066,
+        "cannot_tell": 0.2813
+      },
+      "confidence": 0.1418,
+      "auto_remediable": 0.4819,
+      "noise": 0.2998,
+      "severity_score": 1.4866,
+      "latency_ms": 654,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-040",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.313,
+        "restart_container": 0.0273,
+        "open_ticket": 0.17,
+        "escalate_human": 0.1739,
+        "suppress": 0.0666,
+        "cannot_tell": 0.2492
+      },
+      "confidence": 0.1755,
+      "auto_remediable": 0.2653,
+      "noise": 0.3812,
+      "severity_score": 1.0653,
+      "latency_ms": 674,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-097",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2798,
+        "restart_container": 0.0962,
+        "open_ticket": 0.1148,
+        "escalate_human": 0.3141,
+        "suppress": 0.0259,
+        "cannot_tell": 0.1692
+      },
+      "confidence": 0.1769,
+      "auto_remediable": 0.3978,
+      "noise": 0.1345,
+      "severity_score": 2.7348,
+      "latency_ms": 702,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-071",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3098,
+        "restart_container": 0.0179,
+        "open_ticket": 0.1999,
+        "escalate_human": 0.1815,
+        "suppress": 0.0492,
+        "cannot_tell": 0.2418
+      },
+      "confidence": 0.1717,
+      "auto_remediable": 0.1365,
+      "noise": 0.2087,
+      "severity_score": 1.372,
+      "latency_ms": 629,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-147",
+      "label": "suppress",
+      "predicted": "suppress",
+      "probabilities": {
+        "notify_only": 0.2535,
+        "restart_container": 0.0161,
+        "open_ticket": 0.0712,
+        "escalate_human": 0.1703,
+        "suppress": 0.2863,
+        "cannot_tell": 0.2026
+      },
+      "confidence": 0.1436,
+      "auto_remediable": 0.3529,
+      "noise": 0.9302,
+      "severity_score": 0.9782,
+      "latency_ms": 635,
+      "shuffled_predicted": "suppress",
+      "error": null
+    },
+    {
+      "case_id": "k-085",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.268,
+        "restart_container": 0.0199,
+        "open_ticket": 0.1003,
+        "escalate_human": 0.3982,
+        "suppress": 0.0248,
+        "cannot_tell": 0.1887
+      },
+      "confidence": 0.2779,
+      "auto_remediable": 0.2136,
+      "noise": 0.1066,
+      "severity_score": 2.035,
+      "latency_ms": 639,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-024",
+      "label": "restart_container",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2699,
+        "restart_container": 0.0866,
+        "open_ticket": 0.159,
+        "escalate_human": 0.2097,
+        "suppress": 0.0333,
+        "cannot_tell": 0.2415
+      },
+      "confidence": 0.1239,
+      "auto_remediable": 0.6008,
+      "noise": 0.1976,
+      "severity_score": 1.5291,
+      "latency_ms": 851,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-020",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2243,
+        "restart_container": 0.1388,
+        "open_ticket": 0.1161,
+        "escalate_human": 0.298,
+        "suppress": 0.0282,
+        "cannot_tell": 0.1946
+      },
+      "confidence": 0.1576,
+      "auto_remediable": 0.6747,
+      "noise": 0.191,
+      "severity_score": 2.0923,
+      "latency_ms": 691,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-086",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2731,
+        "restart_container": 0.0235,
+        "open_ticket": 0.0958,
+        "escalate_human": 0.3898,
+        "suppress": 0.0269,
+        "cannot_tell": 0.1908
+      },
+      "confidence": 0.2678,
+      "auto_remediable": 0.2403,
+      "noise": 0.1197,
+      "severity_score": 2.0166,
+      "latency_ms": 716,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-027",
+      "label": "restart_container",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2766,
+        "restart_container": 0.0703,
+        "open_ticket": 0.1469,
+        "escalate_human": 0.2526,
+        "suppress": 0.0339,
+        "cannot_tell": 0.2197
+      },
+      "confidence": 0.1319,
+      "auto_remediable": 0.525,
+      "noise": 0.1941,
+      "severity_score": 1.6222,
+      "latency_ms": 943,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-143",
+      "label": "suppress",
+      "predicted": "suppress",
+      "probabilities": {
+        "notify_only": 0.2535,
+        "restart_container": 0.0161,
+        "open_ticket": 0.0712,
+        "escalate_human": 0.1703,
+        "suppress": 0.2863,
+        "cannot_tell": 0.2026
+      },
+      "confidence": 0.1436,
+      "auto_remediable": 0.3529,
+      "noise": 0.9302,
+      "severity_score": 0.9782,
+      "latency_ms": 585,
+      "shuffled_predicted": "suppress",
+      "error": null
+    },
+    {
+      "case_id": "k-053",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2963,
+        "restart_container": 0.0314,
+        "open_ticket": 0.1348,
+        "escalate_human": 0.2886,
+        "suppress": 0.0291,
+        "cannot_tell": 0.2198
+      },
+      "confidence": 0.1556,
+      "auto_remediable": 0.2286,
+      "noise": 0.14,
+      "severity_score": 1.7089,
+      "latency_ms": 700,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-087",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2744,
+        "restart_container": 0.023,
+        "open_ticket": 0.1107,
+        "escalate_human": 0.3675,
+        "suppress": 0.0284,
+        "cannot_tell": 0.196
+      },
+      "confidence": 0.2409,
+      "auto_remediable": 0.2138,
+      "noise": 0.1251,
+      "severity_score": 1.9435,
+      "latency_ms": 672,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-007",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2445,
+        "restart_container": 0.1172,
+        "open_ticket": 0.1087,
+        "escalate_human": 0.3145,
+        "suppress": 0.0326,
+        "cannot_tell": 0.1826
+      },
+      "confidence": 0.1774,
+      "auto_remediable": 0.6313,
+      "noise": 0.1621,
+      "severity_score": 2.4935,
+      "latency_ms": 634,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-062",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.308,
+        "restart_container": 0.0182,
+        "open_ticket": 0.1456,
+        "escalate_human": 0.2481,
+        "suppress": 0.0359,
+        "cannot_tell": 0.2442
+      },
+      "confidence": 0.1696,
+      "auto_remediable": 0.2643,
+      "noise": 0.1786,
+      "severity_score": 1.5529,
+      "latency_ms": 341,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-074",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2973,
+        "restart_container": 0.0151,
+        "open_ticket": 0.1669,
+        "escalate_human": 0.2415,
+        "suppress": 0.0436,
+        "cannot_tell": 0.2355
+      },
+      "confidence": 0.1568,
+      "auto_remediable": 0.137,
+      "noise": 0.1728,
+      "severity_score": 1.5416,
+      "latency_ms": 334,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-046",
+      "label": "suppress",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2877,
+        "restart_container": 0.0254,
+        "open_ticket": 0.2257,
+        "escalate_human": 0.0865,
+        "suppress": 0.0848,
+        "cannot_tell": 0.2899
+      },
+      "confidence": 0.1479,
+      "auto_remediable": 0.3518,
+      "noise": 0.4282,
+      "severity_score": 1.026,
+      "latency_ms": 342,
+      "shuffled_predicted": "open_ticket",
+      "error": null
+    },
+    {
+      "case_id": "k-058",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2954,
+        "restart_container": 0.0266,
+        "open_ticket": 0.1348,
+        "escalate_human": 0.2864,
+        "suppress": 0.0298,
+        "cannot_tell": 0.2269
+      },
+      "confidence": 0.1545,
+      "auto_remediable": 0.2304,
+      "noise": 0.1392,
+      "severity_score": 1.6832,
+      "latency_ms": 687,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-048",
+      "label": "suppress",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2928,
+        "restart_container": 0.0516,
+        "open_ticket": 0.1052,
+        "escalate_human": 0.3093,
+        "suppress": 0.0411,
+        "cannot_tell": 0.2
+      },
+      "confidence": 0.1712,
+      "auto_remediable": 0.4686,
+      "noise": 0.186,
+      "severity_score": 2.3737,
+      "latency_ms": 748,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-068",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.306,
+        "restart_container": 0.0175,
+        "open_ticket": 0.1894,
+        "escalate_human": 0.1915,
+        "suppress": 0.0521,
+        "cannot_tell": 0.2435
+      },
+      "confidence": 0.1672,
+      "auto_remediable": 0.1326,
+      "noise": 0.24,
+      "severity_score": 1.3817,
+      "latency_ms": 747,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-065",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3062,
+        "restart_container": 0.0168,
+        "open_ticket": 0.1446,
+        "escalate_human": 0.2626,
+        "suppress": 0.0333,
+        "cannot_tell": 0.2364
+      },
+      "confidence": 0.1674,
+      "auto_remediable": 0.2769,
+      "noise": 0.1558,
+      "severity_score": 1.6016,
+      "latency_ms": 785,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-100",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2651,
+        "restart_container": 0.1299,
+        "open_ticket": 0.1158,
+        "escalate_human": 0.2983,
+        "suppress": 0.0294,
+        "cannot_tell": 0.1615
+      },
+      "confidence": 0.1579,
+      "auto_remediable": 0.3595,
+      "noise": 0.1477,
+      "severity_score": 2.7031,
+      "latency_ms": 757,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-034",
+      "label": "suppress",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2486,
+        "restart_container": 0.039,
+        "open_ticket": 0.1672,
+        "escalate_human": 0.1837,
+        "suppress": 0.1063,
+        "cannot_tell": 0.2553
+      },
+      "confidence": 0.1064,
+      "auto_remediable": 0.2878,
+      "noise": 0.5681,
+      "severity_score": 1.4097,
+      "latency_ms": 651,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-135",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2662,
+        "restart_container": 0.0323,
+        "open_ticket": 0.1209,
+        "escalate_human": 0.2653,
+        "suppress": 0.036,
+        "cannot_tell": 0.2793
+      },
+      "confidence": 0.1352,
+      "auto_remediable": 0.2506,
+      "noise": 0.1949,
+      "severity_score": 1.5212,
+      "latency_ms": 605,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-144",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2838,
+        "restart_container": 0.0228,
+        "open_ticket": 0.1388,
+        "escalate_human": 0.2589,
+        "suppress": 0.037,
+        "cannot_tell": 0.2587
+      },
+      "confidence": 0.1406,
+      "auto_remediable": 0.233,
+      "noise": 0.2433,
+      "severity_score": 1.5056,
+      "latency_ms": 640,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-111",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2545,
+        "restart_container": 0.0241,
+        "open_ticket": 0.1262,
+        "escalate_human": 0.3604,
+        "suppress": 0.0305,
+        "cannot_tell": 0.2043
+      },
+      "confidence": 0.2325,
+      "auto_remediable": 0.3809,
+      "noise": 0.1675,
+      "severity_score": 1.8498,
+      "latency_ms": 748,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-011",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2413,
+        "restart_container": 0.1237,
+        "open_ticket": 0.1052,
+        "escalate_human": 0.306,
+        "suppress": 0.0352,
+        "cannot_tell": 0.1886
+      },
+      "confidence": 0.1672,
+      "auto_remediable": 0.6544,
+      "noise": 0.1793,
+      "severity_score": 2.4638,
+      "latency_ms": 742,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-140",
+      "label": "cannot_tell",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2598,
+        "restart_container": 0.0375,
+        "open_ticket": 0.1229,
+        "escalate_human": 0.2595,
+        "suppress": 0.0396,
+        "cannot_tell": 0.2807
+      },
+      "confidence": 0.1368,
+      "auto_remediable": 0.2621,
+      "noise": 0.2239,
+      "severity_score": 1.4661,
+      "latency_ms": 616,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-101",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2418,
+        "restart_container": 0.0864,
+        "open_ticket": 0.1187,
+        "escalate_human": 0.312,
+        "suppress": 0.0324,
+        "cannot_tell": 0.2087
+      },
+      "confidence": 0.1744,
+      "auto_remediable": 0.3518,
+      "noise": 0.187,
+      "severity_score": 2.4265,
+      "latency_ms": 654,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-032",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.254,
+        "restart_container": 0.0365,
+        "open_ticket": 0.1678,
+        "escalate_human": 0.1791,
+        "suppress": 0.1091,
+        "cannot_tell": 0.2535
+      },
+      "confidence": 0.1048,
+      "auto_remediable": 0.2769,
+      "noise": 0.5753,
+      "severity_score": 1.3832,
+      "latency_ms": 661,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-113",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2675,
+        "restart_container": 0.03,
+        "open_ticket": 0.1302,
+        "escalate_human": 0.3365,
+        "suppress": 0.0338,
+        "cannot_tell": 0.2019
+      },
+      "confidence": 0.2038,
+      "auto_remediable": 0.2909,
+      "noise": 0.1871,
+      "severity_score": 1.7838,
+      "latency_ms": 759,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-041",
+      "label": "suppress",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2563,
+        "restart_container": 0.0267,
+        "open_ticket": 0.175,
+        "escalate_human": 0.2142,
+        "suppress": 0.0469,
+        "cannot_tell": 0.281
+      },
+      "confidence": 0.1371,
+      "auto_remediable": 0.3447,
+      "noise": 0.2617,
+      "severity_score": 1.4555,
+      "latency_ms": 666,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-093",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2352,
+        "restart_container": 0.0443,
+        "open_ticket": 0.0987,
+        "escalate_human": 0.4222,
+        "suppress": 0.0288,
+        "cannot_tell": 0.1708
+      },
+      "confidence": 0.3067,
+      "auto_remediable": 0.3206,
+      "noise": 0.1275,
+      "severity_score": 2.4894,
+      "latency_ms": 702,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-002",
+      "label": "restart_container",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2157,
+        "restart_container": 0.2178,
+        "open_ticket": 0.1043,
+        "escalate_human": 0.2334,
+        "suppress": 0.0363,
+        "cannot_tell": 0.1925
+      },
+      "confidence": 0.08,
+      "auto_remediable": 0.6937,
+      "noise": 0.2266,
+      "severity_score": 2.3383,
+      "latency_ms": 763,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-127",
+      "label": "notify_only",
+      "predicted": "cannot_tell",
+      "probabilities": {
+        "notify_only": 0.2622,
+        "restart_container": 0.0368,
+        "open_ticket": 0.1692,
+        "escalate_human": 0.1713,
+        "suppress": 0.0786,
+        "cannot_tell": 0.2819
+      },
+      "confidence": 0.1382,
+      "auto_remediable": 0.4553,
+      "noise": 0.3454,
+      "severity_score": 1.2917,
+      "latency_ms": 596,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-050",
+      "label": "suppress",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.3073,
+        "restart_container": 0.0446,
+        "open_ticket": 0.095,
+        "escalate_human": 0.3351,
+        "suppress": 0.0267,
+        "cannot_tell": 0.1913
+      },
+      "confidence": 0.2022,
+      "auto_remediable": 0.4495,
+      "noise": 0.1188,
+      "severity_score": 2.4819,
+      "latency_ms": 593,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-148",
+      "label": "suppress",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2827,
+        "restart_container": 0.0226,
+        "open_ticket": 0.1394,
+        "escalate_human": 0.2591,
+        "suppress": 0.037,
+        "cannot_tell": 0.2591
+      },
+      "confidence": 0.1393,
+      "auto_remediable": 0.234,
+      "noise": 0.2448,
+      "severity_score": 1.5016,
+      "latency_ms": 681,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    },
+    {
+      "case_id": "k-073",
+      "label": "open_ticket",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.2967,
+        "restart_container": 0.0151,
+        "open_ticket": 0.17,
+        "escalate_human": 0.2389,
+        "suppress": 0.0445,
+        "cannot_tell": 0.2347
+      },
+      "confidence": 0.1561,
+      "auto_remediable": 0.1365,
+      "noise": 0.1794,
+      "severity_score": 1.5226,
+      "latency_ms": 415,
+      "shuffled_predicted": "notify_only",
+      "error": null
+    },
+    {
+      "case_id": "k-096",
+      "label": "escalate_human",
+      "predicted": "escalate_human",
+      "probabilities": {
+        "notify_only": 0.2592,
+        "restart_container": 0.1547,
+        "open_ticket": 0.1088,
+        "escalate_human": 0.2814,
+        "suppress": 0.0309,
+        "cannot_tell": 0.1651
+      },
+      "confidence": 0.1377,
+      "auto_remediable": 0.4491,
+      "noise": 0.1523,
+      "severity_score": 2.6877,
+      "latency_ms": 499,
+      "shuffled_predicted": "escalate_human",
+      "error": null
+    },
+    {
+      "case_id": "k-119",
+      "label": "notify_only",
+      "predicted": "notify_only",
+      "probabilities": {
+        "notify_only": 0.3026,
+        "restart_container": 0.0244,
+        "open_ticket": 0.2478,
+        "escalate_human": 0.1284,
+        "suppress": 0.0579,
+        "cannot_tell": 0.2389
+      },
+      "confidence": 0.1631,
+      "auto_remediable": 0.3037,
+      "noise": 0.2787,
+      "severity_score": 1.3119,
+      "latency_ms": 785,
+      "shuffled_predicted": "cannot_tell",
+      "error": null
+    }
+  ]
+}

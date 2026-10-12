@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-10-12T15:30:31.000000000Z",
+  "event.kind": "DAVIS_PROBLEM",
+  "event.id": "-4417092361181637228_1791819000000V2",
+  "display_id": "P-261012190",
+  "event.name": "Long garbage-collection time",
+  "event.description": "Long garbage-collection time on kafka-broker (kafka-0)",
+  "event.category": "RESOURCE_CONTENTION",
+  "event.status": "ACTIVE",
+  "event.status_transition": "CREATED",
+  "event.start": "2026-10-12T15:30:00.000000000Z",
+  "dt.analysis.ready": true,
+  "dt.davis.event_ids": [
+    "8302664511948770210_1791819000000"
+  ],
+  "dt.davis.impact_level": "Infrastructure",
+  "dt.davis.is_duplicate": false,
+  "dt.duration_marker": "5 min",
+  "maintenance.is_under_maintenance": false,
+  "smartscape.affected_entities": [
+    {
+      "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-0)"
+    }
+  ],
+  "affected_entity_ids": [
+    "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+  ],
+  "affected_entity_types": [
+    "dt.entity.process_group_instance"
+  ],
+  "entity_tags": [
+    "team:streaming",
+    "app:kafka"
+  ],
+  "event.severity": 4
+}

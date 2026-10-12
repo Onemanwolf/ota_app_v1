@@ -1,0 +1,29 @@
+[
+  {
+    "event.id": "-4417092361181399658_1791817200000V2",
+    "status": "ACTIVE",
+    "dup": false,
+    "name": "Kafka offline partitions",
+    "display_id": "P-261012160",
+    "category": "CUSTOM_ALERT",
+    "severity": 1,
+    "start": "2026-10-12T15:00:00.000000000Z",
+    "end": null,
+    "affected": [
+      {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "PROCESS_GROUP_INSTANCE",
+        "name": "kafka-broker (kafka-0)"
+      },
+      {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "PROCESS_GROUP_INSTANCE",
+        "name": "kafka-broker (kafka-1)"
+      }
+    ],
+    "root_cause": null,
+    "maintenance": false,
+    "impact_level": "Infrastructure",
+    "last_update": "2026-10-12T15:00:31.000000000Z"
+  }
+]

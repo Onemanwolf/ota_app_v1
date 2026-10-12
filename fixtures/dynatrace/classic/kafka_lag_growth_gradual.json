@@ -1,0 +1,140 @@
+{
+  "pid": "-4417092361181257116_1791816120000V2",
+  "problem_id": "P-261012142",
+  "state": "OPEN",
+  "title": "Kafka consumer lag high",
+  "severity": "CUSTOM_ALERT",
+  "impact": "SERVICE",
+  "url": "https://abc12345.live.dynatrace.com/#problems/problemdetails;pid=-4417092361181257116_1791816120000V2",
+  "tags": "team:streaming, app:kafka",
+  "impacted_entities": [
+    {
+      "type": "SERVICE",
+      "name": "orders-consumer",
+      "entity": "SERVICE-7F3E2D1C0B9A8877"
+    }
+  ],
+  "details": {
+    "problemId": "-4417092361181257116_1791816120000V2",
+    "displayId": "P-261012142",
+    "title": "Kafka consumer lag high",
+    "status": "OPEN",
+    "severityLevel": "CUSTOM_ALERT",
+    "impactLevel": "SERVICES",
+    "startTime": 1791816120000,
+    "endTime": -1,
+    "affectedEntities": [
+      {
+        "entityId": {
+          "id": "SERVICE-7F3E2D1C0B9A8877",
+          "type": "SERVICE"
+        },
+        "name": "orders-consumer"
+      }
+    ],
+    "impactedEntities": [
+      {
+        "entityId": {
+          "id": "SERVICE-7F3E2D1C0B9A8877",
+          "type": "SERVICE"
+        },
+        "name": "orders-consumer"
+      }
+    ],
+    "rootCauseEntity": null,
+    "managementZones": [
+      {
+        "id": "4567890123456789012",
+        "name": "Kafka Prod"
+      }
+    ],
+    "entityTags": [
+      {
+        "context": "CONTEXTLESS",
+        "key": "team",
+        "value": "streaming",
+        "stringRepresentation": "team:streaming"
+      },
+      {
+        "context": "CONTEXTLESS",
+        "key": "app",
+        "value": "kafka",
+        "stringRepresentation": "app:kafka"
+      }
+    ],
+    "problemFilters": [
+      {
+        "id": "c1b2a3d4-0000-4000-8000-000000000001",
+        "name": "Kafka on-call"
+      }
+    ],
+    "evidenceDetails": {
+      "totalCount": 3,
+      "details": [
+        {
+          "evidenceType": "EVENT",
+          "displayName": "Kafka consumer lag high",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "orders-consumer (orders-consumer-7d9f)"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791816120000,
+          "endTime": -1,
+          "eventId": "8302664511948770210_1791816120000",
+          "eventType": "CUSTOM_ALERT"
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Kafka Consumer - Consumer lag maximum",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "orders-consumer (orders-consumer-7d9f)"
+          },
+          "rootCauseRelevant": false,
+          "startTime": 1791816180000,
+          "metricId": "kafka.consumer.consumer-metrics.records-lag-max",
+          "unit": "Count",
+          "valueBeforeChangePoint": 2200,
+          "valueAfterChangePoint": 9480,
+          "endTime": null
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Kafka Consumer - Records consumed rate",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "orders-consumer (orders-consumer-7d9f)"
+          },
+          "rootCauseRelevant": false,
+          "startTime": 1791816180000,
+          "metricId": "kafka.consumer.consumer-metrics.records-consumed-rate",
+          "unit": "PerSecond",
+          "valueBeforeChangePoint": 1950,
+          "valueAfterChangePoint": 1910,
+          "endTime": null
+        }
+      ]
+    },
+    "impactAnalysis": {
+      "impacts": []
+    },
+    "linkedProblemInfo": null,
+    "k8s.cluster.name": [
+      "prod-aks-weu"
+    ],
+    "k8s.cluster.uid": [],
+    "k8s.namespace.name": [
+      "streaming"
+    ]
+  }
+}

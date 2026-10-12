@@ -1,0 +1,36 @@
+{
+  "logs": [],
+  "log_records": [],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Low disk space",
+      "entity": {
+        "id": "HOST-91C2D4E5F6A70810",
+        "type": "host",
+        "name": "aks-kafka-pool-0000"
+      },
+      "root_cause_relevant": true,
+      "event_type": "OSI_LOW_DISK_SPACE",
+      "event_id": "8302664511948770210_1791816480000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Disk used %",
+      "entity": {
+        "id": "HOST-91C2D4E5F6A70810",
+        "type": "host",
+        "name": "aks-kafka-pool-0000"
+      },
+      "root_cause_relevant": true,
+      "metric_id": "builtin:host.disk.usedPct",
+      "unit": "Percent",
+      "value_before": 71,
+      "value_after": 78.4
+    }
+  ],
+  "provenance": [
+    "'Low disk space'/OSI_LOW_DISK_SPACE: documented",
+    "builtin:host.disk.usedPct: INFERRED key"
+  ]
+}

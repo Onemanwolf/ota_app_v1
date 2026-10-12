@@ -1,0 +1,47 @@
+{
+  "logs": [
+    "[2026-10-12 15:36:07,552] WARN [Producer clientId=checkout-producer-1] Connection to node 1 (kafka-1.kafka-headless.streaming.svc/10.42.1.12:9092) could not be established. Node may not be available. (org.apache.kafka.clients.NetworkClient)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T15:36:07.552000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:36:07,552] WARN [Producer clientId=checkout-producer-1] Connection to node 1 (kafka-1.kafka-headless.streaming.svc/10.42.1.12:9092) could not be established. Node may not be available. (org.apache.kafka.clients.NetworkClient)",
+      "loglevel": "WARN",
+      "status": "WARN",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "checkout-producer",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "SERVICE-1A2B3C4D5E6F7788",
+      "dt.source_entity": [
+        "SERVICE-1A2B3C4D5E6F7788"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Connectivity problem",
+      "entity": {
+        "id": "SERVICE-1A2B3C4D5E6F7788",
+        "type": "service",
+        "name": "checkout-producer"
+      },
+      "root_cause_relevant": true,
+      "event_type": "PROCESS_NA_HIGH_CONN_FAIL_RATE",
+      "event_id": "8302664511948770210_1791819360000"
+    }
+  ],
+  "provenance": [
+    "NetworkClient line: Kafka 3.7 source"
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "logs": [
+    "[2026-10-12 14:16:07,592] WARN [Consumer clientId=orders-consumer-7d9f, groupId=orders] consumer poll timeout has expired. This means the time between subsequent calls to poll() was longer than the configured max.poll.interval.ms, which typically implies that the poll loop is spending too much time processing messages. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)",
+    "[2026-10-12 14:16:07,592] INFO [Consumer clientId=orders-consumer-7d9f, groupId=orders] Member orders-consumer-7d9f-1a2b sending LeaveGroup request to coordinator kafka-1:9092 (id: 2147483646 rack: null) due to consumer poll timeout has expired. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)",
+    "[2026-10-12 14:17:07,629] ERROR [Consumer clientId=orders-consumer-7d9f, groupId=orders] Offset commit failed: org.apache.kafka.clients.consumer.CommitFailedException: Commit cannot be completed since the group has already rebalanced and assigned the partitions to another member. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T14:16:07.592000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:16:07,592] WARN [Consumer clientId=orders-consumer-7d9f, groupId=orders] consumer poll timeout has expired. This means the time between subsequent calls to poll() was longer than the configured max.poll.interval.ms, which typically implies that the poll loop is spending too much time processing messages. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)",
+      "loglevel": "WARN",
+      "status": "WARN",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "orders-consumer-7d9f",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T14:16:07.592000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:16:07,592] INFO [Consumer clientId=orders-consumer-7d9f, groupId=orders] Member orders-consumer-7d9f-1a2b sending LeaveGroup request to coordinator kafka-1:9092 (id: 2147483646 rack: null) due to consumer poll timeout has expired. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "orders-consumer-7d9f",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T14:17:07.629000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:17:07,629] ERROR [Consumer clientId=orders-consumer-7d9f, groupId=orders] Offset commit failed: org.apache.kafka.clients.consumer.CommitFailedException: Commit cannot be completed since the group has already rebalanced and assigned the partitions to another member. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)",
+      "loglevel": "ERROR",
+      "status": "ERROR",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "orders-consumer-7d9f",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Kafka consumer lag high",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+        "type": "process_group_instance",
+        "name": "orders-consumer (orders-consumer-7d9f)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "CUSTOM_ALERT",
+      "event_id": "8302664511948770210_1791814680000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Consumer - Consumer lag maximum",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+        "type": "process_group_instance",
+        "name": "orders-consumer (orders-consumer-7d9f)"
+      },
+      "root_cause_relevant": true,
+      "metric_id": "kafka.consumer.consumer-metrics.records-lag-max",
+      "unit": "Count",
+      "value_before": 140,
+      "value_after": 48310
+    }
+  ],
+  "provenance": [
+    "metric event title: INFERRED (user-defined)",
+    "poll timeout / LeaveGroup / CommitFailed: Kafka 3.7 source"
+  ]
+}

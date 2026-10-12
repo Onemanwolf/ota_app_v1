@@ -6,7 +6,7 @@
     "name": "Container demo-orders-api unavailable",
     "display_id": "P-2610130",
     "category": "AVAILABILITY",
-    "severity": 4,
+    "severity": 2,
     "start": "2026-10-12T12:00:00Z",
     "end": null,
     "affected": [
@@ -36,7 +36,7 @@
     "name": "Response time degradation on checkout",
     "display_id": "P-2610131",
     "category": "SLOWDOWN",
-    "severity": 2,
+    "severity": 4,
     "start": "2026-10-12T12:15:00Z",
     "end": null,
     "affected": [

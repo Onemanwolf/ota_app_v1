@@ -32,6 +32,8 @@ known-first-party = ["opstriage_contracts", "opstriage_shared", "opstriage_*"]
 "**/tests/**" = ["S101", "S105", "S106", "E501"]   # test names and fixtures read better unwrapped
 "postman/build_collection.py" = ["E501"]   # embedded Postman JavaScript test scripts
 "evals/generate_dataset.py" = ["E501"]     # scenario text
+"evals/generate_kafka_dataset.py" = ["E501"]
+"fixtures/kafka/generate.py" = ["E501"]   # verbatim Kafka log lines and Dynatrace titles
 "**/domain/questions.py" = ["E501"]         # decision-model prompts, verbatim from spec 12.4.2
 "**/entrypoints/evals.py" = ["E501"]        # Markdown report rows
 

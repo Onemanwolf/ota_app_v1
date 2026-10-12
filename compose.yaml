@@ -105,9 +105,25 @@ services:
       interval: 10s
       retries: 10
 
-  demo-target:                            # the only container the local executor may restart
+  demo-target:                            # restart targets for the local executor (stand-ins, see targets.example.yaml)
     image: nginx:alpine
     container_name: demo-orders-api
+
+  demo-kafka-0: &kafka-stand-in           # stand-ins for Kafka brokers/consumer in fixtures/kafka scenarios
+    image: nginx:alpine
+    container_name: demo-kafka-0
+
+  demo-kafka-1:
+    <<: *kafka-stand-in
+    container_name: demo-kafka-1
+
+  demo-kafka-2:
+    <<: *kafka-stand-in
+    container_name: demo-kafka-2
+
+  demo-orders-consumer:
+    <<: *kafka-stand-in
+    container_name: demo-orders-consumer
 
 volumes:
   pgdata: {}

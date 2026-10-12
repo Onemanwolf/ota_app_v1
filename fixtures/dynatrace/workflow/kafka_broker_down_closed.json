@@ -1,0 +1,37 @@
+{
+  "source": "dynatrace-workflow",
+  "event_id": "-4417092361180979951_1791814020000V2",
+  "display_id": "P-261012107",
+  "status": "CLOSED",
+  "name": "Process unavailable",
+  "category": "AVAILABILITY",
+  "severity": 2,
+  "start": "2026-10-12T14:07:00.000000000Z",
+  "end": "2026-10-12T14:30:00.000000000Z",
+  "affected": [
+    {
+      "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-2)"
+    },
+    {
+      "id": "HOST-91C2D4E5F6A70812",
+      "type": "HOST",
+      "name": "aks-kafka-pool-0002"
+    }
+  ],
+  "root_cause": {
+    "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+    "type": "PROCESS_GROUP_INSTANCE",
+    "name": "kafka-broker (kafka-2)"
+  },
+  "maintenance": false,
+  "impact_level": "Infrastructure",
+  "is_duplicate": false,
+  "tags": {
+    "team": "streaming",
+    "app": "kafka",
+    "context_fixture": "kafka_broker_down_closed"
+  },
+  "problem_url": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-261012107"
+}

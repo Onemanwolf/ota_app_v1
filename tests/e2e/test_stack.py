@@ -156,3 +156,45 @@ async def _runs_for(display_id: str) -> list[dict[str, Any]]:
         ids = [str(row[0]) for row in await cur.fetchall()]
     async with httpx2.AsyncClient(timeout=10) as c:
         return [await run_of(c, alert_id) for alert_id in ids]
+
+
+KAFKA_INDEX = json.loads((ROOT / "fixtures/kafka/scenarios.json").read_text())
+
+
+def kafka_fixture(kind: str, name: str) -> dict[str, Any]:
+    body: dict[str, Any] = json.loads((ROOT / "fixtures/dynatrace" / kind / f"{name}.json").read_text())
+    suffix = random.randrange(10**6, 10**7)  # noqa: S311
+    if kind == "workflow":
+        body["event_id"] = f"{body['event_id'][:-3]}{suffix}V2"
+        body["display_id"] = f"P-K{suffix}"
+    else:
+        body["pid"], body["problem_id"] = f"{body['pid']}-{suffix}", f"P-K{suffix}"
+    return body
+
+
+@pytest.mark.parametrize(
+    "entry", [e for e in KAFKA_INDEX if "workflow" in e.get("channels", [])], ids=lambda e: e["id"]
+)
+async def test_kafka_workflow_scenarios_complete(client: httpx2.AsyncClient, entry: dict[str, Any]) -> None:
+    """Every Kafka scenario completes end to end; rules decide the deterministic ones (default rules provider)."""
+    resp = await post(client, kafka_fixture("workflow", entry["fixture"]))
+    assert resp.status_code == 202
+    alert = await wait_done(client, resp.json()["alert_id"])
+    assert alert["state"] == "done"
+    run = await run_of(client, resp.json()["alert_id"])
+    if entry["id"] == "duplicate_problem":
+        assert run["decision"]["rule_id"] == "duplicate-problem" and run["plan"] == []
+    if entry["id"] == "rolling_restart_isr":
+        assert run["decision"]["rule_id"] == "maintenance-suppress" and run["plan"] == []
+    if entry["id"] == "broker_down_closed":
+        assert [o["step"] for o in run["outcomes"]] == ["resolve"]
+
+
+async def test_kafka_test_notification_is_suppressed(client: httpx2.AsyncClient) -> None:
+    body = json.loads((ROOT / "fixtures/dynatrace/classic/kafka_test_notification.json").read_text())
+    body["pid"] = f"99999-{random.randrange(10**6, 10**7)}"  # noqa: S311  (unique so dedup does not hide it)
+    resp = await client.post(f"{INTAKE}/v1/webhooks/dynatrace/classic", json=body, headers=WEBHOOK)
+    assert resp.status_code == 202
+    await wait_done(client, resp.json()["alert_id"])
+    run = await run_of(client, resp.json()["alert_id"])
+    assert run["decision"]["rule_id"] == "dynatrace-test-notification" and run["plan"] == []

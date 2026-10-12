@@ -1,0 +1,147 @@
+{
+  "pid": "-4417092361181637228_1791819000000V2",
+  "problem_id": "P-261012190",
+  "state": "OPEN",
+  "title": "Long garbage-collection time",
+  "severity": "RESOURCE_CONTENTION",
+  "impact": "INFRASTRUCTURE",
+  "url": "https://abc12345.live.dynatrace.com/#problems/problemdetails;pid=-4417092361181637228_1791819000000V2",
+  "tags": "team:streaming, app:kafka",
+  "impacted_entities": [
+    {
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-0)",
+      "entity": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+    }
+  ],
+  "details": {
+    "problemId": "-4417092361181637228_1791819000000V2",
+    "displayId": "P-261012190",
+    "title": "Long garbage-collection time",
+    "status": "OPEN",
+    "severityLevel": "RESOURCE_CONTENTION",
+    "impactLevel": "INFRASTRUCTURE",
+    "startTime": 1791819000000,
+    "endTime": -1,
+    "affectedEntities": [
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-0)"
+      }
+    ],
+    "impactedEntities": [
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-0)"
+      }
+    ],
+    "rootCauseEntity": null,
+    "managementZones": [
+      {
+        "id": "4567890123456789012",
+        "name": "Kafka Prod"
+      }
+    ],
+    "entityTags": [
+      {
+        "context": "CONTEXTLESS",
+        "key": "team",
+        "value": "streaming",
+        "stringRepresentation": "team:streaming"
+      },
+      {
+        "context": "CONTEXTLESS",
+        "key": "app",
+        "value": "kafka",
+        "stringRepresentation": "app:kafka"
+      }
+    ],
+    "problemFilters": [
+      {
+        "id": "c1b2a3d4-0000-4000-8000-000000000001",
+        "name": "Kafka on-call"
+      }
+    ],
+    "evidenceDetails": {
+      "totalCount": 3,
+      "details": [
+        {
+          "evidenceType": "EVENT",
+          "displayName": "Long garbage-collection time",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "kafka-broker (kafka-0)"
+          },
+          "groupingEntity": {
+            "entityId": {
+              "id": "PROCESS_GROUP-3D7A1C0E9B2F4A65",
+              "type": "PROCESS_GROUP"
+            },
+            "name": "kafka-broker"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791819000000,
+          "endTime": -1,
+          "eventId": "8302664511948770210_1791819000000",
+          "eventType": "PROCESS_HIGH_GC_ACTIVITY"
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Kafka Server - Under replicated partitions",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "kafka-broker (kafka-0)"
+          },
+          "rootCauseRelevant": false,
+          "startTime": 1791819060000,
+          "metricId": "kafka.server.ReplicaManager.UnderReplicatedPartitions",
+          "unit": "Count",
+          "valueBeforeChangePoint": 0,
+          "valueAfterChangePoint": 0,
+          "endTime": null
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Kafka Consumer - Consumer lag maximum",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "orders-consumer (orders-consumer-7d9f)"
+          },
+          "rootCauseRelevant": false,
+          "startTime": 1791819060000,
+          "metricId": "kafka.consumer.consumer-metrics.records-lag-max",
+          "unit": "Count",
+          "valueBeforeChangePoint": 90,
+          "valueAfterChangePoint": 110,
+          "endTime": null
+        }
+      ]
+    },
+    "impactAnalysis": {
+      "impacts": []
+    },
+    "linkedProblemInfo": null,
+    "k8s.cluster.name": [
+      "prod-aks-weu"
+    ],
+    "k8s.cluster.uid": [],
+    "k8s.namespace.name": [
+      "streaming"
+    ]
+  }
+}

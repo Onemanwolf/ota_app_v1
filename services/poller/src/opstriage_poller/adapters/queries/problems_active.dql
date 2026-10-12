@@ -12,6 +12,7 @@ fetch dt.davis.problems, from: now() - ${lookback_hours}h
     affected    = takeLast(smartscape.affected_entities),
     root_cause  = takeLast(root_cause.smartscape_entity),
     maintenance = takeLast(maintenance.is_under_maintenance),
+    impact_level = takeLast(dt.davis.impact_level),
     last_update = max(timestamp)
   }, by: { event.id }
 | filter isFalseOrNull(dup) and status == "ACTIVE"

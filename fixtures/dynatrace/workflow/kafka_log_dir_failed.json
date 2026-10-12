@@ -1,0 +1,37 @@
+{
+  "source": "dynatrace-workflow",
+  "event_id": "-4417092361181494686_1791817920000V2",
+  "display_id": "P-261012172",
+  "status": "ACTIVE",
+  "name": "Process unavailable",
+  "category": "AVAILABILITY",
+  "severity": 2,
+  "start": "2026-10-12T15:12:00.000000000Z",
+  "end": null,
+  "affected": [
+    {
+      "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-1)"
+    },
+    {
+      "id": "HOST-91C2D4E5F6A70811",
+      "type": "HOST",
+      "name": "aks-kafka-pool-0001"
+    }
+  ],
+  "root_cause": {
+    "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+    "type": "PROCESS_GROUP_INSTANCE",
+    "name": "kafka-broker (kafka-1)"
+  },
+  "maintenance": false,
+  "impact_level": "Infrastructure",
+  "is_duplicate": false,
+  "tags": {
+    "team": "streaming",
+    "app": "kafka",
+    "context_fixture": "kafka_log_dir_failed"
+  },
+  "problem_url": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-261012172"
+}

@@ -1,0 +1,120 @@
+{
+  "totalCount": 1,
+  "pageSize": 50,
+  "problems": [
+    {
+      "problemId": "-4417092361180979951_1791814020000V2",
+      "displayId": "P-261012107",
+      "title": "Process unavailable",
+      "status": "CLOSED",
+      "severityLevel": "AVAILABILITY",
+      "impactLevel": "INFRASTRUCTURE",
+      "startTime": 1791814020000,
+      "endTime": 1791815400000,
+      "affectedEntities": [
+        {
+          "entityId": {
+            "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+            "type": "PROCESS_GROUP_INSTANCE"
+          },
+          "name": "kafka-broker (kafka-2)"
+        },
+        {
+          "entityId": {
+            "id": "HOST-91C2D4E5F6A70812",
+            "type": "HOST"
+          },
+          "name": "aks-kafka-pool-0002"
+        }
+      ],
+      "impactedEntities": [
+        {
+          "entityId": {
+            "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+            "type": "PROCESS_GROUP_INSTANCE"
+          },
+          "name": "kafka-broker (kafka-2)"
+        },
+        {
+          "entityId": {
+            "id": "HOST-91C2D4E5F6A70812",
+            "type": "HOST"
+          },
+          "name": "aks-kafka-pool-0002"
+        }
+      ],
+      "rootCauseEntity": {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-2)"
+      },
+      "managementZones": [
+        {
+          "id": "4567890123456789012",
+          "name": "Kafka Prod"
+        }
+      ],
+      "entityTags": [
+        {
+          "context": "CONTEXTLESS",
+          "key": "team",
+          "value": "streaming",
+          "stringRepresentation": "team:streaming"
+        },
+        {
+          "context": "CONTEXTLESS",
+          "key": "app",
+          "value": "kafka",
+          "stringRepresentation": "app:kafka"
+        }
+      ],
+      "problemFilters": [
+        {
+          "id": "c1b2a3d4-0000-4000-8000-000000000001",
+          "name": "Kafka on-call"
+        }
+      ],
+      "evidenceDetails": {
+        "totalCount": 1,
+        "details": [
+          {
+            "evidenceType": "EVENT",
+            "displayName": "Process unavailable",
+            "entity": {
+              "entityId": {
+                "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+                "type": "PROCESS_GROUP_INSTANCE"
+              },
+              "name": "kafka-broker (kafka-2)"
+            },
+            "groupingEntity": {
+              "entityId": {
+                "id": "PROCESS_GROUP-3D7A1C0E9B2F4A65",
+                "type": "PROCESS_GROUP"
+              },
+              "name": "kafka-broker"
+            },
+            "rootCauseRelevant": true,
+            "startTime": 1791814020000,
+            "endTime": 1791815400000,
+            "eventId": "8302664511948770210_1791814020000",
+            "eventType": "PGI_UNAVAILABLE"
+          }
+        ]
+      },
+      "impactAnalysis": {
+        "impacts": []
+      },
+      "linkedProblemInfo": null,
+      "k8s.cluster.name": [
+        "prod-aks-weu"
+      ],
+      "k8s.cluster.uid": [],
+      "k8s.namespace.name": [
+        "streaming"
+      ]
+    }
+  ]
+}

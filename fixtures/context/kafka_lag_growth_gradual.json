@@ -1,0 +1,49 @@
+{
+  "logs": [],
+  "log_records": [],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Kafka consumer lag high",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+        "type": "process_group_instance",
+        "name": "orders-consumer (orders-consumer-7d9f)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "CUSTOM_ALERT",
+      "event_id": "8302664511948770210_1791816120000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Consumer - Consumer lag maximum",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+        "type": "process_group_instance",
+        "name": "orders-consumer (orders-consumer-7d9f)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.consumer.consumer-metrics.records-lag-max",
+      "unit": "Count",
+      "value_before": 2200,
+      "value_after": 9480
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Consumer - Records consumed rate",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+        "type": "process_group_instance",
+        "name": "orders-consumer (orders-consumer-7d9f)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.consumer.consumer-metrics.records-consumed-rate",
+      "unit": "PerSecond",
+      "value_before": 1950,
+      "value_after": 1910
+    }
+  ],
+  "provenance": [
+    "metric event title: INFERRED"
+  ]
+}

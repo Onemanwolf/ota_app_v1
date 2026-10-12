@@ -1,0 +1,76 @@
+{
+  "logs": [
+    "[2026-10-12 15:05:07,405] WARN [QuorumController id=3000] Renouncing the leadership due to a metadata log event. We were the leader at epoch 41, but in the new epoch 42, the leader is (none). Reverting to last stable offset 1288331. (org.apache.kafka.controller.QuorumController)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T15:05:07.405000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:05:07,405] WARN [QuorumController id=3000] Renouncing the leadership due to a metadata log event. We were the leader at epoch 41, but in the new epoch 42, the leader is (none). Reverting to last stable offset 1288331. (org.apache.kafka.controller.QuorumController)",
+      "loglevel": "WARN",
+      "status": "WARN",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-0",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Process unavailable",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "PGI_UNAVAILABLE",
+      "event_id": "8302664511948770210_1791817560000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Controller - Active cluster controllers",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": true,
+      "metric_id": "kafka.controller.KafkaController.ActiveControllerCount.Value",
+      "unit": "Count",
+      "value_before": 1,
+      "value_after": 0
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Current leader",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-1)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.raft.current-leader",
+      "unit": "Count",
+      "value_before": 3000,
+      "value_after": -1
+    }
+  ],
+  "provenance": [
+    "QuorumController lines: Kafka 3.7 source (two lines joined)",
+    "kafka.raft.current-leader: extension docs"
+  ]
+}

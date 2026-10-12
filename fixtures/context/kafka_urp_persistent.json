@@ -1,0 +1,90 @@
+{
+  "logs": [
+    "[2026-10-12 14:35:07,295] WARN [ReplicaFetcher replicaId=1, leaderId=2, fetcherId=0] Partition audit-events-9 marked as failed (kafka.server.ReplicaFetcherThread)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T14:35:07.295000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:35:07,295] WARN [ReplicaFetcher replicaId=1, leaderId=2, fetcherId=0] Partition audit-events-9 marked as failed (kafka.server.ReplicaFetcherThread)",
+      "loglevel": "WARN",
+      "status": "WARN",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-1",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Kafka under-replicated partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-1)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "CUSTOM_ALERT",
+      "event_id": "8302664511948770210_1791815760000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Server - Under replicated partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-1)"
+      },
+      "root_cause_relevant": true,
+      "metric_id": "kafka.server.ReplicaManager.UnderReplicatedPartitions",
+      "unit": "Count",
+      "value_before": 0,
+      "value_after": 14
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Server - Under min ISR partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-1)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.server.ReplicaManager.UnderMinIsrPartitionCount",
+      "unit": "Count",
+      "value_before": 0,
+      "value_after": 0
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Controller - Offline partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.controller.KafkaController.OfflinePartitionsCount",
+      "unit": "Count",
+      "value_before": 0,
+      "value_after": 0
+    }
+  ],
+  "provenance": [
+    "metric event title: INFERRED",
+    "fetcher line: Kafka 3.7 source (prefix unverified)"
+  ]
+}

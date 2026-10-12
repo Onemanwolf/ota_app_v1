@@ -5,7 +5,7 @@
   "status": "ACTIVE",
   "name": "Container demo-orders-api unavailable during patching",
   "category": "AVAILABILITY",
-  "severity": 4,
+  "severity": 2,
   "start": "2026-10-12T10:30:00Z",
   "end": null,
   "affected": [

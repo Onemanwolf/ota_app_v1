@@ -1,0 +1,28 @@
+{
+  "source": "dynatrace-workflow",
+  "event_id": "-4417092361181637228_1791819000000V2",
+  "display_id": "P-261012190",
+  "status": "ACTIVE",
+  "name": "Long garbage-collection time",
+  "category": "RESOURCE_CONTENTION",
+  "severity": 4,
+  "start": "2026-10-12T15:30:00.000000000Z",
+  "end": null,
+  "affected": [
+    {
+      "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-0)"
+    }
+  ],
+  "root_cause": null,
+  "maintenance": false,
+  "impact_level": "Infrastructure",
+  "is_duplicate": false,
+  "tags": {
+    "team": "streaming",
+    "app": "kafka",
+    "context_fixture": "kafka_gc_long_no_impact"
+  },
+  "problem_url": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-261012190"
+}

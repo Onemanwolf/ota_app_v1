@@ -1,0 +1,24 @@
+[
+  {
+    "event.id": "-4417092361181684742_1791819360000V2",
+    "status": "ACTIVE",
+    "dup": false,
+    "name": "Connectivity problem",
+    "display_id": "P-261012196",
+    "category": "ERROR",
+    "severity": 5,
+    "start": "2026-10-12T15:36:00.000000000Z",
+    "end": null,
+    "affected": [
+      {
+        "id": "SERVICE-1A2B3C4D5E6F7788",
+        "type": "SERVICE",
+        "name": "checkout-producer"
+      }
+    ],
+    "root_cause": null,
+    "maintenance": false,
+    "impact_level": "Infrastructure",
+    "last_update": "2026-10-12T15:36:31.000000000Z"
+  }
+]

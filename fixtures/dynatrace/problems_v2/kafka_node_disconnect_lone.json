@@ -1,0 +1,93 @@
+{
+  "totalCount": 1,
+  "pageSize": 50,
+  "problems": [
+    {
+      "problemId": "-4417092361181684742_1791819360000V2",
+      "displayId": "P-261012196",
+      "title": "Connectivity problem",
+      "status": "OPEN",
+      "severityLevel": "ERROR",
+      "impactLevel": "INFRASTRUCTURE",
+      "startTime": 1791819360000,
+      "endTime": -1,
+      "affectedEntities": [
+        {
+          "entityId": {
+            "id": "SERVICE-1A2B3C4D5E6F7788",
+            "type": "SERVICE"
+          },
+          "name": "checkout-producer"
+        }
+      ],
+      "impactedEntities": [
+        {
+          "entityId": {
+            "id": "SERVICE-1A2B3C4D5E6F7788",
+            "type": "SERVICE"
+          },
+          "name": "checkout-producer"
+        }
+      ],
+      "rootCauseEntity": null,
+      "managementZones": [
+        {
+          "id": "4567890123456789012",
+          "name": "Kafka Prod"
+        }
+      ],
+      "entityTags": [
+        {
+          "context": "CONTEXTLESS",
+          "key": "team",
+          "value": "streaming",
+          "stringRepresentation": "team:streaming"
+        },
+        {
+          "context": "CONTEXTLESS",
+          "key": "app",
+          "value": "kafka",
+          "stringRepresentation": "app:kafka"
+        }
+      ],
+      "problemFilters": [
+        {
+          "id": "c1b2a3d4-0000-4000-8000-000000000001",
+          "name": "Kafka on-call"
+        }
+      ],
+      "evidenceDetails": {
+        "totalCount": 1,
+        "details": [
+          {
+            "evidenceType": "EVENT",
+            "displayName": "Connectivity problem",
+            "entity": {
+              "entityId": {
+                "id": "SERVICE-1A2B3C4D5E6F7788",
+                "type": "SERVICE"
+              },
+              "name": "checkout-producer"
+            },
+            "rootCauseRelevant": true,
+            "startTime": 1791819360000,
+            "endTime": -1,
+            "eventId": "8302664511948770210_1791819360000",
+            "eventType": "PROCESS_NA_HIGH_CONN_FAIL_RATE"
+          }
+        ]
+      },
+      "impactAnalysis": {
+        "impacts": []
+      },
+      "linkedProblemInfo": null,
+      "k8s.cluster.name": [
+        "prod-aks-weu"
+      ],
+      "k8s.cluster.uid": [],
+      "k8s.namespace.name": [
+        "streaming"
+      ]
+    }
+  ]
+}

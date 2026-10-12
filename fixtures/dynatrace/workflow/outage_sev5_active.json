@@ -5,7 +5,7 @@
   "status": "ACTIVE",
   "name": "Multiple services unavailable in orders application",
   "category": "AVAILABILITY",
-  "severity": 5,
+  "severity": 1,
   "start": "2026-10-12T11:00:00Z",
   "end": null,
   "affected": [

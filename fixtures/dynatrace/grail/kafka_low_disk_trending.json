@@ -1,0 +1,24 @@
+[
+  {
+    "event.id": "-4417092361181304630_1791816480000V2",
+    "status": "ACTIVE",
+    "dup": false,
+    "name": "Low disk space",
+    "display_id": "P-261012148",
+    "category": "RESOURCE_CONTENTION",
+    "severity": 3,
+    "start": "2026-10-12T14:48:00.000000000Z",
+    "end": null,
+    "affected": [
+      {
+        "id": "HOST-91C2D4E5F6A70810",
+        "type": "HOST",
+        "name": "aks-kafka-pool-0000"
+      }
+    ],
+    "root_cause": null,
+    "maintenance": false,
+    "impact_level": "Infrastructure",
+    "last_update": "2026-10-12T14:48:31.000000000Z"
+  }
+]

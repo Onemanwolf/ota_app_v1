@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-10-12T14:18:31.000000000Z",
+  "event.kind": "DAVIS_PROBLEM",
+  "event.id": "-4417092361181067060_1791814680000V2",
+  "display_id": "P-261012118",
+  "event.name": "Kafka consumer lag high",
+  "event.description": "Kafka consumer lag high on orders-consumer (orders-consumer-7d9f)",
+  "event.category": "CUSTOM_ALERT",
+  "event.status": "ACTIVE",
+  "event.status_transition": "CREATED",
+  "event.start": "2026-10-12T14:18:00.000000000Z",
+  "dt.analysis.ready": true,
+  "dt.davis.event_ids": [
+    "8302664511948770210_1791814680000"
+  ],
+  "dt.davis.impact_level": "Services",
+  "dt.davis.is_duplicate": false,
+  "dt.duration_marker": "5 min",
+  "maintenance.is_under_maintenance": false,
+  "smartscape.affected_entities": [
+    {
+      "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "orders-consumer (orders-consumer-7d9f)"
+    },
+    {
+      "id": "SERVICE-7F3E2D1C0B9A8877",
+      "type": "SERVICE",
+      "name": "orders-consumer"
+    }
+  ],
+  "affected_entity_ids": [
+    "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+    "SERVICE-7F3E2D1C0B9A8877"
+  ],
+  "affected_entity_types": [
+    "dt.entity.process_group_instance",
+    "dt.entity.service"
+  ],
+  "entity_tags": [
+    "team:streaming",
+    "app:kafka"
+  ],
+  "event.severity": 3
+}

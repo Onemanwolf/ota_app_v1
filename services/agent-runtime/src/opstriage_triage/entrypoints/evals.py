@@ -18,7 +18,7 @@ from typing import Any
 import httpx2
 import yaml
 
-from opstriage_contracts.problems import ProblemEvent
+from opstriage_contracts.problems import Evidence, ProblemEvent
 from opstriage_contracts.tools import ResolveTargetResult, TargetSummary
 from opstriage_triage.adapters.auth_headers import no_auth, static_bearer
 from opstriage_triage.adapters.systemone import SystemOneDecisionModel
@@ -51,9 +51,20 @@ def _model(
     )
 
 
-def _input(event: ProblemEvent, logs: list[str], has_target: bool, max_chars: int) -> DecisionInput:
+def _input(
+    event: ProblemEvent,
+    logs: list[str],
+    has_target: bool,
+    max_chars: int,
+    evidence: list[dict[str, Any]] | None = None,
+) -> DecisionInput:
     resolved = ResolveTargetResult(target=EVAL_TARGET if has_target else None)
-    ctx = ProblemContext(event=event, target=resolved.target, logs=tuple(logs))
+    ctx = ProblemContext(
+        event=event,
+        target=resolved.target,
+        logs=tuple(logs),
+        evidence=tuple(Evidence.model_validate(e) for e in evidence or []),
+    )
     return DecisionInput(context=ctx, resolved=resolved, state_text=build_state_text(ctx, max_chars))
 
 
@@ -112,7 +123,9 @@ async def run(args: argparse.Namespace) -> Report:
 
         async def one(case: dict[str, Any]) -> Prediction:
             event = ProblemEvent.model_validate(case["event"])
-            request = _input(event, case["logs"], case["has_target"], args.max_state_chars)
+            request = _input(
+                event, case["logs"], case["has_target"], args.max_state_chars, case.get("evidence")
+            )
             async with sem:
                 try:
                     d = await plain.decide(request)

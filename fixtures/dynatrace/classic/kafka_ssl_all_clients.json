@@ -1,0 +1,160 @@
+{
+  "pid": "-4417092361181589714_1791818640000V2",
+  "problem_id": "P-261012184",
+  "state": "OPEN",
+  "title": "Failure rate increase",
+  "severity": "ERROR",
+  "impact": "SERVICE",
+  "url": "https://abc12345.live.dynatrace.com/#problems/problemdetails;pid=-4417092361181589714_1791818640000V2",
+  "tags": "team:streaming, app:kafka",
+  "impacted_entities": [
+    {
+      "type": "SERVICE",
+      "name": "checkout-producer",
+      "entity": "SERVICE-1A2B3C4D5E6F7788"
+    },
+    {
+      "type": "SERVICE",
+      "name": "payments-producer",
+      "entity": "SERVICE-2B3C4D5E6F708899"
+    },
+    {
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-0)",
+      "entity": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+    }
+  ],
+  "details": {
+    "problemId": "-4417092361181589714_1791818640000V2",
+    "displayId": "P-261012184",
+    "title": "Failure rate increase",
+    "status": "OPEN",
+    "severityLevel": "ERROR",
+    "impactLevel": "SERVICES",
+    "startTime": 1791818640000,
+    "endTime": -1,
+    "affectedEntities": [
+      {
+        "entityId": {
+          "id": "SERVICE-1A2B3C4D5E6F7788",
+          "type": "SERVICE"
+        },
+        "name": "checkout-producer"
+      },
+      {
+        "entityId": {
+          "id": "SERVICE-2B3C4D5E6F708899",
+          "type": "SERVICE"
+        },
+        "name": "payments-producer"
+      },
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-0)"
+      }
+    ],
+    "impactedEntities": [
+      {
+        "entityId": {
+          "id": "SERVICE-1A2B3C4D5E6F7788",
+          "type": "SERVICE"
+        },
+        "name": "checkout-producer"
+      },
+      {
+        "entityId": {
+          "id": "SERVICE-2B3C4D5E6F708899",
+          "type": "SERVICE"
+        },
+        "name": "payments-producer"
+      },
+      {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-0)"
+      }
+    ],
+    "rootCauseEntity": null,
+    "managementZones": [
+      {
+        "id": "4567890123456789012",
+        "name": "Kafka Prod"
+      }
+    ],
+    "entityTags": [
+      {
+        "context": "CONTEXTLESS",
+        "key": "team",
+        "value": "streaming",
+        "stringRepresentation": "team:streaming"
+      },
+      {
+        "context": "CONTEXTLESS",
+        "key": "app",
+        "value": "kafka",
+        "stringRepresentation": "app:kafka"
+      }
+    ],
+    "problemFilters": [
+      {
+        "id": "c1b2a3d4-0000-4000-8000-000000000001",
+        "name": "Kafka on-call"
+      }
+    ],
+    "evidenceDetails": {
+      "totalCount": 2,
+      "details": [
+        {
+          "evidenceType": "EVENT",
+          "displayName": "Failure rate increase",
+          "entity": {
+            "entityId": {
+              "id": "SERVICE-1A2B3C4D5E6F7788",
+              "type": "SERVICE"
+            },
+            "name": "checkout-producer"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791818640000,
+          "endTime": -1,
+          "eventId": "8302664511948770210_1791818640000",
+          "eventType": "SERVICE_ERROR_RATE_INCREASED"
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Kafka Server - Failed produce requests",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "kafka-broker (kafka-0)"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791818700000,
+          "metricId": "kafka.server.BrokerTopicMetrics.FailedProduceRequestsPerSec.OneMinuteRate",
+          "unit": "PerSecond",
+          "valueBeforeChangePoint": 0,
+          "valueAfterChangePoint": 412,
+          "endTime": null
+        }
+      ]
+    },
+    "impactAnalysis": {
+      "impacts": []
+    },
+    "linkedProblemInfo": null,
+    "k8s.cluster.name": [
+      "prod-aks-weu"
+    ],
+    "k8s.cluster.uid": [],
+    "k8s.namespace.name": [
+      "streaming"
+    ]
+  }
+}

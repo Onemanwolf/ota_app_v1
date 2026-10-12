@@ -46,4 +46,8 @@ async def test_pagination_mapping_and_auth() -> None:
     assert seen[0].headers["Authorization"] == "Api-Token t0k"
     assert seen[0].url.path == "/api/v2/problems" and seen[0].url.params["pageSize"] == "500"
     # with nextPageKey, no other query parameters are sent
-    assert dict(seen[1].url.params) == {"nextPageKey": "___next_page_key_2___"}
+    assert dict(seen[1].url.params) == {
+        "nextPageKey": "___next_page_key_2___",
+        "fields": "evidenceDetails,impactAnalysis",
+    }
+    assert seen[0].url.params["fields"] == "evidenceDetails,impactAnalysis"

@@ -1,0 +1,47 @@
+{
+  "logs": [
+    "[2026-10-12 14:30:07,110] INFO [Partition orders-3 broker=0] ISR updated to 0,1,2 (kafka.cluster.Partition)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T14:30:07.110000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:30:07,110] INFO [Partition orders-3 broker=0] ISR updated to 0,1,2 (kafka.cluster.Partition)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-2",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Process unavailable",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-2)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "PGI_UNAVAILABLE",
+      "event_id": "8302664511948770210_1791814020000"
+    }
+  ],
+  "provenance": [
+    "CLOSED adds event.end and resolved_problem_duration: Davis semantic dictionary"
+  ]
+}

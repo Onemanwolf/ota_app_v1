@@ -1,0 +1,88 @@
+{
+  "logs": [
+    "[2026-10-12 14:11:07,407] ERROR [KafkaApi-1] Unexpected error handling request. java.lang.OutOfMemoryError: Java heap space (kafka.server.KafkaApis)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T14:11:07.407000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:11:07,407] ERROR [KafkaApi-1] Unexpected error handling request. java.lang.OutOfMemoryError: Java heap space (kafka.server.KafkaApis)",
+      "loglevel": "ERROR",
+      "status": "ERROR",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-1",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Out-of-memory kills",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-1)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "ERROR_EVENT",
+      "event_id": "8302664511948770210_1791814320000"
+    },
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Container restarts",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-1)"
+      },
+      "root_cause_relevant": false,
+      "event_type": "ERROR_EVENT",
+      "event_id": "8302664511948770211_1791814320000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Server - Under replicated partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.server.ReplicaManager.UnderReplicatedPartitions",
+      "unit": "Count",
+      "value_before": 0,
+      "value_after": 64
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Controller - Offline partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.controller.KafkaController.OfflinePartitionsCount",
+      "unit": "Count",
+      "value_before": 0,
+      "value_after": 0
+    }
+  ],
+  "provenance": [
+    "K8s titles 'Out-of-memory kills'/'Container restarts': Dynatrace K8s alerting docs",
+    "OutOfMemoryError line: paraphrased (not verified against source)"
+  ]
+}

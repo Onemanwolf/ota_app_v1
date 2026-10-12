@@ -1,0 +1,29 @@
+[
+  {
+    "event.id": "-4417092361181114574_1791815040000V2",
+    "status": "ACTIVE",
+    "dup": false,
+    "name": "Multiple infrastructure problems",
+    "display_id": "P-261012124",
+    "category": "AVAILABILITY",
+    "severity": 3,
+    "start": "2026-10-12T14:24:00.000000000Z",
+    "end": null,
+    "affected": [
+      {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "PROCESS_GROUP_INSTANCE",
+        "name": "kafka-broker (kafka-0)"
+      },
+      {
+        "id": "HOST-91C2D4E5F6A70810",
+        "type": "HOST",
+        "name": "aks-kafka-pool-0000"
+      }
+    ],
+    "root_cause": null,
+    "maintenance": true,
+    "impact_level": "Infrastructure",
+    "last_update": "2026-10-12T14:24:31.000000000Z"
+  }
+]

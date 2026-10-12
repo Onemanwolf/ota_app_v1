@@ -5,7 +5,7 @@
   "status": "ACTIVE",
   "name": "Containers demo-orders-api and demo-orders-worker unavailable",
   "category": "AVAILABILITY",
-  "severity": 4,
+  "severity": 2,
   "start": "2026-10-12T11:15:00Z",
   "end": null,
   "affected": [

@@ -1,0 +1,122 @@
+{
+  "logs": [
+    "[2026-10-12 15:11:07,627] ERROR Error while writing to checkpoint file /var/lib/kafka/data/replication-offset-checkpoint: java.io.IOException: No space left on device (kafka.server.LogDirFailureChannel)",
+    "[2026-10-12 15:11:07,627] INFO Stopping serving logs in dir /var/lib/kafka/data (kafka.log.LogManager)",
+    "[2026-10-12 15:11:07,627] ERROR Shutdown broker because all log dirs in /var/lib/kafka/data have failed (kafka.log.LogManager)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T15:11:07.627000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:11:07,627] ERROR Error while writing to checkpoint file /var/lib/kafka/data/replication-offset-checkpoint: java.io.IOException: No space left on device (kafka.server.LogDirFailureChannel)",
+      "loglevel": "ERROR",
+      "status": "ERROR",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-1",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T15:11:07.627000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:11:07,627] INFO Stopping serving logs in dir /var/lib/kafka/data (kafka.log.LogManager)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-1",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T15:11:07.627000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:11:07,627] ERROR Shutdown broker because all log dirs in /var/lib/kafka/data have failed (kafka.log.LogManager)",
+      "loglevel": "ERROR",
+      "status": "ERROR",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-1",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Process unavailable",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-1)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "PGI_UNAVAILABLE",
+      "event_id": "8302664511948770210_1791817920000"
+    },
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Low disk space",
+      "entity": {
+        "id": "HOST-91C2D4E5F6A70811",
+        "type": "host",
+        "name": "aks-kafka-pool-0001"
+      },
+      "root_cause_relevant": true,
+      "event_type": "OSI_LOW_DISK_SPACE",
+      "event_id": "8302664511948770211_1791817920000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Disk used %",
+      "entity": {
+        "id": "HOST-91C2D4E5F6A70811",
+        "type": "host",
+        "name": "aks-kafka-pool-0001"
+      },
+      "root_cause_relevant": true,
+      "metric_id": "builtin:host.disk.usedPct",
+      "unit": "Percent",
+      "value_before": 91,
+      "value_after": 100
+    }
+  ],
+  "provenance": [
+    "log-dir failure sequence: real log, KAFKA-9604",
+    "never restart before freeing space: Conduktor, Netdata"
+  ]
+}

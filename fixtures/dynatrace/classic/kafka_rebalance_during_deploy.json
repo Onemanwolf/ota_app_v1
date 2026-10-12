@@ -1,0 +1,138 @@
+{
+  "pid": "-4417092361181162088_1791815400000V2",
+  "problem_id": "P-261012130",
+  "state": "OPEN",
+  "title": "Unexpected low load",
+  "severity": "AVAILABILITY",
+  "impact": "SERVICE",
+  "url": "https://abc12345.live.dynatrace.com/#problems/problemdetails;pid=-4417092361181162088_1791815400000V2",
+  "tags": "team:streaming, app:kafka",
+  "impacted_entities": [
+    {
+      "type": "SERVICE",
+      "name": "orders-consumer",
+      "entity": "SERVICE-7F3E2D1C0B9A8877"
+    }
+  ],
+  "details": {
+    "problemId": "-4417092361181162088_1791815400000V2",
+    "displayId": "P-261012130",
+    "title": "Unexpected low load",
+    "status": "OPEN",
+    "severityLevel": "AVAILABILITY",
+    "impactLevel": "SERVICES",
+    "startTime": 1791815400000,
+    "endTime": -1,
+    "affectedEntities": [
+      {
+        "entityId": {
+          "id": "SERVICE-7F3E2D1C0B9A8877",
+          "type": "SERVICE"
+        },
+        "name": "orders-consumer"
+      }
+    ],
+    "impactedEntities": [
+      {
+        "entityId": {
+          "id": "SERVICE-7F3E2D1C0B9A8877",
+          "type": "SERVICE"
+        },
+        "name": "orders-consumer"
+      }
+    ],
+    "rootCauseEntity": null,
+    "managementZones": [
+      {
+        "id": "4567890123456789012",
+        "name": "Kafka Prod"
+      }
+    ],
+    "entityTags": [
+      {
+        "context": "CONTEXTLESS",
+        "key": "team",
+        "value": "streaming",
+        "stringRepresentation": "team:streaming"
+      },
+      {
+        "context": "CONTEXTLESS",
+        "key": "app",
+        "value": "kafka",
+        "stringRepresentation": "app:kafka"
+      }
+    ],
+    "problemFilters": [
+      {
+        "id": "c1b2a3d4-0000-4000-8000-000000000001",
+        "name": "Kafka on-call"
+      }
+    ],
+    "evidenceDetails": {
+      "totalCount": 3,
+      "details": [
+        {
+          "evidenceType": "EVENT",
+          "displayName": "Unexpected low load",
+          "entity": {
+            "entityId": {
+              "id": "SERVICE-7F3E2D1C0B9A8877",
+              "type": "SERVICE"
+            },
+            "name": "orders-consumer"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791815400000,
+          "endTime": -1,
+          "eventId": "8302664511948770210_1791815400000",
+          "eventType": "SERVICE_UNEXPECTED_LOW_LOAD"
+        },
+        {
+          "evidenceType": "EVENT",
+          "displayName": "Deployment orders-consumer 4.12.0",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "orders-consumer (orders-consumer-7d9f)"
+          },
+          "rootCauseRelevant": false,
+          "startTime": 1791815400000,
+          "endTime": -1,
+          "eventId": "8302664511948770211_1791815400000",
+          "eventType": "CUSTOM_DEPLOYMENT"
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Kafka Consumer - Consumer lag maximum",
+          "entity": {
+            "entityId": {
+              "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+              "type": "PROCESS_GROUP_INSTANCE"
+            },
+            "name": "orders-consumer (orders-consumer-7d9f)"
+          },
+          "rootCauseRelevant": false,
+          "startTime": 1791815460000,
+          "metricId": "kafka.consumer.consumer-metrics.records-lag-max",
+          "unit": "Count",
+          "valueBeforeChangePoint": 120,
+          "valueAfterChangePoint": 160,
+          "endTime": null
+        }
+      ]
+    },
+    "impactAnalysis": {
+      "impacts": []
+    },
+    "linkedProblemInfo": null,
+    "k8s.cluster.name": [
+      "prod-aks-weu"
+    ],
+    "k8s.cluster.uid": [],
+    "k8s.namespace.name": [
+      "streaming"
+    ]
+  }
+}

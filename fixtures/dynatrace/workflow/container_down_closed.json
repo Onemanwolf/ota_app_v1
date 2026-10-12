@@ -5,7 +5,7 @@
   "status": "CLOSED",
   "name": "Container demo-orders-api unavailable",
   "category": "AVAILABILITY",
-  "severity": 4,
+  "severity": 2,
   "start": "2026-10-12T10:00:00Z",
   "end": "2026-10-12T10:07:30Z",
   "affected": [

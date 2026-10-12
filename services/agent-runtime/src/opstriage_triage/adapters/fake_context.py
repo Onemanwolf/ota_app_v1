@@ -4,8 +4,9 @@ import asyncio
 import json
 import re
 from pathlib import Path
+from typing import Any
 
-from opstriage_contracts.problems import ProblemEvent
+from opstriage_contracts.problems import Evidence, ProblemEvent
 from opstriage_contracts.tools import ResolveTargetResult
 from opstriage_triage.domain.context import ProblemContext
 from opstriage_triage.ports import InboxPort
@@ -26,23 +27,25 @@ class FakeProblemContextSource:
         self._dir, self._inbox, self._max = fixtures_dir, inbox, max_log_lines
 
     async def get_context(self, event: ProblemEvent, resolved: ResolveTargetResult) -> ProblemContext:
-        logs = await asyncio.to_thread(self._logs, event.display_id, event.tags.get("context_fixture"))
+        data = await asyncio.to_thread(self._load, event.display_id, event.tags.get("context_fixture"))
+        logs = [str(line) for line in data.get("logs", [])]
         return ProblemContext(
             event=event,
             target=resolved.target,
             recent_restarts_24h=resolved.recent_restarts_24h,
             logs=tuple(dict.fromkeys(logs))[: self._max],
+            evidence=tuple(Evidence.model_validate(e) for e in data.get("evidence", [])),
         )
 
     async def get_problem(self, problem_id: str) -> ProblemEvent | None:
         return await self._inbox.latest_event(problem_id)
 
-    def _logs(self, *names: str | None) -> list[str]:
+    def _load(self, *names: str | None) -> dict[str, Any]:
         for name in (*names, "default"):
             if not name or not _SAFE.match(name):
                 continue
             path = self._dir / f"{name}.json"
             if path.is_file():
                 data = json.loads(path.read_text(encoding="utf-8"))
-                return [str(line) for line in data.get("logs", [])]
-        return []
+                return data if isinstance(data, dict) else {}
+        return {}

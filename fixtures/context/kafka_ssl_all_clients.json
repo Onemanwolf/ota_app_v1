@@ -1,0 +1,134 @@
+{
+  "logs": [
+    "[2026-10-12 15:24:07,108] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.7.19 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+    "[2026-10-12 15:24:07,108] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.9.4 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+    "[2026-10-12 15:24:07,108] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.2.88 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+    "[2026-10-12 15:24:07,108] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.5.140 (SSL handshake failed) (org.apache.kafka.common.network.Selector)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T15:24:07.108000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:24:07,108] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.7.19 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "checkout-producer",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "SERVICE-1A2B3C4D5E6F7788",
+      "dt.source_entity": [
+        "SERVICE-1A2B3C4D5E6F7788"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T15:24:07.108000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:24:07,108] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.9.4 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "checkout-producer",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "SERVICE-1A2B3C4D5E6F7788",
+      "dt.source_entity": [
+        "SERVICE-1A2B3C4D5E6F7788"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T15:24:07.108000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:24:07,108] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.2.88 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "checkout-producer",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "SERVICE-1A2B3C4D5E6F7788",
+      "dt.source_entity": [
+        "SERVICE-1A2B3C4D5E6F7788"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T15:24:07.108000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:24:07,108] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.5.140 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "checkout-producer",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "SERVICE-1A2B3C4D5E6F7788",
+      "dt.source_entity": [
+        "SERVICE-1A2B3C4D5E6F7788"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Failure rate increase",
+      "entity": {
+        "id": "SERVICE-1A2B3C4D5E6F7788",
+        "type": "service",
+        "name": "checkout-producer"
+      },
+      "root_cause_relevant": true,
+      "event_type": "SERVICE_ERROR_RATE_INCREASED",
+      "event_id": "8302664511948770210_1791818640000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Server - Failed produce requests",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": true,
+      "metric_id": "kafka.server.BrokerTopicMetrics.FailedProduceRequestsPerSec.OneMinuteRate",
+      "unit": "PerSecond",
+      "value_before": 0,
+      "value_after": 412
+    }
+  ],
+  "provenance": [
+    "SSL line: vendor KBs",
+    "SERVICE_ERROR_RATE_INCREASED: alerting-profile enum"
+  ]
+}

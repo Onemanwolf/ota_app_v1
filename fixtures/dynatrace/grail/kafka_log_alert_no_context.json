@@ -1,0 +1,24 @@
+[
+  {
+    "event.id": "-4417092361181732256_1791819720000V2",
+    "status": "ACTIVE",
+    "dup": false,
+    "name": "Kafka error log",
+    "display_id": "P-2610121102",
+    "category": "CUSTOM_ALERT",
+    "severity": null,
+    "start": "2026-10-12T15:42:00.000000000Z",
+    "end": null,
+    "affected": [
+      {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+        "type": "PROCESS_GROUP_INSTANCE",
+        "name": "kafka-broker (kafka-2)"
+      }
+    ],
+    "root_cause": null,
+    "maintenance": false,
+    "impact_level": "Infrastructure",
+    "last_update": "2026-10-12T15:42:31.000000000Z"
+  }
+]

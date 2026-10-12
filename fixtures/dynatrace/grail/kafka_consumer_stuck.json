@@ -1,0 +1,29 @@
+[
+  {
+    "event.id": "-4417092361181067060_1791814680000V2",
+    "status": "ACTIVE",
+    "dup": false,
+    "name": "Kafka consumer lag high",
+    "display_id": "P-261012118",
+    "category": "CUSTOM_ALERT",
+    "severity": 3,
+    "start": "2026-10-12T14:18:00.000000000Z",
+    "end": null,
+    "affected": [
+      {
+        "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+        "type": "PROCESS_GROUP_INSTANCE",
+        "name": "orders-consumer (orders-consumer-7d9f)"
+      },
+      {
+        "id": "SERVICE-7F3E2D1C0B9A8877",
+        "type": "SERVICE",
+        "name": "orders-consumer"
+      }
+    ],
+    "root_cause": null,
+    "maintenance": false,
+    "impact_level": "Services",
+    "last_update": "2026-10-12T14:18:31.000000000Z"
+  }
+]

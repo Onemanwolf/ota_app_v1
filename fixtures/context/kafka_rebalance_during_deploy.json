@@ -1,0 +1,98 @@
+{
+  "logs": [
+    "[2026-10-12 14:30:07,110] INFO [Consumer clientId=orders-consumer-5c2a, groupId=orders] (Re-)joining group (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)",
+    "[2026-10-12 14:30:07,110] INFO [Consumer clientId=orders-consumer-5c2a, groupId=orders] Successfully joined group with generation Generation{generationId=482, memberId='orders-consumer-5c2a-77f1', protocol='range'} (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T14:30:07.110000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:30:07,110] INFO [Consumer clientId=orders-consumer-5c2a, groupId=orders] (Re-)joining group (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "orders-consumer",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "SERVICE-7F3E2D1C0B9A8877",
+      "dt.source_entity": [
+        "SERVICE-7F3E2D1C0B9A8877"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T14:30:07.110000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:30:07,110] INFO [Consumer clientId=orders-consumer-5c2a, groupId=orders] Successfully joined group with generation Generation{generationId=482, memberId='orders-consumer-5c2a-77f1', protocol='range'} (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "orders-consumer",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "SERVICE-7F3E2D1C0B9A8877",
+      "dt.source_entity": [
+        "SERVICE-7F3E2D1C0B9A8877"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Unexpected low load",
+      "entity": {
+        "id": "SERVICE-7F3E2D1C0B9A8877",
+        "type": "service",
+        "name": "orders-consumer"
+      },
+      "root_cause_relevant": true,
+      "event_type": "SERVICE_UNEXPECTED_LOW_LOAD",
+      "event_id": "8302664511948770210_1791815400000"
+    },
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Deployment orders-consumer 4.12.0",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+        "type": "process_group_instance",
+        "name": "orders-consumer (orders-consumer-7d9f)"
+      },
+      "root_cause_relevant": false,
+      "event_type": "CUSTOM_DEPLOYMENT",
+      "event_id": "8302664511948770211_1791815400000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Consumer - Consumer lag maximum",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+        "type": "process_group_instance",
+        "name": "orders-consumer (orders-consumer-7d9f)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.consumer.consumer-metrics.records-lag-max",
+      "unit": "Count",
+      "value_before": 120,
+      "value_after": 160
+    }
+  ],
+  "provenance": [
+    "event type SERVICE_UNEXPECTED_LOW_LOAD: INFERRED",
+    "rejoin lines: Kafka 3.7 AbstractCoordinator.java"
+  ]
+}

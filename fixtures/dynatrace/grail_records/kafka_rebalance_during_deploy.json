@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-10-12T14:30:31.000000000Z",
+  "event.kind": "DAVIS_PROBLEM",
+  "event.id": "-4417092361181162088_1791815400000V2",
+  "display_id": "P-261012130",
+  "event.name": "Unexpected low load",
+  "event.description": "Unexpected low load on orders-consumer",
+  "event.category": "AVAILABILITY",
+  "event.status": "ACTIVE",
+  "event.status_transition": "CREATED",
+  "event.start": "2026-10-12T14:30:00.000000000Z",
+  "dt.analysis.ready": true,
+  "dt.davis.event_ids": [
+    "8302664511948770210_1791815400000",
+    "8302664511948770211_1791815400000"
+  ],
+  "dt.davis.impact_level": "Services",
+  "dt.davis.is_duplicate": false,
+  "dt.duration_marker": "5 min",
+  "maintenance.is_under_maintenance": false,
+  "smartscape.affected_entities": [
+    {
+      "id": "SERVICE-7F3E2D1C0B9A8877",
+      "type": "SERVICE",
+      "name": "orders-consumer"
+    }
+  ],
+  "affected_entity_ids": [
+    "SERVICE-7F3E2D1C0B9A8877"
+  ],
+  "affected_entity_types": [
+    "dt.entity.service"
+  ],
+  "entity_tags": [
+    "team:streaming",
+    "app:kafka"
+  ],
+  "event.severity": 4
+}

@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-10-12T14:48:31.000000000Z",
+  "event.kind": "DAVIS_PROBLEM",
+  "event.id": "-4417092361181304630_1791816480000V2",
+  "display_id": "P-261012148",
+  "event.name": "Low disk space",
+  "event.description": "Low disk space on aks-kafka-pool-0000",
+  "event.category": "RESOURCE_CONTENTION",
+  "event.status": "ACTIVE",
+  "event.status_transition": "CREATED",
+  "event.start": "2026-10-12T14:48:00.000000000Z",
+  "dt.analysis.ready": true,
+  "dt.davis.event_ids": [
+    "8302664511948770210_1791816480000"
+  ],
+  "dt.davis.impact_level": "Infrastructure",
+  "dt.davis.is_duplicate": false,
+  "dt.duration_marker": "5 min",
+  "maintenance.is_under_maintenance": false,
+  "smartscape.affected_entities": [
+    {
+      "id": "HOST-91C2D4E5F6A70810",
+      "type": "HOST",
+      "name": "aks-kafka-pool-0000"
+    }
+  ],
+  "affected_entity_ids": [
+    "HOST-91C2D4E5F6A70810"
+  ],
+  "affected_entity_types": [
+    "dt.entity.host"
+  ],
+  "entity_tags": [
+    "team:streaming",
+    "app:kafka"
+  ],
+  "event.severity": 3
+}

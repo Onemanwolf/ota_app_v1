@@ -33,3 +33,50 @@ targets:
       cooldown_minutes: 15
       max_restarts_per_day: 5
       restart_timeout_seconds: 20
+
+  # Kafka targets for the fixtures in fixtures/kafka (matched by Dynatrace PROCESS_GROUP_INSTANCE id). Locally the
+  # executor restarts small stand-in containers (demo-kafka-N, demo-orders-consumer in compose.yaml).
+  # A problem touching several brokers matches several targets -> ambiguous -> escalate, never restart.
+  - id: kafka-broker-0
+    description: Kafka broker kafka-0 (StatefulSet streaming/kafka)
+    match:
+      entity_ids: ["PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"]
+    executor:
+      kind: local_docker
+      container: demo-kafka-0
+    policy: &broker-policy
+      autonomy: approval_required
+      cooldown_minutes: 30           # let ISR catch up (URP back to 0) before another broker restart
+      max_restarts_per_day: 3
+      restart_timeout_seconds: 60    # controlled shutdown, never kill -9
+
+  - id: kafka-broker-1
+    description: Kafka broker kafka-1 (StatefulSet streaming/kafka)
+    match:
+      entity_ids: ["PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11"]
+    executor:
+      kind: local_docker
+      container: demo-kafka-1
+    policy: *broker-policy
+
+  - id: kafka-broker-2
+    description: Kafka broker kafka-2 (StatefulSet streaming/kafka)
+    match:
+      entity_ids: ["PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"]
+    executor:
+      kind: local_docker
+      container: demo-kafka-2
+    policy: *broker-policy
+
+  - id: orders-consumer
+    description: orders consumer group member (Deployment streaming/orders-consumer)
+    match:
+      entity_ids: ["PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601"]
+    executor:
+      kind: local_docker
+      container: demo-orders-consumer
+    policy:
+      autonomy: approval_required
+      cooldown_minutes: 15
+      max_restarts_per_day: 5
+      restart_timeout_seconds: 30

@@ -12,6 +12,7 @@ from opstriage_contracts import problems, tools, triage
 
 EXPORTED: tuple[type[BaseModel], ...] = (
     problems.ProblemEvent,
+    problems.Evidence,
     triage.TriageDecision,
     tools.NotificationRequest,
     tools.NotificationResult,

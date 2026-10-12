@@ -12,7 +12,8 @@ from typing import Any
 import httpx2
 from tenacity import AsyncRetrying, retry_if_exception_type, stop_after_attempt, wait_exponential_jitter
 
-from opstriage_contracts.problems import AlertSource, EntityRef, ProblemEvent, ProblemStatus
+from opstriage_contracts import dynatrace
+from opstriage_contracts.problems import AlertSource, ProblemEvent, ProblemStatus
 from opstriage_poller.settings import GrailSettings
 
 TERMINAL_FAILURES = {"FAILED", "CANCELLED", "RESULT_GONE"}
@@ -102,30 +103,28 @@ class GrailClient:
 
 
 def map_record(r: dict[str, Any], source: AlertSource = AlertSource.DYNATRACE_POLLER_GRAIL) -> ProblemEvent:
-    """Map one record of the problems_changed / problems_active summarize to the canonical event."""
+    """Map one record of the problems_changed / problems_active summarize to the canonical event.
 
-    def ent(x: dict[str, Any] | str | None) -> EntityRef | None:
-        if not x:
-            return None
-        if isinstance(x, str):  # tolerate ID-only arrays
-            return EntityRef(id=x, type=x.split("-", 1)[0].lower())
-        return EntityRef(id=x["id"], type=str(x.get("type", "unknown")).lower(), name=x.get("name"))
-
-    affected = tuple(e for e in (ent(x) for x in (r.get("affected") or [])) if e)
+    Grail severity is kept as-is (1 = Critical ... 5 = Informational, null when unset). Root cause is usually
+    absent on real problems, so it stays optional. Evidence is not on the problem record.
+    """
+    affected = tuple(e for e in (dynatrace.smartscape_entity(x) for x in (r.get("affected") or [])) if e)
     return ProblemEvent(
         source=source,
         problem_id=r["event.id"],
         display_id=r.get("display_id"),
-        status=ProblemStatus(r["status"]),
+        status=ProblemStatus(str(r["status"]).upper()),
         title=r.get("name") or "(untitled problem)",
-        category=r.get("category"),
+        category=dynatrace.category(r.get("category")),
         severity=r.get("severity"),
-        started_at=r["start"],
-        ended_at=r.get("end"),
+        started_at=dynatrace.grail_time(r["start"]),
+        ended_at=dynatrace.grail_time(r.get("end")),
         affected_entities=affected,
-        root_cause_entity=ent(r.get("root_cause")),
+        root_cause_entity=dynatrace.smartscape_entity(r.get("root_cause")),
         tags={"maintenance": "true"} if r.get("maintenance") else {},
-        observed_at=r["last_update"],
+        observed_at=dynatrace.grail_time(r["last_update"]),
+        impact_levels=dynatrace.impact_levels(r.get("impact_level")),
+        is_duplicate=bool(r.get("dup")),
     )
 
 

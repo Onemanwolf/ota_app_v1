@@ -101,3 +101,43 @@ def test_maintenance_rule_matches_tag_only() -> None:
 def test_policy_rejects_unknown_keys() -> None:
     with pytest.raises(ValueError):
         Policy.model_validate({"version": 1, "thresholds": {"restart_container": {"min_confidence": 0.1}}})
+
+
+@pytest.mark.parametrize(
+    ("severity", "category", "expected"),
+    [
+        (1, "CUSTOM_ALERT", "critical"),  # Grail: 1 = Critical
+        (2, "ERROR", "critical"),  # 2 = High
+        (3, "AVAILABILITY", "warning"),
+        (4, "AVAILABILITY", "info"),  # 4 = Low: NOT critical (the old code treated >= 4 as critical)
+        (5, "ERROR", "info"),
+        (None, "AVAILABILITY", "critical"),  # no severity (v2, classic): documented category order
+        (None, "MONITORING_UNAVAILABLE", "critical"),
+        (None, "SLOWDOWN", "warning"),
+        (None, None, "info"),
+    ],
+)
+def test_notification_severity_follows_grail_direction(
+    severity: int | None, category: str | None, expected: str
+) -> None:
+    event = EVENT.model_copy(update={"severity": severity, "category": category})
+    assert POLICY.notification_severity(event, None).value == expected
+
+
+def test_classifier_severity_can_raise_but_not_lower() -> None:
+    low = EVENT.model_copy(update={"severity": 5})
+    assert POLICY.notification_severity(low, {"severity_score": 2.9}).value == "critical"
+    high = EVENT.model_copy(update={"severity": 1})
+    assert POLICY.notification_severity(high, {"severity_score": 0.0}).value == "critical"
+
+
+def test_test_notification_and_duplicates_are_suppressed_by_rule() -> None:
+    test = EVENT.model_copy(update={"title": "Dynatrace problem notification test run"})
+    rule = POLICY.match_rule(test, has_target=False)
+    assert rule is not None and rule.id == "dynatrace-test-notification" and rule.action is Action.SUPPRESS
+    dup = EVENT.model_copy(update={"is_duplicate": True})
+    rule = POLICY.match_rule(dup, has_target=False)
+    assert rule is not None and rule.id == "duplicate-problem"
+    assert (
+        POLICY.match_rule(EVENT.model_copy(update={"title": "Process unavailable"}), has_target=True) is None
+    )

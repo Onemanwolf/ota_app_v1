@@ -1,0 +1,28 @@
+{
+  "source": "dynatrace-workflow",
+  "event_id": "-4417092361181732256_1791819720000V2",
+  "display_id": "P-2610121102",
+  "status": "ACTIVE",
+  "name": "Kafka error log",
+  "category": "CUSTOM_ALERT",
+  "severity": null,
+  "start": "2026-10-12T15:42:00.000000000Z",
+  "end": null,
+  "affected": [
+    {
+      "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-2)"
+    }
+  ],
+  "root_cause": null,
+  "maintenance": false,
+  "impact_level": "Infrastructure",
+  "is_duplicate": false,
+  "tags": {
+    "team": "streaming",
+    "app": "kafka",
+    "context_fixture": "kafka_log_alert_no_context"
+  },
+  "problem_url": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-2610121102"
+}

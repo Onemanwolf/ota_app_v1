@@ -42,6 +42,154 @@
       "title": "EntityRef",
       "type": "object"
     },
+    "Evidence": {
+      "additionalProperties": false,
+      "description": "One piece of Davis evidence (Problems API v2 `evidenceDetails`, or Grail `dt.davis.events` joined via\n`dt.davis.event_ids`). Added in schema 1.1; see reports/Dynatrace Kafka triage data models.md.",
+      "properties": {
+        "display_name": {
+          "title": "Display Name",
+          "type": "string"
+        },
+        "ended_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ended At"
+        },
+        "entity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EntityRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Id"
+        },
+        "event_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Type"
+        },
+        "evidence_type": {
+          "enum": [
+            "EVENT",
+            "METRIC",
+            "TRANSACTIONAL",
+            "MAINTENANCE_WINDOW",
+            "AVAILABILITY_EVIDENCE"
+          ],
+          "title": "Evidence Type",
+          "type": "string"
+        },
+        "metric_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Metric Id"
+        },
+        "root_cause_relevant": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Root Cause Relevant"
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value_after": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value After"
+        },
+        "value_before": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value Before"
+        }
+      },
+      "required": [
+        "evidence_type",
+        "display_name"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
     "ProblemStatus": {
       "enum": [
         "ACTIVE",
@@ -100,6 +248,34 @@
       "default": null,
       "title": "Ended At"
     },
+    "evidence": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "impact_levels": {
+      "default": [],
+      "items": {
+        "enum": [
+          "APPLICATION",
+          "ENVIRONMENT",
+          "INFRASTRUCTURE",
+          "SERVICE",
+          "SYNTHETIC"
+        ],
+        "type": "string"
+      },
+      "title": "Impact Levels",
+      "type": "array"
+    },
+    "is_duplicate": {
+      "default": false,
+      "title": "Is Duplicate",
+      "type": "boolean"
+    },
     "observed_at": {
       "format": "date-time",
       "title": "Observed At",
@@ -134,8 +310,11 @@
       "default": null
     },
     "schema_version": {
-      "const": "1.0",
-      "default": "1.0",
+      "default": "1.1",
+      "enum": [
+        "1.0",
+        "1.1"
+      ],
       "title": "Schema Version",
       "type": "string"
     },
@@ -151,6 +330,7 @@
         }
       ],
       "default": null,
+      "description": "Grail event.severity, ITIL-aligned: 1 = Critical, 2 = High, 3 = Medium, 4 = Low, 5 = Informational. None when Dynatrace sets none; always None from Problems API v2 and the classic webhook.",
       "title": "Severity"
     },
     "source": {

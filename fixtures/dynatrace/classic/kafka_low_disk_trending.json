@@ -1,0 +1,122 @@
+{
+  "pid": "-4417092361181304630_1791816480000V2",
+  "problem_id": "P-261012148",
+  "state": "OPEN",
+  "title": "Low disk space",
+  "severity": "RESOURCE_CONTENTION",
+  "impact": "INFRASTRUCTURE",
+  "url": "https://abc12345.live.dynatrace.com/#problems/problemdetails;pid=-4417092361181304630_1791816480000V2",
+  "tags": "team:streaming, app:kafka",
+  "impacted_entities": [
+    {
+      "type": "HOST",
+      "name": "aks-kafka-pool-0000",
+      "entity": "HOST-91C2D4E5F6A70810"
+    }
+  ],
+  "details": {
+    "problemId": "-4417092361181304630_1791816480000V2",
+    "displayId": "P-261012148",
+    "title": "Low disk space",
+    "status": "OPEN",
+    "severityLevel": "RESOURCE_CONTENTION",
+    "impactLevel": "INFRASTRUCTURE",
+    "startTime": 1791816480000,
+    "endTime": -1,
+    "affectedEntities": [
+      {
+        "entityId": {
+          "id": "HOST-91C2D4E5F6A70810",
+          "type": "HOST"
+        },
+        "name": "aks-kafka-pool-0000"
+      }
+    ],
+    "impactedEntities": [
+      {
+        "entityId": {
+          "id": "HOST-91C2D4E5F6A70810",
+          "type": "HOST"
+        },
+        "name": "aks-kafka-pool-0000"
+      }
+    ],
+    "rootCauseEntity": null,
+    "managementZones": [
+      {
+        "id": "4567890123456789012",
+        "name": "Kafka Prod"
+      }
+    ],
+    "entityTags": [
+      {
+        "context": "CONTEXTLESS",
+        "key": "team",
+        "value": "streaming",
+        "stringRepresentation": "team:streaming"
+      },
+      {
+        "context": "CONTEXTLESS",
+        "key": "app",
+        "value": "kafka",
+        "stringRepresentation": "app:kafka"
+      }
+    ],
+    "problemFilters": [
+      {
+        "id": "c1b2a3d4-0000-4000-8000-000000000001",
+        "name": "Kafka on-call"
+      }
+    ],
+    "evidenceDetails": {
+      "totalCount": 2,
+      "details": [
+        {
+          "evidenceType": "EVENT",
+          "displayName": "Low disk space",
+          "entity": {
+            "entityId": {
+              "id": "HOST-91C2D4E5F6A70810",
+              "type": "HOST"
+            },
+            "name": "aks-kafka-pool-0000"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791816480000,
+          "endTime": -1,
+          "eventId": "8302664511948770210_1791816480000",
+          "eventType": "OSI_LOW_DISK_SPACE"
+        },
+        {
+          "evidenceType": "METRIC",
+          "displayName": "Disk used %",
+          "entity": {
+            "entityId": {
+              "id": "HOST-91C2D4E5F6A70810",
+              "type": "HOST"
+            },
+            "name": "aks-kafka-pool-0000"
+          },
+          "rootCauseRelevant": true,
+          "startTime": 1791816540000,
+          "metricId": "builtin:host.disk.usedPct",
+          "unit": "Percent",
+          "valueBeforeChangePoint": 71,
+          "valueAfterChangePoint": 78.4,
+          "endTime": null
+        }
+      ]
+    },
+    "impactAnalysis": {
+      "impacts": []
+    },
+    "linkedProblemInfo": null,
+    "k8s.cluster.name": [
+      "prod-aks-weu"
+    ],
+    "k8s.cluster.uid": [],
+    "k8s.namespace.name": [
+      "streaming"
+    ]
+  }
+}

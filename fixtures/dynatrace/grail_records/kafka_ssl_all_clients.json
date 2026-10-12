@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-10-12T15:24:31.000000000Z",
+  "event.kind": "DAVIS_PROBLEM",
+  "event.id": "-4417092361181589714_1791818640000V2",
+  "display_id": "P-261012184",
+  "event.name": "Failure rate increase",
+  "event.description": "Failure rate increase on checkout-producer",
+  "event.category": "ERROR",
+  "event.status": "ACTIVE",
+  "event.status_transition": "CREATED",
+  "event.start": "2026-10-12T15:24:00.000000000Z",
+  "dt.analysis.ready": true,
+  "dt.davis.event_ids": [
+    "8302664511948770210_1791818640000"
+  ],
+  "dt.davis.impact_level": "Services",
+  "dt.davis.is_duplicate": false,
+  "dt.duration_marker": "5 min",
+  "maintenance.is_under_maintenance": false,
+  "smartscape.affected_entities": [
+    {
+      "id": "SERVICE-1A2B3C4D5E6F7788",
+      "type": "SERVICE",
+      "name": "checkout-producer"
+    },
+    {
+      "id": "SERVICE-2B3C4D5E6F708899",
+      "type": "SERVICE",
+      "name": "payments-producer"
+    },
+    {
+      "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "type": "PROCESS_GROUP_INSTANCE",
+      "name": "kafka-broker (kafka-0)"
+    }
+  ],
+  "affected_entity_ids": [
+    "SERVICE-1A2B3C4D5E6F7788",
+    "SERVICE-2B3C4D5E6F708899",
+    "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+  ],
+  "affected_entity_types": [
+    "dt.entity.service",
+    "dt.entity.service",
+    "dt.entity.process_group_instance"
+  ],
+  "entity_tags": [
+    "team:streaming",
+    "app:kafka"
+  ],
+  "event.severity": 2
+}

@@ -11,6 +11,7 @@ from opstriage_contracts.tools import ResolveTargetResult, Severity
 from opstriage_contracts.triage import Action, TriageDecision
 
 Destination = Literal["notify", "ticket", "escalate", "remediate"]
+SEVERITY_NAMES = {1: "1 (Critical)", 2: "2 (High)", 3: "3 (Medium)", 4: "4 (Low)", 5: "5 (Informational)"}
 
 
 class _Model(BaseModel):
@@ -18,11 +19,19 @@ class _Model(BaseModel):
 
 
 class RuleWhen(_Model):
+    """All given conditions must hold (AND). Structural matches only: tags, category, flags, exact titles."""
+
     tag_equals: dict[str, str] = Field(default_factory=dict)
     category_in: tuple[str, ...] = ()
+    title_equals: tuple[str, ...] = ()  # exact match, e.g. Dynatrace's "Send test notification" title
+    is_duplicate: bool | None = None  # Grail dt.davis.is_duplicate
 
     def matches(self, event: ProblemEvent) -> bool:
         if self.tag_equals and any(event.tags.get(k) != v for k, v in self.tag_equals.items()):
+            return False
+        if self.title_equals and event.title not in self.title_equals:
+            return False
+        if self.is_duplicate is not None and event.is_duplicate != self.is_duplicate:
             return False
         return not self.category_in or event.category in self.category_in
 
@@ -142,14 +151,31 @@ class Policy(_Model):
 
     # ---- notification helpers --------------------------------------------------------------
     def notification_severity(self, event: ProblemEvent, decision: dict[str, Any] | None) -> Severity:
+        """Grail event.severity is ITIL-aligned: 1 = Critical ... 5 = Informational (1 is the MOST severe).
+
+        When Dynatrace sets none (always for Problems API v2 and the classic webhook), fall back to the
+        documented category order. The classifier's severity score can only raise the result, never lower it.
+        """
+        if event.severity is not None:
+            base = (
+                Severity.CRITICAL
+                if event.severity <= 2
+                else Severity.WARNING
+                if event.severity == 3
+                else Severity.INFO
+            )
+        elif event.category in ("MONITORING_UNAVAILABLE", "AVAILABILITY"):
+            base = Severity.CRITICAL
+        elif event.category in ("ERROR", "SLOWDOWN", "RESOURCE_CONTENTION", "CUSTOM_ALERT"):
+            base = Severity.WARNING
+        else:
+            base = Severity.INFO
         score = (decision or {}).get("severity_score")
-        if (event.severity or 0) >= 4 or (
-            score is not None and score >= self.escalation.severity_score_at_least
-        ):
+        if score is not None and score >= self.escalation.severity_score_at_least:
             return Severity.CRITICAL
-        if (event.severity or 0) >= 2 or (score is not None and score >= 1.0):
+        if score is not None and score >= 1.0 and base is Severity.INFO:
             return Severity.WARNING
-        return Severity.INFO
+        return base
 
     @staticmethod
     def notification_facts(
@@ -159,7 +185,9 @@ class Policy(_Model):
             "Problem": event.display_id or event.problem_id,
             "Status": event.status.value,
             "Category": event.category or "n/a",
-            "Dynatrace severity": str(event.severity) if event.severity is not None else "n/a",
+            "Dynatrace severity": SEVERITY_NAMES.get(event.severity, "not set")
+            if event.severity
+            else "not set",
         }
         if decision:
             conf = decision.get("action_confidence")

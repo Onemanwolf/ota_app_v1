@@ -2,44 +2,40 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta
 from typing import Any
 
 import httpx2
 from tenacity import AsyncRetrying, retry_if_exception_type, stop_after_attempt, wait_exponential_jitter
 
-from opstriage_contracts.problems import AlertSource, EntityRef, ProblemEvent, ProblemStatus
+from opstriage_contracts import dynatrace
+from opstriage_contracts.problems import AlertSource, ProblemEvent, ProblemStatus
 from opstriage_poller.settings import ClassicSettings
 
 _STATUS = {"OPEN": ProblemStatus.ACTIVE, "CLOSED": ProblemStatus.CLOSED}
-
-
-def _ms(value: int | None) -> datetime | None:
-    return None if value is None or value < 0 else datetime.fromtimestamp(value / 1000, tz=UTC)
-
-
-def _entity(e: dict[str, Any] | None) -> EntityRef | None:
-    if not e:
-        return None
-    eid = e["entityId"]
-    return EntityRef(id=eid["id"], type=str(eid.get("type", "unknown")).lower(), name=e.get("name"))
+FIELDS = "evidenceDetails,impactAnalysis"  # must be sent on EVERY page, including with nextPageKey
 
 
 def map_problem(p: dict[str, Any], observed_at: datetime) -> ProblemEvent:
-    started = _ms(p.get("startTime")) or observed_at
-    ended = _ms(p.get("endTime"))
+    """Problems API v2 Problem -> canonical event. v2 has no numeric severity: severityLevel is a category."""
+    started = dynatrace.epoch_ms(p.get("startTime")) or observed_at
+    ended = dynatrace.epoch_ms(p.get("endTime"))
+    affected = tuple(e for e in (dynatrace.v2_entity(x) for x in p.get("affectedEntities") or []) if e)
     return ProblemEvent(
         source=AlertSource.DYNATRACE_POLLER_CLASSIC,
         problem_id=p["problemId"],
         display_id=p.get("displayId"),
-        status=_STATUS[p["status"]],
+        status=_STATUS[str(p["status"]).upper()],
         title=p.get("title") or "(untitled problem)",
-        category=p.get("severityLevel"),
+        category=dynatrace.category(p.get("severityLevel")),
         started_at=started,
         ended_at=ended,
-        affected_entities=tuple(e for e in (_entity(x) for x in p.get("affectedEntities") or []) if e),
-        root_cause_entity=_entity(p.get("rootCauseEntity")),
+        affected_entities=affected,
+        root_cause_entity=dynatrace.v2_entity(p.get("rootCauseEntity")),
+        tags=dynatrace.v2_tags(p.get("entityTags")),
         observed_at=ended or observed_at,  # the API has no last-update field
+        impact_levels=dynatrace.impact_levels(p.get("impactLevel")),
+        evidence=dynatrace.v2_evidence(p.get("evidenceDetails")),
     )
 
 
@@ -62,7 +58,7 @@ class ClassicProblemSource:
 
     async def _fetch(self, first_params: dict[str, Any]) -> list[ProblemEvent]:
         headers = {"Authorization": f"Api-Token {self._s.api_token.get_secret_value()}"}
-        params: dict[str, Any] = {**first_params, "pageSize": self._s.page_size}
+        params: dict[str, Any] = {**first_params, "pageSize": self._s.page_size, "fields": FIELDS}
         events: list[ProblemEvent] = []
         observed = self._clock.now()
         while True:
@@ -80,4 +76,4 @@ class ClassicProblemSource:
             next_key = body.get("nextPageKey")
             if not next_key:
                 return events
-            params = {"nextPageKey": next_key}  # with nextPageKey, send no other query parameters
+            params = {"nextPageKey": next_key, "fields": FIELDS}  # nextPageKey allows only `fields`

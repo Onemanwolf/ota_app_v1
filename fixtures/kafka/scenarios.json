@@ -1,0 +1,444 @@
+[
+  {
+    "id": "broker_down_single",
+    "fixture": "kafka_broker_down_single",
+    "display_id": "P-261012107",
+    "event_id": "-4417092361180979951_1791814020000V2",
+    "label": "restart_container",
+    "signature": "one broker process down; URP > 0 but OfflinePartitions = 0 and one active controller",
+    "title": "Process unavailable",
+    "category": "AVAILABILITY",
+    "severity": 2,
+    "has_root_cause": true,
+    "restart_target": "kafka-broker-2",
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "ISR shrink: Kafka 3.7 Partition.scala (assembled)",
+      "connection: Kafka 3.7 NetworkClient.java"
+    ]
+  },
+  {
+    "id": "broker_oom",
+    "fixture": "kafka_broker_oom",
+    "display_id": "P-261012112",
+    "event_id": "-4417092361181019546_1791814320000V2",
+    "label": "restart_container",
+    "signature": "single broker container OOM-killed and restarting; cluster otherwise healthy (offline 0, 1 controller)",
+    "title": "Out-of-memory kills",
+    "category": "ERROR",
+    "severity": 2,
+    "has_root_cause": false,
+    "restart_target": "kafka-broker-1",
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "K8s titles 'Out-of-memory kills'/'Container restarts': Dynatrace K8s alerting docs",
+      "OutOfMemoryError line: paraphrased (not verified against source)"
+    ]
+  },
+  {
+    "id": "consumer_stuck",
+    "fixture": "kafka_consumer_stuck",
+    "display_id": "P-261012118",
+    "event_id": "-4417092361181067060_1791814680000V2",
+    "label": "restart_container",
+    "signature": "one consumer instance hung: poll timeout + LeaveGroup + CommitFailedException, lag climbing",
+    "title": "Kafka consumer lag high",
+    "category": "CUSTOM_ALERT",
+    "severity": 3,
+    "has_root_cause": false,
+    "restart_target": "orders-consumer",
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "metric event title: INFERRED (user-defined)",
+      "poll timeout / LeaveGroup / CommitFailed: Kafka 3.7 source"
+    ]
+  },
+  {
+    "id": "rolling_restart_isr",
+    "fixture": "kafka_rolling_restart_isr",
+    "display_id": "P-261012124",
+    "event_id": "-4417092361181114574_1791815040000V2",
+    "label": "suppress",
+    "signature": "ISR shrink then 'ISR updated' within a minute during a maintenance window; URP back to 0",
+    "title": "Multiple infrastructure problems",
+    "category": "AVAILABILITY",
+    "severity": 3,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "'Multiple infrastructure problems': documented example title",
+      "ISR lines: Kafka 3.7 Partition.scala"
+    ]
+  },
+  {
+    "id": "rebalance_during_deploy",
+    "fixture": "kafka_rebalance_during_deploy",
+    "display_id": "P-261012130",
+    "event_id": "-4417092361181162088_1791815400000V2",
+    "label": "suppress",
+    "signature": "consumer group rejoins during a deployment; lag flat; no errors",
+    "title": "Unexpected low load",
+    "category": "AVAILABILITY",
+    "severity": 4,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "event type SERVICE_UNEXPECTED_LOW_LOAD: INFERRED",
+      "rejoin lines: Kafka 3.7 AbstractCoordinator.java"
+    ]
+  },
+  {
+    "id": "duplicate_problem",
+    "fixture": "kafka_duplicate_problem",
+    "display_id": "P-261012108",
+    "event_id": "-4417092361180987870_1791814080000V2",
+    "label": "suppress",
+    "signature": "Grail dt.davis.is_duplicate = true: merged into another problem",
+    "title": "Process unavailable",
+    "category": "AVAILABILITY",
+    "severity": 2,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow"
+    ],
+    "provenance": [
+      "dt.davis.is_duplicate: Davis semantic dictionary"
+    ]
+  },
+  {
+    "id": "urp_persistent",
+    "fixture": "kafka_urp_persistent",
+    "display_id": "P-261012136",
+    "event_id": "-4417092361181209602_1791815760000V2",
+    "label": "open_ticket",
+    "signature": "under-replicated partitions persist with no broker down (capacity / ACL), no offline partitions",
+    "title": "Kafka under-replicated partitions",
+    "category": "CUSTOM_ALERT",
+    "severity": 3,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "metric event title: INFERRED",
+      "fetcher line: Kafka 3.7 source (prefix unverified)"
+    ]
+  },
+  {
+    "id": "lag_growth_gradual",
+    "fixture": "kafka_lag_growth_gradual",
+    "display_id": "P-261012142",
+    "event_id": "-4417092361181257116_1791816120000V2",
+    "label": "open_ticket",
+    "signature": "consumer lag grows slowly over hours, no errors, consumers healthy (capacity)",
+    "title": "Kafka consumer lag high",
+    "category": "CUSTOM_ALERT",
+    "severity": 4,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "metric event title: INFERRED"
+    ]
+  },
+  {
+    "id": "low_disk_trending",
+    "fixture": "kafka_low_disk_trending",
+    "display_id": "P-261012148",
+    "event_id": "-4417092361181304630_1791816480000V2",
+    "label": "open_ticket",
+    "signature": "broker log dir disk trending above 75% (ticket), not full, no log-dir failure",
+    "title": "Low disk space",
+    "category": "RESOURCE_CONTENTION",
+    "severity": 3,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "'Low disk space'/OSI_LOW_DISK_SPACE: documented",
+      "builtin:host.disk.usedPct: INFERRED key"
+    ]
+  },
+  {
+    "id": "ssl_single_client",
+    "fixture": "kafka_ssl_single_client",
+    "display_id": "P-261012154",
+    "event_id": "-4417092361181352144_1791816840000V2",
+    "label": "open_ticket",
+    "signature": "SSL handshake failures from ONE client IP (client certificate/config problem)",
+    "title": "Connectivity problem",
+    "category": "ERROR",
+    "severity": 4,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "SSL line: vendor KBs (Yandex Cloud, IBM)",
+      "PROCESS_NA_HIGH_CONN_FAIL_RATE category: INFERRED"
+    ]
+  },
+  {
+    "id": "offline_partitions",
+    "fixture": "kafka_offline_partitions",
+    "display_id": "P-261012160",
+    "event_id": "-4417092361181399658_1791817200000V2",
+    "label": "escalate_human",
+    "signature": "OfflinePartitionsCount > 0: partitions without a leader, data unavailable",
+    "title": "Kafka offline partitions",
+    "category": "CUSTOM_ALERT",
+    "severity": 1,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "metric event title: INFERRED",
+      "fetcher error: Kafka 3.7 source"
+    ]
+  },
+  {
+    "id": "controller_lost_kraft",
+    "fixture": "kafka_controller_lost_kraft",
+    "display_id": "P-261012166",
+    "event_id": "-4417092361181447172_1791817560000V2",
+    "label": "escalate_human",
+    "signature": "KRaft quorum lost: no active controller (sum 0), current-leader -1",
+    "title": "Multiple infrastructure problems",
+    "category": "AVAILABILITY",
+    "severity": 1,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "QuorumController lines: Kafka 3.7 source (two lines joined)",
+      "kafka.raft.current-leader: extension docs"
+    ]
+  },
+  {
+    "id": "log_dir_failed",
+    "fixture": "kafka_log_dir_failed",
+    "display_id": "P-261012172",
+    "event_id": "-4417092361181494686_1791817920000V2",
+    "label": "escalate_human",
+    "signature": "ADVERSARIAL: titled 'Process unavailable' but the log dir failed (disk full) - never restart first",
+    "title": "Process unavailable",
+    "category": "AVAILABILITY",
+    "severity": 2,
+    "has_root_cause": true,
+    "restart_target": "kafka-broker-1",
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "log-dir failure sequence: real log, KAFKA-9604",
+      "never restart before freeing space: Conduktor, Netdata"
+    ]
+  },
+  {
+    "id": "unclean_election",
+    "fixture": "kafka_unclean_election",
+    "display_id": "P-261012178",
+    "event_id": "-4417092361181542200_1791818280000V2",
+    "label": "escalate_human",
+    "signature": "unclean leader election: possible data loss (partition RECOVERING)",
+    "title": "Kafka unclean leader election",
+    "category": "CUSTOM_ALERT",
+    "severity": 1,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "normal value 0: Kafka 3.8 docs",
+      "RECOVERING line: Kafka 3.7 source"
+    ]
+  },
+  {
+    "id": "ssl_all_clients",
+    "fixture": "kafka_ssl_all_clients",
+    "display_id": "P-261012184",
+    "event_id": "-4417092361181589714_1791818640000V2",
+    "label": "escalate_human",
+    "signature": "SSL handshake failures from MANY clients right after a certificate rotation; produce failures rising",
+    "title": "Failure rate increase",
+    "category": "ERROR",
+    "severity": 2,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "SSL line: vendor KBs",
+      "SERVICE_ERROR_RATE_INCREASED: alerting-profile enum"
+    ]
+  },
+  {
+    "id": "gc_long_no_impact",
+    "fixture": "kafka_gc_long_no_impact",
+    "display_id": "P-261012190",
+    "event_id": "-4417092361181637228_1791819000000V2",
+    "label": "notify_only",
+    "signature": "long GC on one broker, no lag, no URP, no errors",
+    "title": "Long garbage-collection time",
+    "category": "RESOURCE_CONTENTION",
+    "severity": 4,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "PROCESS_HIGH_GC_ACTIVITY 'Long garbage-collection time': alerting-profile enum"
+    ]
+  },
+  {
+    "id": "node_disconnect_lone",
+    "fixture": "kafka_node_disconnect_lone",
+    "display_id": "P-261012196",
+    "event_id": "-4417092361181684742_1791819360000V2",
+    "label": "notify_only",
+    "signature": "a lone client disconnect with no metric impact",
+    "title": "Connectivity problem",
+    "category": "ERROR",
+    "severity": 5,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "NetworkClient line: Kafka 3.7 source"
+    ]
+  },
+  {
+    "id": "log_alert_no_context",
+    "fixture": "kafka_log_alert_no_context",
+    "display_id": "P-2610121102",
+    "event_id": "-4417092361181732256_1791819720000V2",
+    "label": "cannot_tell",
+    "signature": "a single log-event alert, no metrics, no entity health context",
+    "title": "Kafka error log",
+    "category": "CUSTOM_ALERT",
+    "severity": null,
+    "has_root_cause": false,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "log event with {content} title: INFERRED",
+      "event.severity null: documented as nullable"
+    ]
+  },
+  {
+    "id": "broker_down_closed",
+    "fixture": "kafka_broker_down_closed",
+    "display_id": "P-261012107",
+    "event_id": "-4417092361180979951_1791814020000V2",
+    "label": "resolve",
+    "signature": "the broker_down_single problem closing (resolve path, not a classifier label)",
+    "title": "Process unavailable",
+    "category": "AVAILABILITY",
+    "severity": 2,
+    "has_root_cause": true,
+    "restart_target": null,
+    "channels": [
+      "grail",
+      "workflow",
+      "classic",
+      "problems_v2"
+    ],
+    "provenance": [
+      "CLOSED adds event.end and resolved_problem_duration: Davis semantic dictionary"
+    ]
+  },
+  {
+    "id": "test_notification",
+    "fixture": "kafka_test_notification",
+    "label": "suppress",
+    "signature": "Dynatrace 'Send test notification' (PID 99999 / ProblemID 999)",
+    "channels": [
+      "classic"
+    ],
+    "provenance": [
+      "documented test notification values"
+    ]
+  }
+]

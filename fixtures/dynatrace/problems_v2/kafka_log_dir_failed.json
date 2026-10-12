@@ -1,0 +1,154 @@
+{
+  "totalCount": 1,
+  "pageSize": 50,
+  "problems": [
+    {
+      "problemId": "-4417092361181494686_1791817920000V2",
+      "displayId": "P-261012172",
+      "title": "Process unavailable",
+      "status": "OPEN",
+      "severityLevel": "AVAILABILITY",
+      "impactLevel": "INFRASTRUCTURE",
+      "startTime": 1791817920000,
+      "endTime": -1,
+      "affectedEntities": [
+        {
+          "entityId": {
+            "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+            "type": "PROCESS_GROUP_INSTANCE"
+          },
+          "name": "kafka-broker (kafka-1)"
+        },
+        {
+          "entityId": {
+            "id": "HOST-91C2D4E5F6A70811",
+            "type": "HOST"
+          },
+          "name": "aks-kafka-pool-0001"
+        }
+      ],
+      "impactedEntities": [
+        {
+          "entityId": {
+            "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+            "type": "PROCESS_GROUP_INSTANCE"
+          },
+          "name": "kafka-broker (kafka-1)"
+        },
+        {
+          "entityId": {
+            "id": "HOST-91C2D4E5F6A70811",
+            "type": "HOST"
+          },
+          "name": "aks-kafka-pool-0001"
+        }
+      ],
+      "rootCauseEntity": {
+        "entityId": {
+          "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+          "type": "PROCESS_GROUP_INSTANCE"
+        },
+        "name": "kafka-broker (kafka-1)"
+      },
+      "managementZones": [
+        {
+          "id": "4567890123456789012",
+          "name": "Kafka Prod"
+        }
+      ],
+      "entityTags": [
+        {
+          "context": "CONTEXTLESS",
+          "key": "team",
+          "value": "streaming",
+          "stringRepresentation": "team:streaming"
+        },
+        {
+          "context": "CONTEXTLESS",
+          "key": "app",
+          "value": "kafka",
+          "stringRepresentation": "app:kafka"
+        }
+      ],
+      "problemFilters": [
+        {
+          "id": "c1b2a3d4-0000-4000-8000-000000000001",
+          "name": "Kafka on-call"
+        }
+      ],
+      "evidenceDetails": {
+        "totalCount": 3,
+        "details": [
+          {
+            "evidenceType": "EVENT",
+            "displayName": "Process unavailable",
+            "entity": {
+              "entityId": {
+                "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+                "type": "PROCESS_GROUP_INSTANCE"
+              },
+              "name": "kafka-broker (kafka-1)"
+            },
+            "groupingEntity": {
+              "entityId": {
+                "id": "PROCESS_GROUP-3D7A1C0E9B2F4A65",
+                "type": "PROCESS_GROUP"
+              },
+              "name": "kafka-broker"
+            },
+            "rootCauseRelevant": true,
+            "startTime": 1791817920000,
+            "endTime": -1,
+            "eventId": "8302664511948770210_1791817920000",
+            "eventType": "PGI_UNAVAILABLE"
+          },
+          {
+            "evidenceType": "EVENT",
+            "displayName": "Low disk space",
+            "entity": {
+              "entityId": {
+                "id": "HOST-91C2D4E5F6A70811",
+                "type": "HOST"
+              },
+              "name": "aks-kafka-pool-0001"
+            },
+            "rootCauseRelevant": true,
+            "startTime": 1791817920000,
+            "endTime": -1,
+            "eventId": "8302664511948770211_1791817920000",
+            "eventType": "OSI_LOW_DISK_SPACE"
+          },
+          {
+            "evidenceType": "METRIC",
+            "displayName": "Disk used %",
+            "entity": {
+              "entityId": {
+                "id": "HOST-91C2D4E5F6A70811",
+                "type": "HOST"
+              },
+              "name": "aks-kafka-pool-0001"
+            },
+            "rootCauseRelevant": true,
+            "startTime": 1791817980000,
+            "metricId": "builtin:host.disk.usedPct",
+            "unit": "Percent",
+            "valueBeforeChangePoint": 91,
+            "valueAfterChangePoint": 100,
+            "endTime": null
+          }
+        ]
+      },
+      "impactAnalysis": {
+        "impacts": []
+      },
+      "linkedProblemInfo": null,
+      "k8s.cluster.name": [
+        "prod-aks-weu"
+      ],
+      "k8s.cluster.uid": [],
+      "k8s.namespace.name": [
+        "streaming"
+      ]
+    }
+  ]
+}

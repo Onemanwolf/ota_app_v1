@@ -1,0 +1,25 @@
+{
+  "pid": "99999",
+  "problem_id": "999",
+  "state": "OPEN",
+  "title": "Dynatrace problem notification test run",
+  "severity": "AVAILABILITY",
+  "impact": "INFRASTRUCTURE",
+  "url": "https://example.com",
+  "tags": "testtag1, testtag2",
+  "impacted_entities": [
+    {
+      "type": "HOST",
+      "name": "MyHost1",
+      "entity": "HOST-XXXXXXXXXXXXX"
+    },
+    {
+      "type": "SERVICE",
+      "name": "MyService1",
+      "entity": "SERVICE-XXXXXXXXXXXXX"
+    }
+  ],
+  "details": {
+    "ID": "99999"
+  }
+}

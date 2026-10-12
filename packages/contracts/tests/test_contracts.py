@@ -71,3 +71,29 @@ def test_triage_decision_round_trips_through_json() -> None:
 
 def test_committed_schemas_are_current() -> None:
     assert cli.check(Path(cli.DEFAULT_OUT)) == []
+
+
+def test_schema_1_0_events_still_validate() -> None:
+    event = _event(schema_version="1.0")
+    assert event.evidence == () and event.impact_levels == () and not event.is_duplicate
+
+
+def test_evidence_and_impact_levels() -> None:
+    from opstriage_contracts.problems import Evidence
+
+    event = _event(
+        impact_levels=("INFRASTRUCTURE",),
+        evidence=(
+            Evidence(
+                evidence_type="METRIC",
+                display_name="Kafka broker - Under replicated partitions",
+                metric_id="kafka.server.ReplicaManager.UnderReplicatedPartitions",
+                unit="Count",
+                value_before=0,
+                value_after=118,
+            ),
+        ),
+    )
+    assert event.schema_version == "1.1" and event.evidence[0].value_after == 118
+    with pytest.raises(ValidationError):
+        _event(impact_levels=("SERVICES",))  # canonical is SERVICE; adapters normalize

@@ -1,0 +1,96 @@
+{
+  "logs": [
+    "[2026-10-12 14:54:07,998] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.7.19 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+    "[2026-10-12 14:54:07,998] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.7.19 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+    "[2026-10-12 14:54:07,998] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.7.19 (SSL handshake failed) (org.apache.kafka.common.network.Selector)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T14:54:07.998000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:54:07,998] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.7.19 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-0",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T14:54:07.998000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:54:07,998] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.7.19 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-0",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T14:54:07.998000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:54:07,998] INFO [SocketServer listenerType=BROKER, nodeId=0] Failed authentication with /10.42.7.19 (SSL handshake failed) (org.apache.kafka.common.network.Selector)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-0",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Connectivity problem",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "PROCESS_NA_HIGH_CONN_FAIL_RATE",
+      "event_id": "8302664511948770210_1791816840000"
+    }
+  ],
+  "provenance": [
+    "SSL line: vendor KBs (Yandex Cloud, IBM)",
+    "PROCESS_NA_HIGH_CONN_FAIL_RATE category: INFERRED"
+  ]
+}

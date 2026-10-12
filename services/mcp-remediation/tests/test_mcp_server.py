@@ -41,6 +41,10 @@ async def test_list_targets_wraps_result(service: RemediationService) -> None:
     assert [t["target_id"] for t in result.structured_content["result"]] == [
         "demo-orders-api",
         "demo-orders-worker",
+        "kafka-broker-0",
+        "kafka-broker-1",
+        "kafka-broker-2",
+        "orders-consumer",
     ]
 
 

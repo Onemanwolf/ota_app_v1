@@ -1,0 +1,114 @@
+{
+  "logs": [
+    "[2026-10-12 14:07:07,259] INFO [Partition orders-3 broker=0] Shrinking ISR from 0,1,2 to 0,1. Leader: (highWatermark: 88123, endOffset: 88131). Out of sync replicas: (brokerId: 2, endOffset: 88123). (kafka.cluster.Partition)",
+    "[2026-10-12 14:07:07,259] WARN [Producer clientId=checkout-producer-1] Connection to node 2 (kafka-2.kafka-headless.streaming.svc/10.42.3.17:9092) could not be established. Node may not be available. (org.apache.kafka.clients.NetworkClient)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T14:07:07.259000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:07:07,259] INFO [Partition orders-3 broker=0] Shrinking ISR from 0,1,2 to 0,1. Leader: (highWatermark: 88123, endOffset: 88131). Out of sync replicas: (brokerId: 2, endOffset: 88123). (kafka.cluster.Partition)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-2",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T14:07:07.259000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:07:07,259] WARN [Producer clientId=checkout-producer-1] Connection to node 2 (kafka-2.kafka-headless.streaming.svc/10.42.3.17:9092) could not be established. Node may not be available. (org.apache.kafka.clients.NetworkClient)",
+      "loglevel": "WARN",
+      "status": "WARN",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-2",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Process unavailable",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-2)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "PGI_UNAVAILABLE",
+      "event_id": "8302664511948770210_1791814020000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Server - Under replicated partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.server.ReplicaManager.UnderReplicatedPartitions",
+      "unit": "Count",
+      "value_before": 0,
+      "value_after": 118
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Controller - Offline partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.controller.KafkaController.OfflinePartitionsCount",
+      "unit": "Count",
+      "value_before": 0,
+      "value_after": 0
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Controller - Active cluster controllers",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.controller.KafkaController.ActiveControllerCount.Value",
+      "unit": "Count",
+      "value_before": 1,
+      "value_after": 1
+    }
+  ],
+  "provenance": [
+    "ISR shrink: Kafka 3.7 Partition.scala (assembled)",
+    "connection: Kafka 3.7 NetworkClient.java"
+  ]
+}

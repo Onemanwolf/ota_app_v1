@@ -1,0 +1,98 @@
+{
+  "logs": [
+    "[2026-10-12 14:24:07,888] INFO [Partition payments-1 broker=1] Shrinking ISR from 1,0,2 to 1,2. Leader: (highWatermark: 5512, endOffset: 5512). Out of sync replicas: (brokerId: 0, endOffset: 5498). (kafka.cluster.Partition)",
+    "[2026-10-12 14:25:07,925] INFO [Partition payments-1 broker=1] ISR updated to 1,2,0 (kafka.cluster.Partition)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T14:24:07.888000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:24:07,888] INFO [Partition payments-1 broker=1] Shrinking ISR from 1,0,2 to 1,2. Leader: (highWatermark: 5512, endOffset: 5512). Out of sync replicas: (brokerId: 0, endOffset: 5498). (kafka.cluster.Partition)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-0",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+      ]
+    },
+    {
+      "timestamp": "2026-10-12T14:25:07.925000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 14:25:07,925] INFO [Partition payments-1 broker=1] ISR updated to 1,2,0 (kafka.cluster.Partition)",
+      "loglevel": "INFO",
+      "status": "INFO",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-0",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Process unavailable",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "PGI_UNAVAILABLE",
+      "event_id": "8302664511948770210_1791815040000"
+    },
+    {
+      "evidence_type": "MAINTENANCE_WINDOW",
+      "display_name": "Planned maintenance",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-0)"
+      },
+      "root_cause_relevant": false,
+      "event_type": "MAINTENANCE_WINDOW",
+      "event_id": "8302664511948770211_1791815040000"
+    },
+    {
+      "evidence_type": "METRIC",
+      "display_name": "Kafka Server - Under replicated partitions",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-1)"
+      },
+      "root_cause_relevant": false,
+      "metric_id": "kafka.server.ReplicaManager.UnderReplicatedPartitions",
+      "unit": "Count",
+      "value_before": 36,
+      "value_after": 0
+    }
+  ],
+  "provenance": [
+    "'Multiple infrastructure problems': documented example title",
+    "ISR lines: Kafka 3.7 Partition.scala"
+  ]
+}

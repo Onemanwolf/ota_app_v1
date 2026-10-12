@@ -12,6 +12,12 @@ rules:                          # evaluated in order by pre_route; first match w
   - id: maintenance-suppress
     when: { tag_equals: { maintenance: "true" } }
     action: suppress
+  - id: dynatrace-test-notification  # classic webhook "Send test notification" (PID 99999 / ProblemID 999)
+    when: { title_equals: ["Dynatrace problem notification test run"] }
+    action: suppress
+  - id: duplicate-problem             # Grail dt.davis.is_duplicate: merged into another problem
+    when: { is_duplicate: true }
+    action: suppress
 thresholds:
   restart_container:
     min_action_confidence: 0.10        # Kev chance-normalised confidence (ADR 0006)

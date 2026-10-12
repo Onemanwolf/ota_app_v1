@@ -1,0 +1,48 @@
+{
+  "logs": [
+    "[2026-10-12 15:42:07,774] ERROR [ReplicaFetcher replicaId=2, leaderId=1, fetcherId=0] Error for partition inventory-2 at offset 412 (kafka.server.ReplicaFetcherThread)"
+  ],
+  "log_records": [
+    {
+      "timestamp": "2026-10-12T15:42:07.774000000Z",
+      "event.type": "LOG",
+      "content": "[2026-10-12 15:42:07,774] ERROR [ReplicaFetcher replicaId=2, leaderId=1, fetcherId=0] Error for partition inventory-2 at offset 412 (kafka.server.ReplicaFetcherThread)",
+      "loglevel": "ERROR",
+      "status": "ERROR",
+      "log.source": "Container Output",
+      "log.iostream": "stdout",
+      "process.technology": [
+        "Java",
+        "Apache Kafka"
+      ],
+      "dt.process.name": "kafka.Kafka",
+      "container.name": "kafka",
+      "k8s.pod.name": "kafka-2",
+      "k8s.container.name": "kafka",
+      "k8s.cluster.name": "prod-aks-weu",
+      "k8s.namespace.name": "streaming",
+      "dt.entity.process_group_instance": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "dt.source_entity": [
+        "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Kafka error log",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-2)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "CUSTOM_ALERT",
+      "event_id": "8302664511948770210_1791819720000"
+    }
+  ],
+  "provenance": [
+    "log event with {content} title: INFERRED",
+    "event.severity null: documented as nullable"
+  ]
+}

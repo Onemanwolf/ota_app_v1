@@ -1,0 +1,21 @@
+{
+  "logs": [],
+  "log_records": [],
+  "evidence": [
+    {
+      "evidence_type": "EVENT",
+      "display_name": "Process unavailable",
+      "entity": {
+        "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+        "type": "process_group_instance",
+        "name": "kafka-broker (kafka-2)"
+      },
+      "root_cause_relevant": true,
+      "event_type": "PGI_UNAVAILABLE",
+      "event_id": "8302664511948770210_1791814080000"
+    }
+  ],
+  "provenance": [
+    "dt.davis.is_duplicate: Davis semantic dictionary"
+  ]
+}

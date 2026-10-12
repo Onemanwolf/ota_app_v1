@@ -1,0 +1,161 @@
+{
+  "totalCount": 1,
+  "pageSize": 50,
+  "problems": [
+    {
+      "problemId": "-4417092361181114574_1791815040000V2",
+      "displayId": "P-261012124",
+      "title": "Multiple infrastructure problems",
+      "status": "OPEN",
+      "severityLevel": "AVAILABILITY",
+      "impactLevel": "INFRASTRUCTURE",
+      "startTime": 1791815040000,
+      "endTime": -1,
+      "affectedEntities": [
+        {
+          "entityId": {
+            "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+            "type": "PROCESS_GROUP_INSTANCE"
+          },
+          "name": "kafka-broker (kafka-0)"
+        },
+        {
+          "entityId": {
+            "id": "HOST-91C2D4E5F6A70810",
+            "type": "HOST"
+          },
+          "name": "aks-kafka-pool-0000"
+        }
+      ],
+      "impactedEntities": [
+        {
+          "entityId": {
+            "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+            "type": "PROCESS_GROUP_INSTANCE"
+          },
+          "name": "kafka-broker (kafka-0)"
+        },
+        {
+          "entityId": {
+            "id": "HOST-91C2D4E5F6A70810",
+            "type": "HOST"
+          },
+          "name": "aks-kafka-pool-0000"
+        }
+      ],
+      "rootCauseEntity": null,
+      "managementZones": [
+        {
+          "id": "4567890123456789012",
+          "name": "Kafka Prod"
+        }
+      ],
+      "entityTags": [
+        {
+          "context": "CONTEXTLESS",
+          "key": "team",
+          "value": "streaming",
+          "stringRepresentation": "team:streaming"
+        },
+        {
+          "context": "CONTEXTLESS",
+          "key": "app",
+          "value": "kafka",
+          "stringRepresentation": "app:kafka"
+        },
+        {
+          "context": "CONTEXTLESS",
+          "key": "maintenance",
+          "value": "true",
+          "stringRepresentation": "maintenance:true"
+        }
+      ],
+      "problemFilters": [
+        {
+          "id": "c1b2a3d4-0000-4000-8000-000000000001",
+          "name": "Kafka on-call"
+        }
+      ],
+      "evidenceDetails": {
+        "totalCount": 3,
+        "details": [
+          {
+            "evidenceType": "EVENT",
+            "displayName": "Process unavailable",
+            "entity": {
+              "entityId": {
+                "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+                "type": "PROCESS_GROUP_INSTANCE"
+              },
+              "name": "kafka-broker (kafka-0)"
+            },
+            "groupingEntity": {
+              "entityId": {
+                "id": "PROCESS_GROUP-3D7A1C0E9B2F4A65",
+                "type": "PROCESS_GROUP"
+              },
+              "name": "kafka-broker"
+            },
+            "rootCauseRelevant": true,
+            "startTime": 1791815040000,
+            "endTime": -1,
+            "eventId": "8302664511948770210_1791815040000",
+            "eventType": "PGI_UNAVAILABLE"
+          },
+          {
+            "evidenceType": "MAINTENANCE_WINDOW",
+            "displayName": "Planned maintenance",
+            "entity": {
+              "entityId": {
+                "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+                "type": "PROCESS_GROUP_INSTANCE"
+              },
+              "name": "kafka-broker (kafka-0)"
+            },
+            "groupingEntity": {
+              "entityId": {
+                "id": "PROCESS_GROUP-3D7A1C0E9B2F4A65",
+                "type": "PROCESS_GROUP"
+              },
+              "name": "kafka-broker"
+            },
+            "rootCauseRelevant": false,
+            "startTime": 1791815040000,
+            "endTime": -1,
+            "eventId": "8302664511948770211_1791815040000",
+            "eventType": "MAINTENANCE_WINDOW"
+          },
+          {
+            "evidenceType": "METRIC",
+            "displayName": "Kafka Server - Under replicated partitions",
+            "entity": {
+              "entityId": {
+                "id": "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+                "type": "PROCESS_GROUP_INSTANCE"
+              },
+              "name": "kafka-broker (kafka-1)"
+            },
+            "rootCauseRelevant": false,
+            "startTime": 1791815100000,
+            "metricId": "kafka.server.ReplicaManager.UnderReplicatedPartitions",
+            "unit": "Count",
+            "valueBeforeChangePoint": 36,
+            "valueAfterChangePoint": 0,
+            "endTime": null
+          }
+        ]
+      },
+      "impactAnalysis": {
+        "impacts": []
+      },
+      "linkedProblemInfo": null,
+      "k8s.cluster.name": [
+        "prod-aks-weu"
+      ],
+      "k8s.cluster.uid": [],
+      "k8s.namespace.name": [
+        "streaming"
+      ]
+    }
+  ]
+}
