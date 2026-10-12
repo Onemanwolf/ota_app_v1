@@ -14,7 +14,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{intake}}/healthz",
+            "url": {
+              "raw": "{{intake}}/healthz",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -34,7 +42,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{agent}}/healthz",
+            "url": {
+              "raw": "{{agent}}/healthz",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -54,7 +70,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{mcp_notification}}/healthz",
+            "url": {
+              "raw": "{{mcp_notification}}/healthz",
+              "host": [
+                "{{mcp_notification}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -74,7 +98,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{mcp_ticketing}}/healthz",
+            "url": {
+              "raw": "{{mcp_ticketing}}/healthz",
+              "host": [
+                "{{mcp_ticketing}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -94,7 +126,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{mcp_remediation}}/healthz",
+            "url": {
+              "raw": "{{mcp_remediation}}/healthz",
+              "host": [
+                "{{mcp_remediation}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -114,7 +154,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{sink}}/healthz",
+            "url": {
+              "raw": "{{sink}}/healthz",
+              "host": [
+                "{{sink}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -134,7 +182,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{intake}}/readyz",
+            "url": {
+              "raw": "{{intake}}/readyz",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "readyz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -154,7 +210,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{agent}}/readyz",
+            "url": {
+              "raw": "{{agent}}/readyz",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "readyz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -174,7 +238,17 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{mailpit}}/api/v1/info",
+            "url": {
+              "raw": "{{mailpit}}/api/v1/info",
+              "host": [
+                "{{mailpit}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "info"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -194,7 +268,16 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{kev}}/v1/models",
+            "url": {
+              "raw": "{{kev}}/v1/models",
+              "host": [
+                "{{kev}}"
+              ],
+              "path": [
+                "v1",
+                "models"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -220,7 +303,15 @@
           "request": {
             "method": "DELETE",
             "header": [],
-            "url": "{{sink}}/requests",
+            "url": {
+              "raw": "{{sink}}/requests",
+              "host": [
+                "{{sink}}"
+              ],
+              "path": [
+                "requests"
+              ]
+            },
             "description": ""
           },
           "event": []
@@ -239,7 +330,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -287,7 +389,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -330,7 +442,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -347,7 +469,10 @@
                   "pm.test('notified', () => pm.expect(steps).to.include('notify'));",
                   "if (run.decision.action === 'restart_container' && run.plan.includes('remediate')) {",
                   "  const rem = run.outcomes.find(o => o.step === 'remediate');",
-                  "  pm.test('remediation is a dry run (or restarted when dry run is off)', () => pm.expect(['dry_run', 'restarted']).to.include(rem.status));",
+                  "  pm.test('remediation: dry run, restarted, or rejected by the cooldown of an earlier real restart', () => {",
+                  "    pm.expect(['dry_run', 'restarted', 'rejected']).to.include(rem.status);",
+                  "    if (rem.status === 'rejected') pm.expect(rem.reason).to.match(/^cooldown/);",
+                  "  });",
                   "}"
                 ]
               }
@@ -359,7 +484,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{sink}}/requests",
+            "url": {
+              "raw": "{{sink}}/requests",
+              "host": [
+                "{{sink}}"
+              ],
+              "path": [
+                "requests"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -381,7 +514,23 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{mailpit}}/api/v1/search?query={{display_id}}",
+            "url": {
+              "raw": "{{mailpit}}/api/v1/search?query={{display_id}}",
+              "host": [
+                "{{mailpit}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "{{display_id}}"
+                }
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -416,7 +565,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -461,7 +621,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -498,7 +669,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{closed_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{closed_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{closed_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -541,7 +722,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{closed_alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{closed_alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{closed_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -578,7 +769,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/classic",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/classic",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "classic"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -626,7 +828,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{classic_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{classic_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{classic_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -669,7 +881,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{classic_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{classic_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{classic_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -698,7 +920,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/classic",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/classic",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "classic"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -735,7 +968,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{classic_closed_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{classic_closed_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{classic_closed_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -778,7 +1021,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{classic_closed_alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{classic_closed_alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{classic_closed_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -813,7 +1066,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -861,7 +1125,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{alert_high_error_rate_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{alert_high_error_rate_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{alert_high_error_rate_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -904,7 +1178,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{alert_high_error_rate_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{alert_high_error_rate_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{alert_high_error_rate_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -936,7 +1220,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -984,7 +1279,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{alert_maintenance_window_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{alert_maintenance_window_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{alert_maintenance_window_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1027,7 +1332,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{alert_maintenance_window_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{alert_maintenance_window_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{alert_maintenance_window_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1059,7 +1374,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -1107,7 +1433,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{alert_outage_sev5_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{alert_outage_sev5_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{alert_outage_sev5_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1150,7 +1486,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{alert_outage_sev5_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{alert_outage_sev5_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{alert_outage_sev5_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1182,7 +1528,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -1230,7 +1587,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{alert_ambiguous_target_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{alert_ambiguous_target_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{alert_ambiguous_target_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1273,7 +1640,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{alert_ambiguous_target_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{alert_ambiguous_target_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{alert_ambiguous_target_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1305,7 +1682,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -1353,7 +1741,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{alert_unknown_entity_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{alert_unknown_entity_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{alert_unknown_entity_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1396,7 +1794,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{alert_unknown_entity_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{alert_unknown_entity_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{alert_unknown_entity_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1425,7 +1833,16 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{kev}}/v1/models",
+            "url": {
+              "raw": "{{kev}}/v1/models",
+              "host": [
+                "{{kev}}"
+              ],
+              "path": [
+                "v1",
+                "models"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1454,7 +1871,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -1502,7 +1930,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{kev_container_down_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{kev_container_down_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{kev_container_down_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1545,7 +1983,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{kev_container_down_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{kev_container_down_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{kev_container_down_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1582,7 +2030,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -1630,7 +2089,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{kev_outage_sev5_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{kev_outage_sev5_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{kev_outage_sev5_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1673,7 +2142,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{kev_outage_sev5_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{kev_outage_sev5_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{kev_outage_sev5_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1711,7 +2190,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -1759,7 +2249,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{kev_high_error_rate_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{kev_high_error_rate_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{kev_high_error_rate_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1802,7 +2302,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{kev_high_error_rate_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{kev_high_error_rate_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{kev_high_error_rate_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1840,7 +2350,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -1888,7 +2409,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{kev_injection_logs_active}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{kev_injection_logs_active}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{kev_injection_logs_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1931,7 +2462,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{kev_injection_logs_active}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{kev_injection_logs_active}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{kev_injection_logs_active}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -1969,7 +2510,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2017,7 +2569,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{kev_maint}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{kev_maint}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{kev_maint}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2060,7 +2622,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{kev_maint}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{kev_maint}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{kev_maint}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2093,7 +2665,18 @@
                 "value": "application/json"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2131,7 +2714,18 @@
                 "value": "Bearer {{wrong_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2169,7 +2763,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2207,7 +2812,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2245,7 +2861,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2283,7 +2910,17 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{agent}}/v1/runs/{{alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2312,7 +2949,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2360,7 +3008,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{injection_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{injection_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{injection_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2403,7 +3061,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{injection_alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{injection_alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{injection_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2441,7 +3109,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2489,7 +3168,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{approval_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{approval_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{approval_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2532,7 +3221,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{approval_alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{approval_alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{approval_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2563,7 +3262,18 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{approval_alert_id}}/approval",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{approval_alert_id}}/approval",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{approval_alert_id}}",
+                "approval"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2597,7 +3307,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{approval_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{approval_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{approval_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2640,7 +3360,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{approval_alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{approval_alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{approval_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2670,7 +3400,18 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{approval_alert_id}}/approval",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{approval_alert_id}}/approval",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{approval_alert_id}}",
+                "approval"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2705,7 +3446,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{agent}}/healthz",
+            "url": {
+              "raw": "{{agent}}/healthz",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2734,7 +3483,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2782,7 +3542,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{live_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{live_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{live_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2825,7 +3595,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{live_alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{live_alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{live_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2849,7 +3629,15 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{sink}}/requests",
+            "url": {
+              "raw": "{{sink}}/requests",
+              "host": [
+                "{{sink}}"
+              ],
+              "path": [
+                "requests"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2880,7 +3668,18 @@
                 "value": "Bearer {{webhook_token}}"
               }
             ],
-            "url": "{{intake}}/v1/webhooks/dynatrace/workflow",
+            "url": {
+              "raw": "{{intake}}/v1/webhooks/dynatrace/workflow",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "webhooks",
+                "dynatrace",
+                "workflow"
+              ]
+            },
             "description": "",
             "body": {
               "mode": "raw",
@@ -2928,7 +3727,17 @@
                 "value": "Bearer {{service_token}}"
               }
             ],
-            "url": "{{intake}}/v1/alerts/{{live2_alert_id}}",
+            "url": {
+              "raw": "{{intake}}/v1/alerts/{{live2_alert_id}}",
+              "host": [
+                "{{intake}}"
+              ],
+              "path": [
+                "v1",
+                "alerts",
+                "{{live2_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2971,7 +3780,17 @@
                 "value": "Bearer {{admin_token}}"
               }
             ],
-            "url": "{{agent}}/v1/runs/{{live2_alert_id}}",
+            "url": {
+              "raw": "{{agent}}/v1/runs/{{live2_alert_id}}",
+              "host": [
+                "{{agent}}"
+              ],
+              "path": [
+                "v1",
+                "runs",
+                "{{live2_alert_id}}"
+              ]
+            },
             "description": ""
           },
           "event": [
@@ -2992,6 +3811,54 @@
     }
   ],
   "variable": [
+    {
+      "key": "intake",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "agent",
+      "value": "http://localhost:8010"
+    },
+    {
+      "key": "mcp_notification",
+      "value": "http://localhost:8101"
+    },
+    {
+      "key": "mcp_ticketing",
+      "value": "http://localhost:8102"
+    },
+    {
+      "key": "mcp_remediation",
+      "value": "http://localhost:8103"
+    },
+    {
+      "key": "sink",
+      "value": "http://localhost:8091"
+    },
+    {
+      "key": "mailpit",
+      "value": "http://localhost:8025"
+    },
+    {
+      "key": "kev",
+      "value": "http://127.0.0.1:18003"
+    },
+    {
+      "key": "webhook_token",
+      "value": "dev-webhook-token"
+    },
+    {
+      "key": "service_token",
+      "value": "dev-poller-token"
+    },
+    {
+      "key": "admin_token",
+      "value": "dev-admin-token"
+    },
+    {
+      "key": "wrong_token",
+      "value": "not-a-valid-token"
+    },
     {
       "key": "event_id",
       "value": ""

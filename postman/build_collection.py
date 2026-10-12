@@ -87,6 +87,20 @@ def fixture_body(kind: str, name: str, *, ids: tuple[str, str] | None = None) ->
     return json.dumps(data, indent=2)
 
 
+def url_object(url: str) -> dict[str, Any]:
+    """The parsed form Postman exports ({raw, host, path, query}); the app's editor expects it."""
+    base, _, query = url.partition("?")
+    if base.startswith("{{"):
+        host, _, path = base.partition("}}")
+        host += "}}"
+    else:
+        host, path = base, ""
+    out: dict[str, Any] = {"raw": url, "host": [host], "path": [s for s in path.split("/") if s]}
+    if query:
+        out["query"] = [{"key": k, "value": v} for k, _, v in (q.partition("=") for q in query.split("&"))]
+    return out
+
+
 def request(
     name: str,
     method: str,
@@ -103,7 +117,7 @@ def request(
         headers.append({"key": "Authorization", "value": f"Bearer {{{{{auth}}}}}"})
     item: dict[str, Any] = {
         "name": name,
-        "request": {"method": method, "header": headers, "url": url, "description": description},
+        "request": {"method": method, "header": headers, "url": url_object(url), "description": description},
         "event": [],
     }
     if body is not None:
@@ -122,6 +136,24 @@ def request(
 def folder(name: str, items: list[dict[str, Any]], description: str = "") -> dict[str, Any]:
     return {"name": name, "description": description, "item": items}
 
+
+# Defaults for every variable. The environment file overrides them; they make the collection work even when no
+# environment is selected in the app (otherwise {{intake}} stays literal and every request is a "network error").
+DEFAULTS = {
+    "intake": "http://localhost:8000",
+    "agent": "http://localhost:8010",
+    "mcp_notification": "http://localhost:8101",
+    "mcp_ticketing": "http://localhost:8102",
+    "mcp_remediation": "http://localhost:8103",
+    "sink": "http://localhost:8091",
+    "mailpit": "http://localhost:8025",
+    # Kev through the Mac-local tunnel (scripts/kev-tunnel.sh): no macOS Local Network permission needed.
+    "kev": "http://127.0.0.1:18003",
+    "webhook_token": "dev-webhook-token",
+    "service_token": "dev-poller-token",
+    "admin_token": "dev-admin-token",
+    "wrong_token": "not-a-valid-token",
+}
 
 WF = "{{intake}}/v1/webhooks/dynatrace/workflow"
 CL = "{{intake}}/v1/webhooks/dynatrace/classic"
@@ -241,7 +273,10 @@ const steps = run.outcomes.map(o => o.step);
 pm.test('notified', () => pm.expect(steps).to.include('notify'));
 if (run.decision.action === 'restart_container' && run.plan.includes('remediate')) {
   const rem = run.outcomes.find(o => o.step === 'remediate');
-  pm.test('remediation is a dry run (or restarted when dry run is off)', () => pm.expect(['dry_run', 'restarted']).to.include(rem.status));
+  pm.test('remediation: dry run, restarted, or rejected by the cooldown of an earlier real restart', () => {
+    pm.expect(['dry_run', 'restarted', 'rejected']).to.include(rem.status);
+    if (rem.status === 'rejected') pm.expect(rem.reason).to.match(/^cooldown/);
+  });
 }""",
             ),
             request(
@@ -702,7 +737,8 @@ pm.test('because of the cooldown', () => pm.expect(rem.reason).to.match(/^cooldo
             "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         },
         "item": [health, happy, dedup, lifecycle, classic, routing, kev, security, approval, live],
-        "variable": [{"key": k, "value": ""} for k in ("event_id", "display_id", "alert_id", "_tries")],
+        "variable": [{"key": k, "value": v} for k, v in DEFAULTS.items()]
+        + [{"key": k, "value": ""} for k in ("event_id", "display_id", "alert_id", "_tries")],
     }
 
 

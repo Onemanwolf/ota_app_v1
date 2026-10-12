@@ -3,6 +3,7 @@
 Files:
 - `OpsTriage-local.postman_collection.json`: generated, do not edit by hand. Regenerate with `python3 postman/build_collection.py`.
 - `local.postman_environment.json`: base URLs and dev tokens. On this Mac the mock Teams sink is on **8091** (8090 is taken).
+  The collection also carries the same values as collection variables, so it works even with **No environment** selected.
 
 ## Import into Postman
 File > Import, select both files, pick the `opstriage-local` environment, then run folders with the Collection Runner.
@@ -43,3 +44,15 @@ npx -y newman@6.2.1 run postman/OpsTriage-local.postman_collection.json \
 - Mock Teams channel: http://localhost:8091/ (refreshes every 5 s)
 - Mock email: http://localhost:8025/ (Mailpit)
 - Run details: `GET http://localhost:8010/v1/runs/{alert_id}` with `Authorization: Bearer dev-admin-token`
+
+## Troubleshooting "network error" in the Postman app
+1. Re-import `OpsTriage-local.postman_collection.json` (replace the old copy). Earlier versions wrote URLs as plain strings,
+   which the app's request editor does not handle (`e.trim is not a function` in its logs).
+2. Use the **Desktop Agent**: bottom-right of the app, the agent selector must say *Desktop Agent*, not *Cloud Agent* or
+   *Browser Agent*. The cloud agent runs in Postman's cloud and cannot reach `localhost`.
+3. Check the stack is up: `docker compose ps` (every service healthy).
+4. Kev is reached at `http://127.0.0.1:18003` (the `scripts/kev-tunnel.sh` tunnel), so the app needs no macOS
+   Local Network permission. `scripts/kev-tunnel.sh status` shows whether the tunnel is up.
+5. The Postman CLI runs the same collection with the same runtime as the app:
+   `postman collection run postman/OpsTriage-local.postman_collection.json -i "1 Workflow webhook happy path"`.
+   If that passes and the app does not, the difference is in the app (agent, proxy settings, environment).
