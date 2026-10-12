@@ -1,0 +1,668 @@
+{
+  "source": "https://docs.dynatrace.com/docs/observe/infrastructure-observability/extensions/apache-kafka",
+  "extracted": "2026-10-12",
+  "extension": "Apache Kafka (com.dynatrace.extension.jmx-kafka) 3.1.4",
+  "status": "DOCUMENTED (verbatim from the feature-set dropdowns on the docs page)",
+  "feature_sets": [
+    {
+      "feature_set": "purgatory-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Server - Purgatory Produce Size",
+          "key": "kafka.server.purgatory.produce-delay-size",
+          "description": "Requests waiting in the produce purgatory."
+        },
+        {
+          "name": "Kafka Server - Purgatory Fetch Size",
+          "key": "kafka.server.purgatory.fetch-delay-size",
+          "description": "Requests waiting in the fetch purgatory."
+        }
+      ]
+    },
+    {
+      "feature_set": "connect-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Connect - Requests",
+          "key": "kafka.connect.connect-metrics.request-rate",
+          "description": "The average number of requests sent per second."
+        },
+        {
+          "name": "Kafka Connect - Outgoing byte rate",
+          "key": "kafka.connect.connect-metrics.outgoing-byte-rate",
+          "description": "The average number of outgoing bytes sent per second to all servers."
+        },
+        {
+          "name": "Kafka Connect - Request size",
+          "key": "kafka.connect.connect-metrics.request-size-avg",
+          "description": "The average size of all requests in the window."
+        },
+        {
+          "name": "Kafka Connect - Incoming byte rate",
+          "key": "kafka.connect.connect-metrics.incoming-byte-rate",
+          "description": "Bytes/second read off all sockets."
+        }
+      ]
+    },
+    {
+      "feature_set": "cluster-link",
+      "metrics": [
+        {
+          "name": "Active link count",
+          "key": "kafka.cluster-link.link-count",
+          "description": "Total number of links in an active state."
+        },
+        {
+          "name": "Active mirror count",
+          "key": "kafka.cluster-link.mirror-topic-count",
+          "description": "Total number of active (healthy) mirror topics."
+        },
+        {
+          "name": "Cluster link max lag",
+          "key": "kafka.cluster-link.max-lag",
+          "description": "Maximum lag in messages between the replicas on the destination cluster and the leader replica on the source cluster."
+        },
+        {
+          "name": "Fetched bytes per second",
+          "key": "kafka.cluster-link.bytes-per-sec.count",
+          "description": "Rate at which data is fetched from the source cluster. Indicates amount of throughput in bytes per second on the cluster link."
+        },
+        {
+          "name": "Fetched throttle time",
+          "key": "kafka.cluster-link.fetch-throttle-time-avg",
+          "description": "Gives throttle times for the Cluster Linking fetchers. May indicate increases in lag on the cluster link due to throttling/quotas being enforced."
+        },
+        {
+          "name": "Active task count",
+          "key": "kafka.cluster-link.link-task-count",
+          "description": "Monitor the state of link level tasks."
+        },
+        {
+          "name": "Failed reverse connection count",
+          "key": "kafka.cluster-link.reverse-connection-failed-total",
+          "description": "Total count of reverse connections that failed for this cluster link. Only available for outbound connections."
+        },
+        {
+          "name": "Authentication problems",
+          "key": "kafka.cluster-link.authentication-problems",
+          "description": "Unavailable links due to authentication."
+        },
+        {
+          "name": "Unavailable link (by reason)",
+          "key": "kafka.cluster-link.unavailable-link-count",
+          "description": "Unavailable links due to authentication."
+        },
+        {
+          "name": "Controller reverse connection count",
+          "key": "kafka.cluster-link.controller-reverse-connection-count",
+          "description": "Number of persistent reverse connections for this link between the local broker and the remote link coordinator."
+        },
+        {
+          "name": "Controller reverse connection count",
+          "key": "kafka.cluster-link.remote-admin-request-time",
+          "description": "Admin request processing time."
+        },
+        {
+          "name": "Background thread count",
+          "key": "kafka.cluster-link.background-thread-usage",
+          "description": "Background thread active usage."
+        }
+      ]
+    },
+    {
+      "feature_set": "log-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Log - Log flush 95th percentile",
+          "key": "kafka.log.LogFlushStats.LogFlushRateAndTimeMs.Percentile95th",
+          "description": "Log flush rate and time in milliseconds."
+        },
+        {
+          "name": "Kafka Log - Log flush mean time",
+          "key": "kafka.log.LogFlushStats.LogFlushRateAndTimeMs.Mean",
+          "description": "Log flush rate and time in milliseconds."
+        },
+        {
+          "name": "Kafka Log - Log end offset",
+          "key": "kafka.log.Log.LogEndOffset",
+          "description": "The offset of the next message that will be appended to the log, by topic and partition."
+        }
+      ]
+    },
+    {
+      "feature_set": "confluent-consumer-lag",
+      "metrics": [
+        {
+          "name": "Kafka Server - Consumer group lag offsets",
+          "key": "kafka.server.tenant-metrics.consumer-lag-offsets",
+          "description": "The difference between the last offset stored by the broker and the last committed offset for a specific consumer group name, client ID, member ID, partition ID, topic name, and group protocol. Confluent Platform only."
+        }
+      ]
+    },
+    {
+      "feature_set": "broker-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Broker - Incoming byte rate",
+          "key": "kafka.server.BrokerTopicMetrics.BytesInPerSec.OneMinuteRate",
+          "description": "The rate at which data sent from producers is consumed by the broker."
+        },
+        {
+          "name": "Kafka Broker - Mirror topic bytes in rate",
+          "key": "kafka.server.BrokerTopicMetrics.MirrorBytesInPerSec.OneMinuteRate",
+          "description": "The rate at which mirror bytes are received, by topic."
+        },
+        {
+          "name": "Kafka Broker - Outgoing byte rate",
+          "key": "kafka.server.BrokerTopicMetrics.BytesOutPerSec.OneMinuteRate",
+          "description": "The rate at which data sent from other brokers is consumed by the follower broker."
+        },
+        {
+          "name": "Kafka Broker - Messages in rate",
+          "key": "kafka.server.BrokerTopicMetrics.MessagesInPerSec.OneMinuteRate",
+          "description": "The rate at which individual messages are consumed by the broker."
+        },
+        {
+          "name": "Kafka Broker - Follower fetch requests rate",
+          "key": "kafka.server.BrokerTopicMetrics.TotalFollowerFetchRequestsPerSec.OneMinuteRate",
+          "description": "The follower fetch request rate for the broker."
+        },
+        {
+          "name": "Kafka Broker - Produce message conversions rate",
+          "key": "kafka.server.BrokerTopicMetrics.ProduceMessageConversionsPerSec.OneMinuteRate",
+          "description": "The rate at which produce messages are converted, by topic."
+        },
+        {
+          "name": "Kafka Broker - Partitions",
+          "key": "kafka.server.ReplicaManager.PartitionCount",
+          "description": "The number of partitions in the broker."
+        },
+        {
+          "name": "Kafka Broker - Under replicated partitions",
+          "key": "kafka.server.ReplicaManager.UnderReplicatedPartitions",
+          "description": "The number of partitions that have not been fully replicated in the follower replicas."
+        },
+        {
+          "name": "Kafka Broker - Under minimum in-sync replica partitions",
+          "key": "kafka.server.ReplicaManager.UnderMinIsrPartitionCount",
+          "description": "The number of partitions whose in-sync replicas count is less than minIsr."
+        },
+        {
+          "name": "Kafka Broker - Produce request rate",
+          "key": "kafka.server.BrokerTopicMetrics.TotalProduceRequestsPerSec.OneMinuteRate",
+          "description": "The produce request rate per second."
+        },
+        {
+          "name": "Kafka Broker - Fetch request rate",
+          "key": "kafka.server.BrokerTopicMetrics.TotalFetchRequestsPerSec.OneMinuteRate",
+          "description": "The fetch request rate per second."
+        },
+        {
+          "name": "Kafka Broker - Failed produce requests",
+          "key": "kafka.server.BrokerTopicMetrics.FailedProduceRequestsPerSec.OneMinuteRate",
+          "description": "The produce request rate for requests that failed."
+        },
+        {
+          "name": "Kafka Broker - Failed fetch requests",
+          "key": "kafka.server.BrokerTopicMetrics.FailedFetchRequestsPerSec.OneMinuteRate",
+          "description": "The fetch request rate for requests that failed."
+        },
+        {
+          "name": "Kafka Server - Max follower lag",
+          "key": "kafka.server.ReplicaFetcherManager.MaxLag.Replica.Value",
+          "description": "The maximum lag between the time that messages are received by the leader replica and by the follower replicas."
+        },
+        {
+          "name": "Kafka Server - Current follower lag",
+          "key": "kafka.server.FetcherLagMetrics.ConsumerLag.Value",
+          "description": "The lag in number of messages per follower replica."
+        },
+        {
+          "name": "Kafka Server - Fetch Conversions Rate",
+          "key": "kafka.server.FetchConversionsRate.OneMinuteRate",
+          "description": "\u2014"
+        },
+        {
+          "name": "Kafka Server - Produce Conversions Rate",
+          "key": "kafka.server.ProduceConversionsRate.OneMinuteRate",
+          "description": "\u2014"
+        }
+      ]
+    },
+    {
+      "feature_set": "connector-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Connector - Status",
+          "key": "kafka.connector.status",
+          "description": "Equals 1 if the status is running, 0 otherwise."
+        },
+        {
+          "name": "Kafka Connector - Task status",
+          "key": "kafka.connector.task.status",
+          "description": "Equals 1 if the status is running, 0 otherwise."
+        },
+        {
+          "name": "Kafka Connector - Task pause ratio",
+          "key": "kafka.connector.task.pause-ratio",
+          "description": "The fraction of time this task has spent in the pause state."
+        },
+        {
+          "name": "Kafka Connector - Task running ratio",
+          "key": "kafka.connector.task.running-ratio",
+          "description": "The fraction of time this task has spent in the running state."
+        },
+        {
+          "name": "Kafka Connector - Task success ratio",
+          "key": "kafka.connector.task.offset-commit-success-percentage",
+          "description": "The average percentage of this task's offset commit attempts that succeeded."
+        },
+        {
+          "name": "Kafka Connector - Task commit time (max)",
+          "key": "kafka.connector.task.offset-commit-max-time-ms",
+          "description": "The maximum time in milliseconds taken by this task to commit offsets."
+        },
+        {
+          "name": "Kafka Connector - Task failure ratio",
+          "key": "kafka.connector.task.offset-commit-failure-percentage",
+          "description": "The maximum time in milliseconds taken by this task to commit offsets."
+        },
+        {
+          "name": "Kafka Connector - Task commit time (avg)",
+          "key": "kafka.connector.task.offset-commit-avg-time-ms",
+          "description": "The average time in milliseconds taken by this task to commit offsets."
+        },
+        {
+          "name": "Kafka Connector - Task batch size (max)",
+          "key": "kafka.connector.task.batch-size-max",
+          "description": "The maximum size of the batches processed by the connector."
+        },
+        {
+          "name": "Kafka Connector - Task batch size (avg)",
+          "key": "kafka.connector.task.batch-size-avg",
+          "description": "The average size of the batches processed by the connector."
+        }
+      ]
+    },
+    {
+      "feature_set": "consumer-records-lag",
+      "metrics": [
+        {
+          "name": "Kafka Consumer - Consumer lag",
+          "key": "kafka.consumer.consumer-metrics.records-lag",
+          "description": "The latest lag of the partition."
+        },
+        {
+          "name": "Kafka Consumer - Consumer lag average",
+          "key": "kafka.consumer.consumer-metrics.records-lag-avg",
+          "description": "The average lag of the partition."
+        },
+        {
+          "name": "Kafka Consumer - Consumer lag maximum",
+          "key": "kafka.consumer.consumer-metrics.records-lag-max",
+          "description": "The max lag of the partition."
+        }
+      ]
+    },
+    {
+      "feature_set": "multi-region-kafka",
+      "metrics": [
+        {
+          "name": "Kafka Partition - Observer replicas count",
+          "key": "kafka.cluster.Partition.ObserverReplicasCount",
+          "description": "The number of observer replicas for a partition in a Confluent Multi-Region Cluster (MRC), by topic and partition."
+        },
+        {
+          "name": "Kafka Partition - Caught up replicas count",
+          "key": "kafka.cluster.Partition.CaughtUpReplicasCount",
+          "description": "The number of replicas considered caught up to the topic partition leader. This may be greater than the ISR size, as observers may be caught up but not part of the ISR. By topic and partition."
+        },
+        {
+          "name": "Kafka Partition - Is not caught up",
+          "key": "kafka.cluster.Partition.IsNotCaughtUp",
+          "description": "Reports 1 (true) if not all replicas are considered caught up to the partition leader, otherwise 0. By topic and partition."
+        },
+        {
+          "name": "Kafka Partition - Observers in ISR count",
+          "key": "kafka.cluster.Partition.ObserversInIsrCount",
+          "description": "The number of observers that are currently in the in-sync replicas (ISR) list for a partition in a Confluent Multi-Region Cluster (MRC), by topic and partition."
+        }
+      ]
+    },
+    {
+      "feature_set": "Raft Broker",
+      "metrics": [
+        {
+          "name": "Last applied record offset",
+          "key": "kafka.raft.last-applied-record-offset",
+          "description": "The offset of the last record from the cluster metadata partition that was applied by the broker."
+        },
+        {
+          "name": "Last applied record timestamp",
+          "key": "kafka.raft.last-applied-record-timestamp",
+          "description": "The timestamp of the last record from the cluster metadata partition that was applied by the broker."
+        },
+        {
+          "name": "Last applied record lag",
+          "key": "kafka.raft.last-applied-record-lag-ms",
+          "description": "The difference between now and the timestamp of the last record from the cluster metadata partition that was applied by the broker."
+        },
+        {
+          "name": "Metadata load error count",
+          "key": "kafka.raft.metadata-load-error-count",
+          "description": "The number of errors encountered by the BrokerMetadataListener while loading the metadata log and generating a new MetadataDelta based on it."
+        },
+        {
+          "name": "Metadata apply error count",
+          "key": "kafka.raft.metadata-apply-error-count",
+          "description": "The number of errors encountered by the BrokerMetadataPublisher while applying a new MetadataImage based on the latest MetadataDelta."
+        }
+      ]
+    },
+    {
+      "feature_set": "Raft Quorum",
+      "metrics": [
+        {
+          "name": "Records appended rate",
+          "key": "kafka.raft.append-records-rate",
+          "description": "The average number of records appended per sec by the leader of the raft quorum."
+        },
+        {
+          "name": "Commit latency (avg)",
+          "key": "kafka.raft.commit-latency-avg",
+          "description": "The average time in milliseconds to commit an entry in the raft log."
+        },
+        {
+          "name": "Commit latency (max)",
+          "key": "kafka.raft.commit-latency-max",
+          "description": "The maximum time in milliseconds to commit an entry in the raft log."
+        },
+        {
+          "name": "Record fetch rate",
+          "key": "kafka.raft.fetch-records-rate",
+          "description": "The average number of records fetched from the leader of the raft quorum."
+        },
+        {
+          "name": "Log end epoch",
+          "key": "kafka.raft.log-end-epoch",
+          "description": "The current raft log end epoch."
+        },
+        {
+          "name": "Log end offset",
+          "key": "kafka.raft.log-end-offset",
+          "description": "The current raft log end offset."
+        },
+        {
+          "name": "Current leader ID",
+          "key": "kafka.raft.current-leader",
+          "description": "The current quorum leader's id; -1 indicates unknown."
+        }
+      ]
+    },
+    {
+      "feature_set": "network-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Network - Produce requests per second",
+          "key": "kafka.network.RequestMetrics.RequestsPerSec.Produce.OneMinuteRate",
+          "description": "The total number of requests made for produce per second"
+        },
+        {
+          "name": "Kafka Network - FetchConsumer requests per second",
+          "key": "kafka.network.RequestMetrics.RequestsPerSec.FetchConsumer.OneMinuteRate",
+          "description": "The total number of requests made for fetch consumer per second"
+        },
+        {
+          "name": "Kafka Network - FetchFollower requests per second",
+          "key": "kafka.network.RequestMetrics.RequestsPerSec.FetchFollower.OneMinuteRate",
+          "description": "The total number of requests made for fetch follower per second"
+        },
+        {
+          "name": "Kafka Network - Total time per Produce request",
+          "key": "kafka.network.RequestMetrics.TotalTimeMs.Produce.Count",
+          "description": "Total time, in milliseconds, spent processing requests, for produce."
+        },
+        {
+          "name": "Kafka Network - Total time per FetchConsumer request",
+          "key": "kafka.network.RequestMetrics.TotalTimeMs.FetchConsumer.Count",
+          "description": "Total time, in milliseconds, spent processing requests, for fetch consumer."
+        },
+        {
+          "name": "Kafka Network - Total time per FetchFollower request",
+          "key": "kafka.network.RequestMetrics.TotalTimeMs.FetchFollower.Count",
+          "description": "Total time, in milliseconds, spent processing requests, for pfetch follower."
+        },
+        {
+          "name": "Kafka Network - Request queue size",
+          "key": "kafka.network.RequestChannel.RequestQueueSize.Value",
+          "description": "Size of the request queue."
+        },
+        {
+          "name": "Kafka Network - Response queue size",
+          "key": "kafka.network.RequestChannel.ResponseQueueSize.Value",
+          "description": "Size of the response queue."
+        },
+        {
+          "name": "Kafka Network - Network processor average idle percent",
+          "key": "kafka.network.SocketServer.NetworkProcessorAvgIdlePercent",
+          "description": "The average fraction of time the network processor threads are idle."
+        }
+      ]
+    },
+    {
+      "feature_set": "zookeeper-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Server - ZooKeeper disconnects",
+          "key": "kafka.server.SessionExpireListener.ZooKeeperDisconnectsPerSec.OneMinuteRate",
+          "description": "A meter that provides the number of recent ZooKeeper client disconnects."
+        },
+        {
+          "name": "Kafka Server - ZooKeeper expires",
+          "key": "kafka.server.SessionExpireListener.ZooKeeperExpiresPerSec.OneMinuteRate",
+          "description": "The number of ZooKeeper sessions that have expired."
+        },
+        {
+          "name": "Kafka Server - Zookeeper Active Connections",
+          "key": "kafka.server.active-connections",
+          "description": "The number of currently open connections to the broker."
+        }
+      ]
+    },
+    {
+      "feature_set": "handler-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Server - Handler Pool Idle Percent Rate",
+          "key": "kafka.server.handler.average-idle-percent.rate",
+          "description": "The average fraction of time the request handler threads are idle. Values are between 0 meaning all resources are used and 1 meaning all resources are available."
+        }
+      ]
+    },
+    {
+      "feature_set": "leader-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Controller - Leader election rate",
+          "key": "kafka.controller.ControllerStats.LeaderElectionRateAndTimeMs.OneMinuteRate",
+          "description": "The broker leader election rate and latency in milliseconds. This is non-zero when there are broker failures."
+        },
+        {
+          "name": "Kafka Controller - Unclean election rate",
+          "key": "kafka.controller.ControllerStats.UncleanLeaderElectionsPerSec.OneMinuteRate",
+          "description": "The unclean broker leader election rate. Should be 0."
+        },
+        {
+          "name": "Kafka Server - Leader count",
+          "key": "kafka.server.ReplicaManager.LeaderCount.Value",
+          "description": "The number of replicas for which this broker is the leader."
+        }
+      ]
+    },
+    {
+      "feature_set": "consumer-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Consumer - Requests",
+          "key": "kafka.consumer.consumer-metrics.request-rate",
+          "description": "The average number of requests sent per second for a node."
+        },
+        {
+          "name": "Kafka Consumer - Request size",
+          "key": "kafka.consumer.consumer-metrics.request-size-avg",
+          "description": "The average size of all requests in the window."
+        },
+        {
+          "name": "Kafka Consumer - Incoming byte rate",
+          "key": "kafka.consumer.consumer-metrics.incoming-byte-rate",
+          "description": "Bytes/second read off all sockets."
+        },
+        {
+          "name": "Kafka Consumer - Outgoing byte rate",
+          "key": "kafka.consumer.consumer-metrics.outgoing-byte-rate",
+          "description": "The average number of outgoing bytes sent per second to all servers."
+        },
+        {
+          "name": "Kafka Consumer - Request latency",
+          "key": "kafka.consumer.consumer-metrics.request-latency-avg",
+          "description": "The average request latency in ms for a node."
+        },
+        {
+          "name": "Kafka Consumer - Assigned Partitions",
+          "key": "kafka.consumer.consumer-metrics.assigned-partitions",
+          "description": "The number of partitions currently assigned to the consumer."
+        },
+        {
+          "name": "Kafka Consumer - Messages consumed rate",
+          "key": "kafka.consumer.consumer-metrics.records-consumed-rate",
+          "description": "The average number of records consumed per second for a topic."
+        },
+        {
+          "name": "Kafka Consumer - Bytes consumed rate",
+          "key": "kafka.consumer.consumer-metrics.bytes-consumed-rate",
+          "description": "The average number of bytes consumed per second for a topic."
+        },
+        {
+          "name": "Kafka Consumer - Messages consumed rate total",
+          "key": "kafka.consumer.consumer-metrics.records-consumed-rate-total",
+          "description": "The average number of records consumed per second."
+        },
+        {
+          "name": "Kafka Consumer - Bytes consumed rate total",
+          "key": "kafka.consumer.consumer-metrics.bytes-consumed-rate-total",
+          "description": "The average number of bytes consumed per second."
+        },
+        {
+          "name": "Kafka Consumer - Fetch latency",
+          "key": "kafka.consumer.consumer-metrics.fetch-latency-avg",
+          "description": "The average time taken for a fetch request."
+        },
+        {
+          "name": "Kafka Consumer - Fetch throttle time avg",
+          "key": "kafka.consumer.consumer-fetch-manager-metrics.fetch-throttle-time-avg",
+          "description": "The average time in milliseconds a fetch request was throttled by the broker."
+        }
+      ]
+    },
+    {
+      "feature_set": "producer-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Producer - Incoming byte rate",
+          "key": "kafka.producer.producer-metrics.incoming-byte-rate",
+          "description": "The average number of responses received per second for a node."
+        },
+        {
+          "name": "Kafka Producer - Outgoing byte rate",
+          "key": "kafka.producer.producer-metrics.outgoing-byte-rate",
+          "description": "The average number of outgoing bytes sent per second to all servers."
+        },
+        {
+          "name": "Kafka Producer - I/O Wait time",
+          "key": "kafka.producer.producer-metrics.io-wait-time-ns-avg",
+          "description": "The average length of time the I/O thread spent waiting for a socket ready for reads or writes in nanoseconds."
+        },
+        {
+          "name": "Kafka Producer - Response rate",
+          "key": "kafka.producer.producer-metrics.response-rate",
+          "description": "Responses received sent per second."
+        },
+        {
+          "name": "Kafka Producer - Request latency",
+          "key": "kafka.producer.producer-metrics.request-latency-avg",
+          "description": "The average request latency in ms."
+        },
+        {
+          "name": "Kafka Producer - Compression rate",
+          "key": "kafka.producer.producer-metrics.compression-rate-avg",
+          "description": "The average compression rate of record batches, defined as the average ratio of the compressed batch size over the uncompressed size."
+        },
+        {
+          "name": "Kafka Producer - Request size",
+          "key": "kafka.producer.producer-metrics.request-size-avg",
+          "description": "The average size of all requests in the window."
+        },
+        {
+          "name": "Kafka Producer - Requests",
+          "key": "kafka.producer.producer-metrics.request-rate",
+          "description": "The average number of requests sent per second."
+        },
+        {
+          "name": "Kafka Producer - Produce throttle time avg",
+          "key": "kafka.producer.producer-metrics.produce-throttle-time-avg",
+          "description": "The average time in milliseconds a request was throttled by the broker."
+        },
+        {
+          "name": "Kafka Producer - Byte rate",
+          "key": "kafka.producer.producer-topic-metrics.byte-rate",
+          "description": "The average number of bytes sent per second for a topic."
+        },
+        {
+          "name": "Kafka Producer - Compression rate",
+          "key": "kafka.producer.producer-topic-metrics.compression-rate",
+          "description": "The average compression rate of record batches for a topic, defined as the average ratio of the compressed batch size over the uncompressed size."
+        },
+        {
+          "name": "Kafka Producer - Failed Requests Rate",
+          "key": "kafka.producer.producer-topic-metrics.record-error-rate",
+          "description": "The average per-second number of record sends that resulted in errors for a topic."
+        },
+        {
+          "name": "Kafka Producer - Requests Sent Rate",
+          "key": "kafka.producer.producer-topic-metrics.record-send-rate",
+          "description": "The average number of records sent per second for a topic."
+        }
+      ]
+    },
+    {
+      "feature_set": "controller-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Controller - Offline partitions",
+          "key": "kafka.controller.KafkaController.OfflinePartitionsCount",
+          "description": "The number of partitions that don't have an active leader and are therefore not writable or readable."
+        },
+        {
+          "name": "Kafka Controller - Active cluster controllers",
+          "key": "kafka.controller.KafkaController.ActiveControllerCount.Value",
+          "description": "Indicates whether the broker is the controller broker."
+        }
+      ]
+    },
+    {
+      "feature_set": "disk-metrics",
+      "metrics": [
+        {
+          "name": "Kafka Server - Disk Read Rate",
+          "key": "kafka.server.disk.read-bytes",
+          "description": "The total number of bytes read by the broker process, including reads from all disks. The total doesn't include reads from page cache. Available only on Linux-based systems."
+        },
+        {
+          "name": "Kafka Server - Disk Write Rate",
+          "key": "kafka.server.disk.write-bytes",
+          "description": "The total number of bytes written by the broker process, including writes from all disks. Available only on Linux-based systems."
+        }
+      ]
+    }
+  ]
+}

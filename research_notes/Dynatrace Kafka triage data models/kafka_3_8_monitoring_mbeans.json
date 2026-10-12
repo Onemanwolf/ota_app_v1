@@ -1,0 +1,2863 @@
+{
+  "source": "https://kafka.apache.org/38/operations/monitoring/",
+  "kafka_version": "3.8",
+  "extracted": "2026-10-12",
+  "status": "DOCUMENTED (verbatim tables)",
+  "tables": [
+    {
+      "title": "Broker metrics (with normal values)",
+      "columns": [
+        "Description",
+        "Mbean name",
+        "Normal value"
+      ],
+      "rows": [
+        {
+          "Description": "Message in rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=MessagesInPerSec,topic=([-.\\w]+)",
+          "Normal value": "Incoming message rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Byte in rate from clients",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec,topic=([-.\\w]+)",
+          "Normal value": "Byte in (from the clients) rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Byte in rate from other brokers",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=ReplicationBytesInPerSec",
+          "Normal value": "Byte in (from the other brokers) rate across all topics."
+        },
+        {
+          "Description": "Controller Request rate from Broker",
+          "Mbean name": "kafka.controller:type=ControllerChannelManager,name=RequestRateAndQueueTimeMs,brokerId=([0-9]+)",
+          "Normal value": "The rate (requests per second) at which the ControllerChannelManager takes requests from the queue of the given broker. And the time it takes for a request to stay in this queue before it is taken from the queue."
+        },
+        {
+          "Description": "Controller Event queue size",
+          "Mbean name": "kafka.controller:type=ControllerEventManager,name=EventQueueSize",
+          "Normal value": "Size of the ControllerEventManager\u2019s queue."
+        },
+        {
+          "Description": "Controller Event queue time",
+          "Mbean name": "kafka.controller:type=ControllerEventManager,name=EventQueueTimeMs",
+          "Normal value": "Time that takes for any event (except the Idle event) to wait in the ControllerEventManager\u2019s queue before being processed"
+        },
+        {
+          "Description": "Request rate",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=RequestsPerSec,request={Produce|FetchConsumer|FetchFollower},version=([0-9]+)",
+          "Normal value": ""
+        },
+        {
+          "Description": "Error rate",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=ErrorsPerSec,request=([-.\\w]+),error=([-.\\w]+)",
+          "Normal value": "Number of errors in responses counted per-request-type, per-error-code. If a response contains multiple errors, all are counted. error=NONE indicates successful responses."
+        },
+        {
+          "Description": "Produce request rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=TotalProduceRequestsPerSec,topic=([-.\\w]+)",
+          "Normal value": "Produce request rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Fetch request rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=TotalFetchRequestsPerSec,topic=([-.\\w]+)",
+          "Normal value": "Fetch request (from clients or followers) rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Failed produce request rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=FailedProduceRequestsPerSec,topic=([-.\\w]+)",
+          "Normal value": "Failed Produce request rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Failed fetch request rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=FailedFetchRequestsPerSec,topic=([-.\\w]+)",
+          "Normal value": "Failed Fetch request (from clients or followers) rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Request size in bytes",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=RequestBytes,request=([-.\\w]+)",
+          "Normal value": "Size of requests for each request type."
+        },
+        {
+          "Description": "Temporary memory size in bytes",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=TemporaryMemoryBytes,request={Produce|Fetch}",
+          "Normal value": "Temporary memory used for message format conversions and decompression."
+        },
+        {
+          "Description": "Message conversion time",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=MessageConversionsTimeMs,request={Produce|Fetch}",
+          "Normal value": "Time in milliseconds spent on message format conversions."
+        },
+        {
+          "Description": "Message conversion rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name={Produce|Fetch}MessageConversionsPerSec,topic=([-.\\w]+)",
+          "Normal value": "Message format conversion rate, for Produce or Fetch requests, per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Request Queue Size",
+          "Mbean name": "kafka.network:type=RequestChannel,name=RequestQueueSize",
+          "Normal value": "Size of the request queue."
+        },
+        {
+          "Description": "Byte out rate to clients",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=BytesOutPerSec,topic=([-.\\w]+)",
+          "Normal value": "Byte out (to the clients) rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Byte out rate to other brokers",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=ReplicationBytesOutPerSec",
+          "Normal value": "Byte out (to the other brokers) rate across all topics"
+        },
+        {
+          "Description": "Rejected byte rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=BytesRejectedPerSec,topic=([-.\\w]+)",
+          "Normal value": "Rejected byte rate per topic, due to the record batch size being greater than max.message.bytes configuration. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate."
+        },
+        {
+          "Description": "Message validation failure rate due to no key specified for compacted topic",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=NoKeyCompactedTopicRecordsPerSec",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Message validation failure rate due to invalid magic number",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=InvalidMagicNumberRecordsPerSec",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Message validation failure rate due to incorrect crc checksum",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=InvalidMessageCrcRecordsPerSec",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Message validation failure rate due to non-continuous offset or sequence number in batch",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=InvalidOffsetOrSequenceRecordsPerSec",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Log flush rate and time",
+          "Mbean name": "kafka.log:type=LogFlushStats,name=LogFlushRateAndTimeMs",
+          "Normal value": ""
+        },
+        {
+          "Description": "# of offline log directories",
+          "Mbean name": "kafka.log:type=LogManager,name=OfflineLogDirectoryCount",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Leader election rate",
+          "Mbean name": "kafka.controller:type=ControllerStats,name=LeaderElectionRateAndTimeMs",
+          "Normal value": "non-zero when there are broker failures"
+        },
+        {
+          "Description": "Unclean leader election rate",
+          "Mbean name": "kafka.controller:type=ControllerStats,name=UncleanLeaderElectionsPerSec",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Is controller active on broker",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ActiveControllerCount",
+          "Normal value": "only one broker in the cluster should have 1"
+        },
+        {
+          "Description": "Pending topic deletes",
+          "Mbean name": "kafka.controller:type=KafkaController,name=TopicsToDeleteCount",
+          "Normal value": ""
+        },
+        {
+          "Description": "Pending replica deletes",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ReplicasToDeleteCount",
+          "Normal value": ""
+        },
+        {
+          "Description": "Ineligible pending topic deletes",
+          "Mbean name": "kafka.controller:type=KafkaController,name=TopicsIneligibleToDeleteCount",
+          "Normal value": ""
+        },
+        {
+          "Description": "Ineligible pending replica deletes",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ReplicasIneligibleToDeleteCount",
+          "Normal value": ""
+        },
+        {
+          "Description": "# of under replicated partitions (|ISR| < |all replicas|)",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=UnderReplicatedPartitions",
+          "Normal value": "0"
+        },
+        {
+          "Description": "# of under minIsr partitions (|ISR| < min.insync.replicas)",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=UnderMinIsrPartitionCount",
+          "Normal value": "0"
+        },
+        {
+          "Description": "# of at minIsr partitions (|ISR| = min.insync.replicas)",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=AtMinIsrPartitionCount",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Producer Id counts",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=ProducerIdCount",
+          "Normal value": "Count of all producer ids created by transactional and idempotent producers in each replica on the broker"
+        },
+        {
+          "Description": "Partition counts",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=PartitionCount",
+          "Normal value": "mostly even across brokers"
+        },
+        {
+          "Description": "Offline Replica counts",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=OfflineReplicaCount",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Leader replica counts",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=LeaderCount",
+          "Normal value": "mostly even across brokers"
+        },
+        {
+          "Description": "ISR shrink rate",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=IsrShrinksPerSec",
+          "Normal value": "If a broker goes down, ISR for some of the partitions will shrink. When that broker is up again, ISR will be expanded once the replicas are fully caught up. Other than that, the expected value for both ISR shrink rate and expansion rate is 0."
+        },
+        {
+          "Description": "ISR expansion rate",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=IsrExpandsPerSec",
+          "Normal value": "See above"
+        },
+        {
+          "Description": "Failed ISR update rate",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=FailedIsrUpdatesPerSec",
+          "Normal value": "0"
+        },
+        {
+          "Description": "Max lag in messages btw follower and leader replicas",
+          "Mbean name": "kafka.server:type=ReplicaFetcherManager,name=MaxLag,clientId=Replica",
+          "Normal value": "lag should be proportional to the maximum batch size of a produce request."
+        },
+        {
+          "Description": "Lag in messages per follower replica",
+          "Mbean name": "kafka.server:type=FetcherLagMetrics,name=ConsumerLag,clientId=([-.\\w]+),topic=([-.\\w]+),partition=([0-9]+)",
+          "Normal value": "lag should be proportional to the maximum batch size of a produce request."
+        },
+        {
+          "Description": "Requests waiting in the producer purgatory",
+          "Mbean name": "kafka.server:type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=Produce",
+          "Normal value": "non-zero if ack=-1 is used"
+        },
+        {
+          "Description": "Requests waiting in the fetch purgatory",
+          "Mbean name": "kafka.server:type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=Fetch",
+          "Normal value": "size depends on fetch.wait.max.ms in the consumer"
+        },
+        {
+          "Description": "Request total time",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}",
+          "Normal value": "broken into queue, local, remote and response send time"
+        },
+        {
+          "Description": "Time the request waits in the request queue",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=RequestQueueTimeMs,request={Produce|FetchConsumer|FetchFollower}",
+          "Normal value": ""
+        },
+        {
+          "Description": "Time the request is processed at the leader",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=LocalTimeMs,request={Produce|FetchConsumer|FetchFollower}",
+          "Normal value": ""
+        },
+        {
+          "Description": "Time the request waits for the follower",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=RemoteTimeMs,request={Produce|FetchConsumer|FetchFollower}",
+          "Normal value": "non-zero for produce requests when ack=-1"
+        },
+        {
+          "Description": "Time the request waits in the response queue",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=ResponseQueueTimeMs,request={Produce|FetchConsumer|FetchFollower}",
+          "Normal value": ""
+        },
+        {
+          "Description": "Time to send the response",
+          "Mbean name": "kafka.network:type=RequestMetrics,name=ResponseSendTimeMs,request={Produce|FetchConsumer|FetchFollower}",
+          "Normal value": ""
+        },
+        {
+          "Description": "Number of messages the consumer lags behind the producer by. Published by the consumer, not broker.",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id={client-id} Attribute: records-lag-max",
+          "Normal value": ""
+        },
+        {
+          "Description": "The average fraction of time the network processors are idle",
+          "Mbean name": "kafka.network:type=SocketServer,name=NetworkProcessorAvgIdlePercent",
+          "Normal value": "between 0 and 1, ideally > 0.3"
+        },
+        {
+          "Description": "The number of connections disconnected on a processor due to a client not re-authenticating and then using the connection beyond its expiration time for anything other than re-authentication",
+          "Mbean name": "kafka.server:type=socket-server-metrics,listener=[SASL_PLAINTEXT|SASL_SSL],networkProcessor=<#>,name=expired-connections-killed-count",
+          "Normal value": "ideally 0 when re-authentication is enabled, implying there are no longer any older, pre-2.2.0 clients connecting to this (listener, processor) combination"
+        },
+        {
+          "Description": "The total number of connections disconnected, across all processors, due to a client not re-authenticating and then using the connection beyond its expiration time for anything other than re-authentication",
+          "Mbean name": "kafka.network:type=SocketServer,name=ExpiredConnectionsKilledCount",
+          "Normal value": "ideally 0 when re-authentication is enabled, implying there are no longer any older, pre-2.2.0 clients connecting to this broker"
+        },
+        {
+          "Description": "The average fraction of time the request handler threads are idle",
+          "Mbean name": "kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent",
+          "Normal value": "between 0 and 1, ideally > 0.3"
+        },
+        {
+          "Description": "Bandwidth quota metrics per (user, client-id), user or client-id",
+          "Mbean name": "kafka.server:type={Produce|Fetch},user=([-.\\w]+),client-id=([-.\\w]+)",
+          "Normal value": "Two attributes. throttle-time indicates the amount of time in ms the client was throttled. Ideally = 0. byte-rate indicates the data produce/consume rate of the client in bytes/sec. For (user, client-id) quotas, both user and client-id are specified. If per-client-id quota is applied to the client, user is not specified. If per-user quota is applied, client-id is not specified."
+        },
+        {
+          "Description": "Request quota metrics per (user, client-id), user or client-id",
+          "Mbean name": "kafka.server:type=Request,user=([-.\\w]+),client-id=([-.\\w]+)",
+          "Normal value": "Two attributes. throttle-time indicates the amount of time in ms the client was throttled. Ideally = 0. request-time indicates the percentage of time spent in broker network and I/O threads to process requests from client group. For (user, client-id) quotas, both user and client-id are specified. If per-client-id quota is applied to the client, user is not specified. If per-user quota is applied, client-id is not specified."
+        },
+        {
+          "Description": "Requests exempt from throttling",
+          "Mbean name": "kafka.server:type=Request",
+          "Normal value": "exempt-throttle-time indicates the percentage of time spent in broker network and I/O threads to process requests that are exempt from throttling."
+        },
+        {
+          "Description": "ZooKeeper client request latency",
+          "Mbean name": "kafka.server:type=ZooKeeperClientMetrics,name=ZooKeeperRequestLatencyMs",
+          "Normal value": "Latency in milliseconds for ZooKeeper requests from broker."
+        },
+        {
+          "Description": "ZooKeeper connection status",
+          "Mbean name": "kafka.server:type=SessionExpireListener,name=SessionState",
+          "Normal value": "Connection status of broker\u2019s ZooKeeper session which may be one of Disconnected|SyncConnected|AuthFailed|ConnectedReadOnly|SaslAuthenticated|Expired."
+        },
+        {
+          "Description": "Max time to load group metadata",
+          "Mbean name": "kafka.server:type=group-coordinator-metrics,name=partition-load-time-max",
+          "Normal value": "maximum time, in milliseconds, it took to load offsets and group metadata from the consumer offset partitions loaded in the last 30 seconds (including time spent waiting for the loading task to be scheduled)"
+        },
+        {
+          "Description": "Avg time to load group metadata",
+          "Mbean name": "kafka.server:type=group-coordinator-metrics,name=partition-load-time-avg",
+          "Normal value": "average time, in milliseconds, it took to load offsets and group metadata from the consumer offset partitions loaded in the last 30 seconds (including time spent waiting for the loading task to be scheduled)"
+        },
+        {
+          "Description": "Max time to load transaction metadata",
+          "Mbean name": "kafka.server:type=transaction-coordinator-metrics,name=partition-load-time-max",
+          "Normal value": "maximum time, in milliseconds, it took to load transaction metadata from the consumer offset partitions loaded in the last 30 seconds (including time spent waiting for the loading task to be scheduled)"
+        },
+        {
+          "Description": "Avg time to load transaction metadata",
+          "Mbean name": "kafka.server:type=transaction-coordinator-metrics,name=partition-load-time-avg",
+          "Normal value": "average time, in milliseconds, it took to load transaction metadata from the consumer offset partitions loaded in the last 30 seconds (including time spent waiting for the loading task to be scheduled)"
+        },
+        {
+          "Description": "Rate of transactional verification errors",
+          "Mbean name": "kafka.server:type=AddPartitionsToTxnManager,name=VerificationFailureRate",
+          "Normal value": "Rate of verifications that returned in failure either from the AddPartitionsToTxn API response or through errors in the AddPartitionsToTxnManager. In steady state 0, but transient errors are expected during rolls and reassignments of the transactional state partition."
+        },
+        {
+          "Description": "Time to verify a transactional request",
+          "Mbean name": "kafka.server:type=AddPartitionsToTxnManager,name=VerificationTimeMs",
+          "Normal value": "The amount of time queueing while a possible previous request is in-flight plus the round trip to the transaction coordinator to verify (or not verify)"
+        },
+        {
+          "Description": "Consumer Group Offset Count",
+          "Mbean name": "kafka.server:type=GroupMetadataManager,name=NumOffsets",
+          "Normal value": "Total number of committed offsets for Consumer Groups"
+        },
+        {
+          "Description": "Consumer Group Count",
+          "Mbean name": "kafka.server:type=GroupMetadataManager,name=NumGroups",
+          "Normal value": "Total number of Consumer Groups"
+        },
+        {
+          "Description": "Consumer Group Count, per State",
+          "Mbean name": "kafka.server:type=GroupMetadataManager,name=NumGroups[PreparingRebalance,CompletingRebalance,Empty,Stable,Dead]",
+          "Normal value": "The number of Consumer Groups in each state: PreparingRebalance, CompletingRebalance, Empty, Stable, Dead"
+        },
+        {
+          "Description": "Number of reassigning partitions",
+          "Mbean name": "kafka.server:type=ReplicaManager,name=ReassigningPartitions",
+          "Normal value": "The number of reassigning leader partitions on a broker."
+        },
+        {
+          "Description": "Outgoing byte rate of reassignment traffic",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=ReassignmentBytesOutPerSec",
+          "Normal value": "0; non-zero when a partition reassignment is in progress."
+        },
+        {
+          "Description": "Incoming byte rate of reassignment traffic",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=ReassignmentBytesInPerSec",
+          "Normal value": "0; non-zero when a partition reassignment is in progress."
+        },
+        {
+          "Description": "Size of a partition on disk (in bytes)",
+          "Mbean name": "kafka.log:type=Log,name=Size,topic=([-.\\w]+),partition=([0-9]+)",
+          "Normal value": "The size of a partition on disk, measured in bytes."
+        },
+        {
+          "Description": "Number of log segments in a partition",
+          "Mbean name": "kafka.log:type=Log,name=NumLogSegments,topic=([-.\\w]+),partition=([0-9]+)",
+          "Normal value": "The number of log segments in a partition."
+        },
+        {
+          "Description": "First offset in a partition",
+          "Mbean name": "kafka.log:type=Log,name=LogStartOffset,topic=([-.\\w]+),partition=([0-9]+)",
+          "Normal value": "The first offset in a partition."
+        },
+        {
+          "Description": "Last offset in a partition",
+          "Mbean name": "kafka.log:type=Log,name=LogEndOffset,topic=([-.\\w]+),partition=([0-9]+)",
+          "Normal value": "The last offset in a partition."
+        }
+      ]
+    },
+    {
+      "title": "Tiered Storage Monitoring",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "Remote Fetch Bytes Per Sec",
+          "Description": "Rate of bytes read from remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteFetchBytesPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Fetch Requests Per Sec",
+          "Description": "Rate of read requests from remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteFetchRequestsPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Fetch Errors Per Sec",
+          "Description": "Rate of read errors from remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteFetchErrorsPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Copy Bytes Per Sec",
+          "Description": "Rate of bytes copied to remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteCopyBytesPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Copy Requests Per Sec",
+          "Description": "Rate of write requests to remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteCopyRequestsPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Copy Errors Per Sec",
+          "Description": "Rate of write errors from remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteCopyErrorsPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Copy Lag Bytes",
+          "Description": "Bytes which are eligible for tiering, but are not in remote storage yet. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic sum",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteCopyLagBytes,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Copy Lag Segments",
+          "Description": "Segments which are eligible for tiering, but are not in remote storage yet. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic count",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteCopyLagSegments,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Delete Requests Per Sec",
+          "Description": "Rate of delete requests to remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteDeleteRequestsPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Delete Errors Per Sec",
+          "Description": "Rate of delete errors from remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteDeleteErrorsPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Delete Lag Bytes",
+          "Description": "Tiered bytes which are eligible for deletion, but have not been deleted yet. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic sum",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteDeleteLagBytes,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Delete Lag Segments",
+          "Description": "Tiered segments which are eligible for deletion, but have not been deleted yet. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic count",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteDeleteLagSegments,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Build Remote Log Aux State Requests Per Sec",
+          "Description": "Rate of requests for rebuilding the auxiliary state from remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=BuildRemoteLogAuxStateRequestsPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Build Remote Log Aux State Errors Per Sec",
+          "Description": "Rate of errors for rebuilding the auxiliary state from remote storage per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=BuildRemoteLogAuxStateErrorsPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Log Size Computation Time",
+          "Description": "The amount of time needed to compute the size of the remote log. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic time",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteLogSizeComputationTime,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Log Size Bytes",
+          "Description": "The total size of a remote log in bytes. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic sum",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteLogSizeBytes,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Remote Log Metadata Count",
+          "Description": "The total number of metadata entries for remote storage. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic count",
+          "Mbean name": "kafka.server:type=BrokerTopicMetrics,name=RemoteLogMetadataCount,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "Delayed Remote Fetch Expires Per Sec",
+          "Description": "The number of expired remote fetches per second. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate",
+          "Mbean name": "kafka.server:type=DelayedRemoteFetchMetrics,name=ExpiresPerSec,topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "RemoteLogReader Task Queue Size",
+          "Description": "Size of the queue holding remote storage read tasks",
+          "Mbean name": "org.apache.kafka.storage.internals.log:type=RemoteStorageThreadPool,name=RemoteLogReaderTaskQueueSize"
+        },
+        {
+          "Metric/Attribute name": "RemoteLogReader Avg Idle Percent",
+          "Description": "Average idle percent of thread pool for processing remote storage read tasks",
+          "Mbean name": "org.apache.kafka.storage.internals.log:type=RemoteStorageThreadPool,name=RemoteLogReaderAvgIdlePercent"
+        },
+        {
+          "Metric/Attribute name": "RemoteLogManager Tasks Avg Idle Percent",
+          "Description": "Average idle percent of thread pool for copying data to remote storage",
+          "Mbean name": "kafka.log.remote:type=RemoteLogManager,name=RemoteLogManagerTasksAvgIdlePercent"
+        }
+      ]
+    },
+    {
+      "title": "KRaft Quorum Monitoring Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "Current State",
+          "Description": "The current state of this member; possible values are leader, candidate, voted, follower, unattached, observer.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=current-state"
+        },
+        {
+          "Metric/Attribute name": "Current Leader",
+          "Description": "The current quorum leader\u2019s id; -1 indicates unknown.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=current-leader"
+        },
+        {
+          "Metric/Attribute name": "Current Voted",
+          "Description": "The current voted leader\u2019s id; -1 indicates not voted for anyone.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=current-vote"
+        },
+        {
+          "Metric/Attribute name": "Current Epoch",
+          "Description": "The current quorum epoch.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=current-epoch"
+        },
+        {
+          "Metric/Attribute name": "High Watermark",
+          "Description": "The high watermark maintained on this member; -1 if it is unknown.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=high-watermark"
+        },
+        {
+          "Metric/Attribute name": "Log End Offset",
+          "Description": "The current raft log end offset.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=log-end-offset"
+        },
+        {
+          "Metric/Attribute name": "Number of Unknown Voter Connections",
+          "Description": "Number of unknown voters whose connection information is not cached. This value of this metric is always 0.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=number-unknown-voter-connections"
+        },
+        {
+          "Metric/Attribute name": "Average Commit Latency",
+          "Description": "The average time in milliseconds to commit an entry in the raft log.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=commit-latency-avg"
+        },
+        {
+          "Metric/Attribute name": "Maximum Commit Latency",
+          "Description": "The maximum time in milliseconds to commit an entry in the raft log.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=commit-latency-max"
+        },
+        {
+          "Metric/Attribute name": "Average Election Latency",
+          "Description": "The average time in milliseconds spent on electing a new leader.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=election-latency-avg"
+        },
+        {
+          "Metric/Attribute name": "Maximum Election Latency",
+          "Description": "The maximum time in milliseconds spent on electing a new leader.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=election-latency-max"
+        },
+        {
+          "Metric/Attribute name": "Fetch Records Rate",
+          "Description": "The average number of records fetched from the leader of the raft quorum.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=fetch-records-rate"
+        },
+        {
+          "Metric/Attribute name": "Append Records Rate",
+          "Description": "The average number of records appended per sec by the leader of the raft quorum.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=append-records-rate"
+        },
+        {
+          "Metric/Attribute name": "Average Poll Idle Ratio",
+          "Description": "The average fraction of time the client\u2019s poll() is idle as opposed to waiting for the user code to process records.",
+          "Mbean name": "kafka.server:type=raft-metrics,name=poll-idle-ratio-avg"
+        },
+        {
+          "Metric/Attribute name": "Current Metadata Version",
+          "Description": "Outputs the feature level of the current effective metadata version.",
+          "Mbean name": "kafka.server:type=MetadataLoader,name=CurrentMetadataVersion"
+        },
+        {
+          "Metric/Attribute name": "Metadata Snapshot Load Count",
+          "Description": "The total number of times we have loaded a KRaft snapshot since the process was started.",
+          "Mbean name": "kafka.server:type=MetadataLoader,name=HandleLoadSnapshotCount"
+        },
+        {
+          "Metric/Attribute name": "Latest Metadata Snapshot Size",
+          "Description": "The total size in bytes of the latest snapshot that the node has generated. If none have been generated yet, this is the size of the latest snapshot that was loaded. If no snapshots have been generated or loaded, this is 0.",
+          "Mbean name": "kafka.server:type=SnapshotEmitter,name=LatestSnapshotGeneratedBytes"
+        },
+        {
+          "Metric/Attribute name": "Latest Metadata Snapshot Age",
+          "Description": "The interval in milliseconds since the latest snapshot that the node has generated. If none have been generated yet, this is approximately the time delta since the process was started.",
+          "Mbean name": "kafka.server:type=SnapshotEmitter,name=LatestSnapshotGeneratedAgeMs"
+        }
+      ]
+    },
+    {
+      "title": "KRaft Controller Monitoring Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "Active Controller Count",
+          "Description": "The number of Active Controllers on this node. Valid values are \u20180\u2019 or \u20181\u2019.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ActiveControllerCount"
+        },
+        {
+          "Metric/Attribute name": "Event Queue Time Ms",
+          "Description": "A Histogram of the time in milliseconds that requests spent waiting in the Controller Event Queue.",
+          "Mbean name": "kafka.controller:type=ControllerEventManager,name=EventQueueTimeMs"
+        },
+        {
+          "Metric/Attribute name": "Event Queue Processing Time Ms",
+          "Description": "A Histogram of the time in milliseconds that requests spent being processed in the Controller Event Queue.",
+          "Mbean name": "kafka.controller:type=ControllerEventManager,name=EventQueueProcessingTimeMs"
+        },
+        {
+          "Metric/Attribute name": "Fenced Broker Count",
+          "Description": "The number of fenced brokers as observed by this Controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=FencedBrokerCount"
+        },
+        {
+          "Metric/Attribute name": "Active Broker Count",
+          "Description": "The number of active brokers as observed by this Controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ActiveBrokerCount"
+        },
+        {
+          "Metric/Attribute name": "Migrating ZK Broker Count",
+          "Description": "The number of brokers registered with the Controller that haven\u2019t yet migrated to KRaft mode.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=MigratingZkBrokerCount"
+        },
+        {
+          "Metric/Attribute name": "ZK Migrating State",
+          "Description": "0 - NONE, cluster created in KRaft mode;4 - ZK, Migration has not started, controller is a ZK controller;2 - PRE_MIGRATION, the KRaft Controller is waiting for all ZK brokers to register in migration mode;1 - MIGRATION, ZK metadata has been migrated, but some broker is still running in ZK mode;3 - POST_MIGRATION, the cluster migration is complete;",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ZkMigrationState"
+        },
+        {
+          "Metric/Attribute name": "Global Topic Count",
+          "Description": "The number of global topics as observed by this Controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=GlobalTopicCount"
+        },
+        {
+          "Metric/Attribute name": "Global Partition Count",
+          "Description": "The number of global partitions as observed by this Controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=GlobalPartitionCount"
+        },
+        {
+          "Metric/Attribute name": "Offline Partition Count",
+          "Description": "The number of offline topic partitions (non-internal) as observed by this Controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=OfflinePartitionsCount"
+        },
+        {
+          "Metric/Attribute name": "Preferred Replica Imbalance Count",
+          "Description": "The count of topic partitions for which the leader is not the preferred leader.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=PreferredReplicaImbalanceCount"
+        },
+        {
+          "Metric/Attribute name": "Metadata Error Count",
+          "Description": "The number of times this controller node has encountered an error during metadata log processing.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=MetadataErrorCount"
+        },
+        {
+          "Metric/Attribute name": "Last Applied Record Offset",
+          "Description": "The offset of the last record from the cluster metadata partition that was applied by the Controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=LastAppliedRecordOffset"
+        },
+        {
+          "Metric/Attribute name": "Last Committed Record Offset",
+          "Description": "The offset of the last record committed to this Controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=LastCommittedRecordOffset"
+        },
+        {
+          "Metric/Attribute name": "Last Applied Record Timestamp",
+          "Description": "The timestamp of the last record from the cluster metadata partition that was applied by the Controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=LastAppliedRecordTimestamp"
+        },
+        {
+          "Metric/Attribute name": "Last Applied Record Lag Ms",
+          "Description": "The difference between now and the timestamp of the last record from the cluster metadata partition that was applied by the controller. For active Controllers the value of this lag is always zero.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=LastAppliedRecordLagMs"
+        },
+        {
+          "Metric/Attribute name": "ZooKeeper Write Behind Lag",
+          "Description": "The amount of lag in records that ZooKeeper is behind relative to the highest committed record in the metadata log. This metric will only be reported by the active KRaft controller.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ZkWriteBehindLag"
+        },
+        {
+          "Metric/Attribute name": "ZooKeeper Metadata Snapshot Write Time",
+          "Description": "The number of milliseconds the KRaft controller took reconciling a snapshot into ZooKeeper.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ZkWriteSnapshotTimeMs"
+        },
+        {
+          "Metric/Attribute name": "ZooKeeper Metadata Delta Write Time",
+          "Description": "The number of milliseconds the KRaft controller took writing a delta into ZK.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=ZkWriteDeltaTimeMs"
+        },
+        {
+          "Metric/Attribute name": "Timed-out Broker Heartbeat Count",
+          "Description": "The number of broker heartbeats that timed out on this controller since the process was started. Note that only active controllers handle heartbeats, so only they will see increases in this metric.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=TimedOutBrokerHeartbeatCount"
+        },
+        {
+          "Metric/Attribute name": "Number Of Operations Started In Event Queue",
+          "Description": "The total number of controller event queue operations that were started. This includes deferred operations.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=EventQueueOperationsStartedCount"
+        },
+        {
+          "Metric/Attribute name": "Number of Operations Timed Out In Event Queue",
+          "Description": "The total number of controller event queue operations that timed out before they could be performed.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=EventQueueOperationsTimedOutCount"
+        },
+        {
+          "Metric/Attribute name": "Number Of New Controller Elections",
+          "Description": "Counts the number of times this node has seen a new controller elected. A transition to the \u201cno leader\u201d state is not counted here. If the same controller as before becomes active, that still counts.",
+          "Mbean name": "kafka.controller:type=KafkaController,name=NewActiveControllersCount"
+        }
+      ]
+    },
+    {
+      "title": "KRaft Broker Monitoring Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "Last Applied Record Offset",
+          "Description": "The offset of the last record from the cluster metadata partition that was applied by the broker",
+          "Mbean name": "kafka.server:type=broker-metadata-metrics,name=last-applied-record-offset"
+        },
+        {
+          "Metric/Attribute name": "Last Applied Record Timestamp",
+          "Description": "The timestamp of the last record from the cluster metadata partition that was applied by the broker.",
+          "Mbean name": "kafka.server:type=broker-metadata-metrics,name=last-applied-record-timestamp"
+        },
+        {
+          "Metric/Attribute name": "Last Applied Record Lag Ms",
+          "Description": "The difference between now and the timestamp of the last record from the cluster metadata partition that was applied by the broker",
+          "Mbean name": "kafka.server:type=broker-metadata-metrics,name=last-applied-record-lag-ms"
+        },
+        {
+          "Metric/Attribute name": "Metadata Load Error Count",
+          "Description": "The number of errors encountered by the BrokerMetadataListener while loading the metadata log and generating a new MetadataDelta based on it.",
+          "Mbean name": "kafka.server:type=broker-metadata-metrics,name=metadata-load-error-count"
+        },
+        {
+          "Metric/Attribute name": "Metadata Apply Error Count",
+          "Description": "The number of errors encountered by the BrokerMetadataPublisher while applying a new MetadataImage based on the latest MetadataDelta.",
+          "Mbean name": "kafka.server:type=broker-metadata-metrics,name=metadata-apply-error-count"
+        }
+      ]
+    },
+    {
+      "title": "Common monitoring metrics for producer/consumer/connect/streams",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "connection-close-rate",
+          "Description": "Connections closed per second in the window.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "connection-close-total",
+          "Description": "Total connections closed in the window.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "connection-creation-rate",
+          "Description": "New connections established per second in the window.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "connection-creation-total",
+          "Description": "Total new connections established in the window.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "network-io-rate",
+          "Description": "The average number of network operations (reads or writes) on all connections per second.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "network-io-total",
+          "Description": "The total number of network operations (reads or writes) on all connections.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "outgoing-byte-rate",
+          "Description": "The average number of outgoing bytes sent per second to all servers.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "outgoing-byte-total",
+          "Description": "The total number of outgoing bytes sent to all servers.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "request-rate",
+          "Description": "The average number of requests sent per second.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "request-total",
+          "Description": "The total number of requests sent.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "request-size-avg",
+          "Description": "The average size of all requests in the window.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "request-size-max",
+          "Description": "The maximum size of any request sent in the window.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "incoming-byte-rate",
+          "Description": "Bytes/second read off all sockets.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "incoming-byte-total",
+          "Description": "Total bytes read off all sockets.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "response-rate",
+          "Description": "Responses received per second.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "response-total",
+          "Description": "Total responses received.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "select-rate",
+          "Description": "Number of times the I/O layer checked for new I/O to perform per second.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "select-total",
+          "Description": "Total number of times the I/O layer checked for new I/O to perform.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "io-wait-time-ns-avg",
+          "Description": "The average length of time the I/O thread spent waiting for a socket ready for reads or writes in nanoseconds.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "io-wait-time-ns-total",
+          "Description": "The total time the I/O thread spent waiting in nanoseconds.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "io-waittime-total",
+          "Description": "Deprecated The total time the I/O thread spent waiting in nanoseconds. Replacement is io-wait-time-ns-total.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "io-wait-ratio",
+          "Description": "The fraction of time the I/O thread spent waiting.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "io-time-ns-avg",
+          "Description": "The average length of time for I/O per select call in nanoseconds.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "io-time-ns-total",
+          "Description": "The total time the I/O thread spent doing I/O in nanoseconds.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "iotime-total",
+          "Description": "Deprecated The total time the I/O thread spent doing I/O in nanoseconds. Replacement is io-time-ns-total.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "io-ratio",
+          "Description": "The fraction of time the I/O thread spent doing I/O.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "connection-count",
+          "Description": "The current number of active connections.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "successful-authentication-rate",
+          "Description": "Connections per second that were successfully authenticated using SASL or SSL.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "successful-authentication-total",
+          "Description": "Total connections that were successfully authenticated using SASL or SSL.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "failed-authentication-rate",
+          "Description": "Connections per second that failed authentication.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "failed-authentication-total",
+          "Description": "Total connections that failed authentication.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "successful-reauthentication-rate",
+          "Description": "Connections per second that were successfully re-authenticated using SASL.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "successful-reauthentication-total",
+          "Description": "Total connections that were successfully re-authenticated using SASL.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "reauthentication-latency-max",
+          "Description": "The maximum latency in ms observed due to re-authentication.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "reauthentication-latency-avg",
+          "Description": "The average latency in ms observed due to re-authentication.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "failed-reauthentication-rate",
+          "Description": "Connections per second that failed re-authentication.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "failed-reauthentication-total",
+          "Description": "Total connections that failed re-authentication.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "successful-authentication-no-reauth-total",
+          "Description": "Total connections that were successfully authenticated by older, pre-2.2.0 SASL clients that do not support re-authentication. May only be non-zero.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[producer|consumer|connect]-metrics,client-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "Common Per-broker metrics for producer/consumer/connect/streams",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "outgoing-byte-rate",
+          "Description": "The average number of outgoing bytes sent per second for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "outgoing-byte-total",
+          "Description": "The total number of outgoing bytes sent for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "request-rate",
+          "Description": "The average number of requests sent per second for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "request-total",
+          "Description": "The total number of requests sent for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "request-size-avg",
+          "Description": "The average size of all requests in the window for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "request-size-max",
+          "Description": "The maximum size of any request sent in the window for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "incoming-byte-rate",
+          "Description": "The average number of bytes received per second for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "incoming-byte-total",
+          "Description": "The total number of bytes received for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "request-latency-avg",
+          "Description": "The average request latency in ms for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "request-latency-max",
+          "Description": "The maximum request latency in ms for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "response-rate",
+          "Description": "Responses received per second for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        },
+        {
+          "Metric/Attribute name": "response-total",
+          "Description": "Total responses received for a node.",
+          "Mbean name": "kafka.[producer|consumer|connect]:type=[consumer|producer|connect]-node-metrics,client-id=([-.\\w]+),node-id=([0-9]+)"
+        }
+      ]
+    },
+    {
+      "title": "Producer monitoring",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "waiting-threads",
+          "Description": "The number of user threads blocked waiting for buffer memory to enqueue their records.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "buffer-total-bytes",
+          "Description": "The maximum amount of buffer memory the client can use (whether or not it is currently used).",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "buffer-available-bytes",
+          "Description": "The total amount of buffer memory that is not being used (either unallocated or in the free list).",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "buffer-exhausted-rate",
+          "Description": "The average per-second number of record sends that are dropped due to buffer exhaustion",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "buffer-exhausted-total",
+          "Description": "The total number of record sends that are dropped due to buffer exhaustion",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bufferpool-wait-time",
+          "Description": "The fraction of time an appender waits for space allocation.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bufferpool-wait-ratio",
+          "Description": "The fraction of time an appender waits for space allocation.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bufferpool-wait-time-total",
+          "Description": "Deprecated The total time an appender waits for space allocation in nanoseconds. Replacement is bufferpool-wait-time-ns-total",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bufferpool-wait-time-ns-total",
+          "Description": "The total time an appender waits for space allocation in nanoseconds.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "flush-time-ns-total",
+          "Description": "The total time the Producer spent in Producer.flush in nanoseconds.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "txn-init-time-ns-total",
+          "Description": "The total time the Producer spent initializing transactions in nanoseconds (for EOS).",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "txn-begin-time-ns-total",
+          "Description": "The total time the Producer spent in beginTransaction in nanoseconds (for EOS).",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "txn-send-offsets-time-ns-total",
+          "Description": "The total time the Producer spent sending offsets to transactions in nanoseconds (for EOS).",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "txn-commit-time-ns-total",
+          "Description": "The total time the Producer spent committing transactions in nanoseconds (for EOS).",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "txn-abort-time-ns-total",
+          "Description": "The total time the Producer spent aborting transactions in nanoseconds (for EOS).",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "metadata-wait-time-ns-total",
+          "Description": "the total time in nanoseconds that has spent waiting for metadata from the Kafka broker",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "Producer Sender Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "batch-size-avg",
+          "Description": "The average number of bytes sent per partition per-request.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "batch-size-max",
+          "Description": "The max number of bytes sent per partition per-request.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "batch-split-rate",
+          "Description": "The average number of batch splits per second",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "batch-split-total",
+          "Description": "The total number of batch splits",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "compression-rate-avg",
+          "Description": "The average compression rate of record batches, defined as the average ratio of the compressed batch size over the uncompressed size.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "metadata-age",
+          "Description": "The age in seconds of the current producer metadata being used.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "produce-throttle-time-avg",
+          "Description": "The average time in ms a request was throttled by a broker",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "produce-throttle-time-max",
+          "Description": "The maximum time in ms a request was throttled by a broker",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-error-rate",
+          "Description": "The average per-second number of record sends that resulted in errors",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-error-total",
+          "Description": "The total number of record sends that resulted in errors",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-queue-time-avg",
+          "Description": "The average time in ms record batches spent in the send buffer.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-queue-time-max",
+          "Description": "The maximum time in ms record batches spent in the send buffer.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-retry-rate",
+          "Description": "The average per-second number of retried record sends",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-retry-total",
+          "Description": "The total number of retried record sends",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-send-rate",
+          "Description": "The average number of records sent per second.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-send-total",
+          "Description": "The total number of records sent.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-size-avg",
+          "Description": "The average record size",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "record-size-max",
+          "Description": "The maximum record size",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-per-request-avg",
+          "Description": "The average number of records per request.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "request-latency-avg",
+          "Description": "The average request latency in ms",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "request-latency-max",
+          "Description": "The maximum request latency in ms",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "requests-in-flight",
+          "Description": "The current number of in-flight requests awaiting a response.",
+          "Mbean name": "kafka.producer:type=producer-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "byte-rate",
+          "Description": "The average number of bytes sent per second for a topic.",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "byte-total",
+          "Description": "The total number of bytes sent for a topic.",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "compression-rate",
+          "Description": "The average compression rate of record batches for a topic, defined as the average ratio of the compressed batch size over the uncompressed size.",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "record-error-rate",
+          "Description": "The average per-second number of record sends that resulted in errors for a topic",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "record-error-total",
+          "Description": "The total number of record sends that resulted in errors for a topic",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "record-retry-rate",
+          "Description": "The average per-second number of retried record sends for a topic",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "record-retry-total",
+          "Description": "The total number of retried record sends for a topic",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "record-send-rate",
+          "Description": "The average number of records sent per second for a topic.",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "record-send-total",
+          "Description": "The total number of records sent for a topic.",
+          "Mbean name": "kafka.producer:type=producer-topic-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        }
+      ]
+    },
+    {
+      "title": "Consumer monitoring",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "time-between-poll-avg",
+          "Description": "The average delay between invocations of poll().",
+          "Mbean name": "kafka.consumer:type=consumer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "time-between-poll-max",
+          "Description": "The max delay between invocations of poll().",
+          "Mbean name": "kafka.consumer:type=consumer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "last-poll-seconds-ago",
+          "Description": "The number of seconds since the last poll() invocation.",
+          "Mbean name": "kafka.consumer:type=consumer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "poll-idle-ratio-avg",
+          "Description": "The average fraction of time the consumer\u2019s poll() is idle as opposed to waiting for the user code to process records.",
+          "Mbean name": "kafka.consumer:type=consumer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "committed-time-ns-total",
+          "Description": "The total time the Consumer spent in committed in nanoseconds.",
+          "Mbean name": "kafka.consumer:type=consumer-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "commit-sync-time-ns-total",
+          "Description": "The total time the Consumer spent committing offsets in nanoseconds (for AOS).",
+          "Mbean name": "kafka.consumer:type=consumer-metrics,client-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "Consumer Group Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "commit-latency-avg",
+          "Description": "The average time taken for a commit request",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "commit-latency-max",
+          "Description": "The max time taken for a commit request",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "commit-rate",
+          "Description": "The number of commit calls per second",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "commit-total",
+          "Description": "The total number of commit calls",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "assigned-partitions",
+          "Description": "The number of partitions currently assigned to this consumer",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "heartbeat-response-time-max",
+          "Description": "The max time taken to receive a response to a heartbeat request",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "heartbeat-rate",
+          "Description": "The average number of heartbeats per second",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "heartbeat-total",
+          "Description": "The total number of heartbeats",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "join-time-avg",
+          "Description": "The average time taken for a group rejoin",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "join-time-max",
+          "Description": "The max time taken for a group rejoin",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "join-rate",
+          "Description": "The number of group joins per second",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "join-total",
+          "Description": "The total number of group joins",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "sync-time-avg",
+          "Description": "The average time taken for a group sync",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "sync-time-max",
+          "Description": "The max time taken for a group sync",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "sync-rate",
+          "Description": "The number of group syncs per second",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "sync-total",
+          "Description": "The total number of group syncs",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "rebalance-latency-avg",
+          "Description": "The average time taken for a group rebalance",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "rebalance-latency-max",
+          "Description": "The max time taken for a group rebalance",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "rebalance-latency-total",
+          "Description": "The total time taken for group rebalances so far",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "rebalance-total",
+          "Description": "The total number of group rebalances participated",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "rebalance-rate-per-hour",
+          "Description": "The number of group rebalance participated per hour",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "failed-rebalance-total",
+          "Description": "The total number of failed group rebalances",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "failed-rebalance-rate-per-hour",
+          "Description": "The number of failed group rebalance event per hour",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "last-rebalance-seconds-ago",
+          "Description": "The number of seconds since the last rebalance event",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "last-heartbeat-seconds-ago",
+          "Description": "The number of seconds since the last controller heartbeat",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "partitions-revoked-latency-avg",
+          "Description": "The average time taken by the on-partitions-revoked rebalance listener callback",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "partitions-revoked-latency-max",
+          "Description": "The max time taken by the on-partitions-revoked rebalance listener callback",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "partitions-assigned-latency-avg",
+          "Description": "The average time taken by the on-partitions-assigned rebalance listener callback",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "partitions-assigned-latency-max",
+          "Description": "The max time taken by the on-partitions-assigned rebalance listener callback",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "partitions-lost-latency-avg",
+          "Description": "The average time taken by the on-partitions-lost rebalance listener callback",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "partitions-lost-latency-max",
+          "Description": "The max time taken by the on-partitions-lost rebalance listener callback",
+          "Mbean name": "kafka.consumer:type=consumer-coordinator-metrics,client-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "Consumer Fetch Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "bytes-consumed-rate",
+          "Description": "The average number of bytes consumed per second",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "bytes-consumed-total",
+          "Description": "The total number of bytes consumed",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-latency-avg",
+          "Description": "The average time taken for a fetch request.",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-latency-max",
+          "Description": "The max time taken for any fetch request.",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-rate",
+          "Description": "The number of fetch requests per second.",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-size-avg",
+          "Description": "The average number of bytes fetched per request",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-size-max",
+          "Description": "The maximum number of bytes fetched per request",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-throttle-time-avg",
+          "Description": "The average throttle time in ms",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-throttle-time-max",
+          "Description": "The maximum throttle time in ms",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-total",
+          "Description": "The total number of fetch requests.",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-consumed-rate",
+          "Description": "The average number of records consumed per second",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-consumed-total",
+          "Description": "The total number of records consumed",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-lag-max",
+          "Description": "The maximum lag in terms of number of records for any partition in this window. NOTE: This is based on current offset and not committed offset",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-lead-min",
+          "Description": "The minimum lead in terms of number of records for any partition in this window",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-per-request-avg",
+          "Description": "The average number of records in each request",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "bytes-consumed-rate",
+          "Description": "The average number of bytes consumed per second for a topic",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "bytes-consumed-total",
+          "Description": "The total number of bytes consumed for a topic",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-size-avg",
+          "Description": "The average number of bytes fetched per request for a topic",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "fetch-size-max",
+          "Description": "The maximum number of bytes fetched per request for a topic",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "records-consumed-rate",
+          "Description": "The average number of records consumed per second for a topic",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "records-consumed-total",
+          "Description": "The total number of records consumed for a topic",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "records-per-request-avg",
+          "Description": "The average number of records in each request for a topic",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=\"{client-id}\",topic=\"{topic}\""
+        },
+        {
+          "Metric/Attribute name": "preferred-read-replica",
+          "Description": "The current read replica for the partition, or -1 if reading from leader",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,partition=\"{partition}\",topic=\"{topic}\",client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-lag",
+          "Description": "The latest lag of the partition",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,partition=\"{partition}\",topic=\"{topic}\",client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-lag-avg",
+          "Description": "The average lag of the partition",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,partition=\"{partition}\",topic=\"{topic}\",client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-lag-max",
+          "Description": "The max lag of the partition",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,partition=\"{partition}\",topic=\"{topic}\",client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-lead",
+          "Description": "The latest lead of the partition",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,partition=\"{partition}\",topic=\"{topic}\",client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-lead-avg",
+          "Description": "The average lead of the partition",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,partition=\"{partition}\",topic=\"{topic}\",client-id=\"{client-id}\""
+        },
+        {
+          "Metric/Attribute name": "records-lead-min",
+          "Description": "The min lead of the partition",
+          "Mbean name": "kafka.consumer:type=consumer-fetch-manager-metrics,partition=\"{partition}\",topic=\"{topic}\",client-id=\"{client-id}\""
+        }
+      ]
+    },
+    {
+      "title": "Connect Monitoring",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "connector-count",
+          "Description": "The number of connectors run in this worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "connector-startup-attempts-total",
+          "Description": "The total number of connector startups that this worker has attempted.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "connector-startup-failure-percentage",
+          "Description": "The average percentage of this worker's connectors starts that failed.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "connector-startup-failure-total",
+          "Description": "The total number of connector starts that failed.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "connector-startup-success-percentage",
+          "Description": "The average percentage of this worker's connectors starts that succeeded.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "connector-startup-success-total",
+          "Description": "The total number of connector starts that succeeded.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "task-count",
+          "Description": "The number of tasks run in this worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "task-startup-attempts-total",
+          "Description": "The total number of task startups that this worker has attempted.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "task-startup-failure-percentage",
+          "Description": "The average percentage of this worker's tasks starts that failed.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "task-startup-failure-total",
+          "Description": "The total number of task starts that failed.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "task-startup-success-percentage",
+          "Description": "The average percentage of this worker's tasks starts that succeeded.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "task-startup-success-total",
+          "Description": "The total number of task starts that succeeded.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics"
+        },
+        {
+          "Metric/Attribute name": "connector-destroyed-task-count",
+          "Description": "The number of destroyed tasks of the connector on the worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "connector-failed-task-count",
+          "Description": "The number of failed tasks of the connector on the worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "connector-paused-task-count",
+          "Description": "The number of paused tasks of the connector on the worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "connector-restarting-task-count",
+          "Description": "The number of restarting tasks of the connector on the worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "connector-running-task-count",
+          "Description": "The number of running tasks of the connector on the worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "connector-total-task-count",
+          "Description": "The number of tasks of the connector on the worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "connector-unassigned-task-count",
+          "Description": "The number of unassigned tasks of the connector on the worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "completed-rebalances-total",
+          "Description": "The total number of rebalances completed by this worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-rebalance-metrics"
+        },
+        {
+          "Metric/Attribute name": "connect-protocol",
+          "Description": "The Connect protocol used by this cluster",
+          "Mbean name": "kafka.connect:type=connect-worker-rebalance-metrics"
+        },
+        {
+          "Metric/Attribute name": "epoch",
+          "Description": "The epoch or generation number of this worker.",
+          "Mbean name": "kafka.connect:type=connect-worker-rebalance-metrics"
+        },
+        {
+          "Metric/Attribute name": "leader-name",
+          "Description": "The name of the group leader.",
+          "Mbean name": "kafka.connect:type=connect-worker-rebalance-metrics"
+        },
+        {
+          "Metric/Attribute name": "rebalance-avg-time-ms",
+          "Description": "The average time in milliseconds spent by this worker to rebalance.",
+          "Mbean name": "kafka.connect:type=connect-worker-rebalance-metrics"
+        },
+        {
+          "Metric/Attribute name": "rebalance-max-time-ms",
+          "Description": "The maximum time in milliseconds spent by this worker to rebalance.",
+          "Mbean name": "kafka.connect:type=connect-worker-rebalance-metrics"
+        },
+        {
+          "Metric/Attribute name": "rebalancing",
+          "Description": "Whether this worker is currently rebalancing.",
+          "Mbean name": "kafka.connect:type=connect-worker-rebalance-metrics"
+        },
+        {
+          "Metric/Attribute name": "time-since-last-rebalance-ms",
+          "Description": "The time in milliseconds since this worker completed the most recent rebalance.",
+          "Mbean name": "kafka.connect:type=connect-worker-rebalance-metrics"
+        },
+        {
+          "Metric/Attribute name": "connector-class",
+          "Description": "The name of the connector class.",
+          "Mbean name": "kafka.connect:type=connector-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "connector-type",
+          "Description": "The type of the connector. One of 'source' or 'sink'.",
+          "Mbean name": "kafka.connect:type=connector-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "connector-version",
+          "Description": "The version of the connector class, as reported by the connector.",
+          "Mbean name": "kafka.connect:type=connector-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "status",
+          "Description": "The status of the connector. One of 'unassigned', 'running', 'paused', 'stopped', 'failed', or 'restarting'.",
+          "Mbean name": "kafka.connect:type=connector-metrics,connector=\"{connector}\""
+        },
+        {
+          "Metric/Attribute name": "batch-size-avg",
+          "Description": "The average number of records in the batches the task has processed so far.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "batch-size-max",
+          "Description": "The number of records in the largest batch the task has processed so far.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-avg-time-ms",
+          "Description": "The average time in milliseconds taken by this task to commit offsets.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-failure-percentage",
+          "Description": "The average percentage of this task's offset commit attempts that failed.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-max-time-ms",
+          "Description": "The maximum time in milliseconds taken by this task to commit offsets.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-success-percentage",
+          "Description": "The average percentage of this task's offset commit attempts that succeeded.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "pause-ratio",
+          "Description": "The fraction of time this task has spent in the pause state.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "running-ratio",
+          "Description": "The fraction of time this task has spent in the running state.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "status",
+          "Description": "The status of the connector task. One of 'unassigned', 'running', 'paused', 'failed', or 'restarting'.",
+          "Mbean name": "kafka.connect:type=connector-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-completion-rate",
+          "Description": "The average per-second number of offset commit completions that were completed successfully.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-completion-total",
+          "Description": "The total number of offset commit completions that were completed successfully.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-seq-no",
+          "Description": "The current sequence number for offset commits.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-skip-rate",
+          "Description": "The average per-second number of offset commit completions that were received too late and skipped/ignored.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "offset-commit-skip-total",
+          "Description": "The total number of offset commit completions that were received too late and skipped/ignored.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "partition-count",
+          "Description": "The number of topic partitions assigned to this task belonging to the named sink connector in this worker.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "put-batch-avg-time-ms",
+          "Description": "The average time taken by this task to put a batch of sinks records.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "put-batch-max-time-ms",
+          "Description": "The maximum time taken by this task to put a batch of sinks records.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "sink-record-active-count",
+          "Description": "The number of records that have been read from Kafka but not yet completely committed/flushed/acknowledged by the sink task.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "sink-record-active-count-avg",
+          "Description": "The average number of records that have been read from Kafka but not yet completely committed/flushed/acknowledged by the sink task.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "sink-record-active-count-max",
+          "Description": "The maximum number of records that have been read from Kafka but not yet completely committed/flushed/acknowledged by the sink task.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "sink-record-lag-max",
+          "Description": "The maximum lag in terms of number of records that the sink task is behind the consumer's position for any topic partitions.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "sink-record-read-rate",
+          "Description": "The average per-second number of records read from Kafka for this task belonging to the named sink connector in this worker. This is before transformations are applied.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "sink-record-read-total",
+          "Description": "The total number of records read from Kafka by this task belonging to the named sink connector in this worker, since the task was last restarted.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "sink-record-send-rate",
+          "Description": "The average per-second number of records output from the transformations and sent/put to this task belonging to the named sink connector in this worker. This is after transformations are applied and excludes any records filtered out by the transformations.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "sink-record-send-total",
+          "Description": "The total number of records output from the transformations and sent/put to this task belonging to the named sink connector in this worker, since the task was last restarted.",
+          "Mbean name": "kafka.connect:type=sink-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "poll-batch-avg-time-ms",
+          "Description": "The average time in milliseconds taken by this task to poll for a batch of source records.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "poll-batch-max-time-ms",
+          "Description": "The maximum time in milliseconds taken by this task to poll for a batch of source records.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "source-record-active-count",
+          "Description": "The number of records that have been produced by this task but not yet completely written to Kafka.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "source-record-active-count-avg",
+          "Description": "The average number of records that have been produced by this task but not yet completely written to Kafka.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "source-record-active-count-max",
+          "Description": "The maximum number of records that have been produced by this task but not yet completely written to Kafka.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "source-record-poll-rate",
+          "Description": "The average per-second number of records produced/polled (before transformation) by this task belonging to the named source connector in this worker.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "source-record-poll-total",
+          "Description": "The total number of records produced/polled (before transformation) by this task belonging to the named source connector in this worker.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "source-record-write-rate",
+          "Description": "The average per-second number of records written to Kafka for this task belonging to the named source connector in this worker, since the task was last restarted. This is after transformations are applied, and excludes any records filtered out by the transformations.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "source-record-write-total",
+          "Description": "The number of records output written to Kafka for this task belonging to the named source connector in this worker, since the task was last restarted. This is after transformations are applied, and excludes any records filtered out by the transformations.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "transaction-size-avg",
+          "Description": "The average number of records in the transactions the task has committed so far.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "transaction-size-max",
+          "Description": "The number of records in the largest transaction the task has committed so far.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "transaction-size-min",
+          "Description": "The number of records in the smallest transaction the task has committed so far.",
+          "Mbean name": "kafka.connect:type=source-task-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "deadletterqueue-produce-failures",
+          "Description": "The number of failed writes to the dead letter queue.",
+          "Mbean name": "kafka.connect:type=task-error-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "deadletterqueue-produce-requests",
+          "Description": "The number of attempted writes to the dead letter queue.",
+          "Mbean name": "kafka.connect:type=task-error-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "last-error-timestamp",
+          "Description": "The epoch timestamp when this task last encountered an error.",
+          "Mbean name": "kafka.connect:type=task-error-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "total-errors-logged",
+          "Description": "The number of errors that were logged.",
+          "Mbean name": "kafka.connect:type=task-error-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "total-record-errors",
+          "Description": "The number of record processing errors in this task.",
+          "Mbean name": "kafka.connect:type=task-error-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "total-record-failures",
+          "Description": "The number of record processing failures in this task.",
+          "Mbean name": "kafka.connect:type=task-error-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "total-records-skipped",
+          "Description": "The number of records skipped due to errors.",
+          "Mbean name": "kafka.connect:type=task-error-metrics,connector=\"{connector}\",task=\"{task}\""
+        },
+        {
+          "Metric/Attribute name": "total-retries",
+          "Description": "The number of operations retried.",
+          "Mbean name": "kafka.connect:type=task-error-metrics,connector=\"{connector}\",task=\"{task}\""
+        }
+      ]
+    },
+    {
+      "title": "Client Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "version",
+          "Description": "The version of the Kafka Streams client.",
+          "Mbean name": "kafka.streams:type=stream-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "commit-id",
+          "Description": "The version control commit ID of the Kafka Streams client.",
+          "Mbean name": "kafka.streams:type=stream-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "application-id",
+          "Description": "The application ID of the Kafka Streams client.",
+          "Mbean name": "kafka.streams:type=stream-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "topology-description",
+          "Description": "The description of the topology executed in the Kafka Streams client.",
+          "Mbean name": "kafka.streams:type=stream-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "state",
+          "Description": "The state of the Kafka Streams client.",
+          "Mbean name": "kafka.streams:type=stream-metrics,client-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "failed-stream-threads",
+          "Description": "The number of failed stream threads since the start of the Kafka Streams client.",
+          "Mbean name": "kafka.streams:type=stream-metrics,client-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "Thread Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "commit-latency-avg",
+          "Description": "The average execution time in ms, for committing, across all running tasks of this thread.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "commit-latency-max",
+          "Description": "The maximum execution time in ms, for committing, across all running tasks of this thread.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "poll-latency-avg",
+          "Description": "The average execution time in ms, for consumer polling.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "poll-latency-max",
+          "Description": "The maximum execution time in ms, for consumer polling.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-latency-avg",
+          "Description": "The average execution time in ms, for processing.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-latency-max",
+          "Description": "The maximum execution time in ms, for processing.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "punctuate-latency-avg",
+          "Description": "The average execution time in ms, for punctuating.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "punctuate-latency-max",
+          "Description": "The maximum execution time in ms, for punctuating.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "commit-rate",
+          "Description": "The average number of commits per second.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "commit-total",
+          "Description": "The total number of commit calls.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "poll-rate",
+          "Description": "The average number of consumer poll calls per second.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "poll-total",
+          "Description": "The total number of consumer poll calls.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-rate",
+          "Description": "The average number of processed records per second.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-total",
+          "Description": "The total number of processed records.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "punctuate-rate",
+          "Description": "The average number of punctuate calls per second.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "punctuate-total",
+          "Description": "The total number of punctuate calls.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "task-created-rate",
+          "Description": "The average number of tasks created per second.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "task-created-total",
+          "Description": "The total number of tasks created.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "task-closed-rate",
+          "Description": "The average number of tasks closed per second.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "task-closed-total",
+          "Description": "The total number of tasks closed.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "blocked-time-ns-total",
+          "Description": "The total time the thread spent blocked on kafka.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "thread-start-time",
+          "Description": "The time that the thread was started.",
+          "Mbean name": "kafka.streams:type=stream-thread-metrics,thread-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "Task Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "process-latency-avg",
+          "Description": "The average execution time in ns, for processing.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-latency-max",
+          "Description": "The maximum execution time in ns, for processing.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-rate",
+          "Description": "The average number of processed records per second across all source processor nodes of this task.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-total",
+          "Description": "The total number of processed records across all source processor nodes of this task.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "record-lateness-avg",
+          "Description": "The average observed lateness of records (stream time - record timestamp).",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "record-lateness-max",
+          "Description": "The max observed lateness of records (stream time - record timestamp).",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "enforced-processing-rate",
+          "Description": "The average number of enforced processings per second.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "enforced-processing-total",
+          "Description": "The total number enforced processings.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "dropped-records-rate",
+          "Description": "The average number of records dropped within this task.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "dropped-records-total",
+          "Description": "The total number of records dropped within this task.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "active-process-ratio",
+          "Description": "The fraction of time the stream thread spent on processing this task among all assigned active tasks.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "input-buffer-bytes-total",
+          "Description": "The total number of bytes accumulated by this task,",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "cache-size-bytes-total",
+          "Description": "The cache size in bytes accumulated by this task.",
+          "Mbean name": "kafka.streams:type=stream-task-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "Processor Node Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "bytes-consumed-total",
+          "Description": "The total number of bytes consumed by a source processor node.",
+          "Mbean name": "kafka.streams:type=stream-topic-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+),topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bytes-produced-total",
+          "Description": "The total number of bytes produced by a sink processor node.",
+          "Mbean name": "kafka.streams:type=stream-topic-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+),topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-rate",
+          "Description": "The average number of records processed by a source processor node per second.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "process-total",
+          "Description": "The total number of records processed by a source processor node per second.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "suppression-emit-rate",
+          "Description": "The rate at which records that have been emitted downstream from suppression operation nodes.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "suppression-emit-total",
+          "Description": "The total number of records that have been emitted downstream from suppression operation nodes.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "emit-final-latency-max",
+          "Description": "The max latency to emit final records when a record could be emitted.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "emit-final-latency-avg",
+          "Description": "The avg latency to emit final records when a record could be emitted.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "emit-final-records-rate",
+          "Description": "The rate of records emitted when records could be emitted.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "emit-final-records-total",
+          "Description": "The total number of records emitted.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "record-e2e-latency-avg",
+          "Description": "The average end-to-end latency of a record, measured by comparing the record timestamp with the system time when it has been fully processed by the node.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "record-e2e-latency-max",
+          "Description": "The maximum end-to-end latency of a record, measured by comparing the record timestamp with the system time when it has been fully processed by the node.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "record-e2e-latency-min",
+          "Description": "The minimum end-to-end latency of a record, measured by comparing the record timestamp with the system time when it has been fully processed by the node.",
+          "Mbean name": "kafka.streams:type=stream-processor-node-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "records-consumed-total",
+          "Description": "The total number of records consumed by a source processor node.",
+          "Mbean name": "kafka.streams:type=stream-topic-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+),topic=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "records-produced-total",
+          "Description": "The total number of records produced by a sink processor node.",
+          "Mbean name": "kafka.streams:type=stream-topic-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),processor-node-id=([-.\\w]+),topic=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "State Store Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "put-latency-avg",
+          "Description": "The average put execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "put-latency-max",
+          "Description": "The maximum put execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "put-if-absent-latency-avg",
+          "Description": "The average put-if-absent execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "put-if-absent-latency-max",
+          "Description": "The maximum put-if-absent execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "get-latency-avg",
+          "Description": "The average get execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "get-latency-max",
+          "Description": "The maximum get execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "delete-latency-avg",
+          "Description": "The average delete execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "delete-latency-max",
+          "Description": "The maximum delete execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "put-all-latency-avg",
+          "Description": "The average put-all execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "put-all-latency-max",
+          "Description": "The maximum put-all execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "all-latency-avg",
+          "Description": "The average all operation execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "all-latency-max, from iterator create to close time.",
+          "Description": "The maximum all operation execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "range-latency-avg, from iterator create to close time.",
+          "Description": "The average range execution time in ns, from iterator create to close time.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "range-latency-max, from iterator create to close time.",
+          "Description": "The maximum range execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "prefix-scan-latency-avg",
+          "Description": "The average prefix-scan execution time in ns, from iterator create to close time.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "prefix-scan-latency-max",
+          "Description": "The maximum prefix-scan execution time in ns, from iterator create to close time.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "flush-latency-avg",
+          "Description": "The average flush execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "flush-latency-max",
+          "Description": "The maximum flush execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "restore-latency-avg",
+          "Description": "The average restore execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "restore-latency-max",
+          "Description": "The maximum restore execution time in ns.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "put-rate",
+          "Description": "The average put rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "put-if-absent-rate",
+          "Description": "The average put-if-absent rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "get-rate",
+          "Description": "The average get rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "delete-rate",
+          "Description": "The average delete rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "put-all-rate",
+          "Description": "The average put-all rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "all-rate",
+          "Description": "The average all operation rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "range-rate",
+          "Description": "The average range rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "prefix-scan-rate",
+          "Description": "The average prefix-scan rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "flush-rate",
+          "Description": "The average flush rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "restore-rate",
+          "Description": "The average restore rate for this store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "suppression-buffer-size-avg",
+          "Description": "The average total size, in bytes, of the buffered data over the sampling window.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),in-memory-suppression-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "suppression-buffer-size-max",
+          "Description": "The maximum total size, in bytes, of the buffered data over the sampling window.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),in-memory-suppression-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "suppression-buffer-count-avg",
+          "Description": "The average number of records buffered over the sampling window.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),in-memory-suppression-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "suppression-buffer-count-max",
+          "Description": "The maximum number of records buffered over the sampling window.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),in-memory-suppression-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "record-e2e-latency-avg",
+          "Description": "The average end-to-end latency of a record, measured by comparing the record timestamp with the system time when it has been fully processed by the node.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "record-e2e-latency-max",
+          "Description": "The maximum end-to-end latency of a record, measured by comparing the record timestamp with the system time when it has been fully processed by the node.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "record-e2e-latency-min",
+          "Description": "The minimum end-to-end latency of a record, measured by comparing the record timestamp with the system time when it has been fully processed by the node.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "num-open-iterators",
+          "Description": "The current number of iterators on the store that have been created, but not yet closed.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "iterator-duration-avg",
+          "Description": "The average time spent between creating an iterator and closing it, in nanoseconds.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "iterator-duration-max",
+          "Description": "The maximum time spent between creating an iterator and closing it, in nanoseconds.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "oldest-iterator-open-since-ms",
+          "Description": "The UNIX timestamp the oldest still open iterator was created, in milliseconds.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "RocksDB Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "bytes-written-rate",
+          "Description": "The average number of bytes written per second to the RocksDB state store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bytes-written-total",
+          "Description": "The total number of bytes written to the RocksDB state store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bytes-read-rate",
+          "Description": "The average number of bytes read per second from the RocksDB state store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bytes-read-total",
+          "Description": "The total number of bytes read from the RocksDB state store.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "memtable-bytes-flushed-rate",
+          "Description": "The average number of bytes flushed per second from the memtable to disk.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "memtable-bytes-flushed-total",
+          "Description": "The total number of bytes flushed from the memtable to disk.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "memtable-hit-ratio",
+          "Description": "The ratio of memtable hits relative to all lookups to the memtable.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "memtable-flush-time-avg",
+          "Description": "The average duration of memtable flushes to disc in ms.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "memtable-flush-time-min",
+          "Description": "The minimum duration of memtable flushes to disc in ms.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "memtable-flush-time-max",
+          "Description": "The maximum duration of memtable flushes to disc in ms.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "block-cache-data-hit-ratio",
+          "Description": "The ratio of block cache hits for data blocks relative to all lookups for data blocks to the block cache.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "block-cache-index-hit-ratio",
+          "Description": "The ratio of block cache hits for index blocks relative to all lookups for index blocks to the block cache.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "block-cache-filter-hit-ratio",
+          "Description": "The ratio of block cache hits for filter blocks relative to all lookups for filter blocks to the block cache.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "write-stall-duration-avg",
+          "Description": "The average duration of write stalls in ms.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "write-stall-duration-total",
+          "Description": "The total duration of write stalls in ms.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bytes-read-compaction-rate",
+          "Description": "The average number of bytes read per second during compaction.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "bytes-written-compaction-rate",
+          "Description": "The average number of bytes written per second during compaction.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "compaction-time-avg",
+          "Description": "The average duration of disc compactions in ms.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "compaction-time-min",
+          "Description": "The minimum duration of disc compactions in ms.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "compaction-time-max",
+          "Description": "The maximum duration of disc compactions in ms.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "number-open-files",
+          "Description": "The number of current open files.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "number-file-errors-total",
+          "Description": "The total number of file errors occurred.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "RocksDB Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "num-immutable-mem-table",
+          "Description": "The number of immutable memtables that have not yet been flushed.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "cur-size-active-mem-table",
+          "Description": "The approximate size of the active memtable in bytes.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "cur-size-all-mem-tables",
+          "Description": "The approximate size of active and unflushed immutable memtables in bytes.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "size-all-mem-tables",
+          "Description": "The approximate size of active, unflushed immutable, and pinned immutable memtables in bytes.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "num-entries-active-mem-table",
+          "Description": "The number of entries in the active memtable.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "num-entries-imm-mem-tables",
+          "Description": "The number of entries in the unflushed immutable memtables.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "num-deletes-active-mem-table",
+          "Description": "The number of delete entries in the active memtable.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "num-deletes-imm-mem-tables",
+          "Description": "The number of delete entries in the unflushed immutable memtables.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "mem-table-flush-pending",
+          "Description": "This metric reports 1 if a memtable flush is pending, otherwise it reports 0.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "num-running-flushes",
+          "Description": "The number of currently running flushes.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "compaction-pending",
+          "Description": "This metric reports 1 if at least one compaction is pending, otherwise it reports 0.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "num-running-compactions",
+          "Description": "The number of currently running compactions.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "estimate-pending-compaction-bytes",
+          "Description": "The estimated total number of bytes a compaction needs to rewrite on disk to get all levels down to under target size (only valid for level compaction).",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "total-sst-files-size",
+          "Description": "The total size in bytes of all SST files.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "live-sst-files-size",
+          "Description": "The total size in bytes of all SST files that belong to the latest LSM tree.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "num-live-versions",
+          "Description": "Number of live versions of the LSM tree.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "block-cache-capacity",
+          "Description": "The capacity of the block cache in bytes.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "block-cache-usage",
+          "Description": "The memory size of the entries residing in block cache in bytes.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "block-cache-pinned-usage",
+          "Description": "The memory size for the entries being pinned in the block cache in bytes.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "estimate-num-keys",
+          "Description": "The estimated number of keys in the active and unflushed immutable memtables and storage.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "estimate-table-readers-mem",
+          "Description": "The estimated memory in bytes used for reading SST tables, excluding memory used in block cache.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "background-errors",
+          "Description": "The total number of background errors.",
+          "Mbean name": "kafka.streams:type=stream-state-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),[store-scope]-id=([-.\\w]+)"
+        }
+      ]
+    },
+    {
+      "title": "Record Cache Metrics",
+      "columns": [
+        "Metric/Attribute name",
+        "Description",
+        "Mbean name"
+      ],
+      "rows": [
+        {
+          "Metric/Attribute name": "hit-ratio-avg",
+          "Description": "The average cache hit ratio defined as the ratio of cache read hits over the total cache read requests.",
+          "Mbean name": "kafka.streams:type=stream-record-cache-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),record-cache-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "hit-ratio-min",
+          "Description": "The minimum cache hit ratio.",
+          "Mbean name": "kafka.streams:type=stream-record-cache-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),record-cache-id=([-.\\w]+)"
+        },
+        {
+          "Metric/Attribute name": "hit-ratio-max",
+          "Description": "The maximum cache hit ratio.",
+          "Mbean name": "kafka.streams:type=stream-record-cache-metrics,thread-id=([-.\\w]+),task-id=([-.\\w]+),record-cache-id=([-.\\w]+)"
+        }
+      ]
+    }
+  ]
+}

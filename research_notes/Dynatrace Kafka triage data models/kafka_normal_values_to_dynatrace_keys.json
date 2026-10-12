@@ -1,0 +1,520 @@
+[
+  {
+    "description": "Message in rate",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=MessagesInPerSec,topic=([-.\\w]+)",
+    "normal_value": "Incoming message rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [
+      "kafka.server.BrokerTopicMetrics.MessagesInPerSec.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Byte in rate from clients",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec,topic=([-.\\w]+)",
+    "normal_value": "Byte in (from the clients) rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [
+      "kafka.server.BrokerTopicMetrics.BytesInPerSec.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Byte in rate from other brokers",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=ReplicationBytesInPerSec",
+    "normal_value": "Byte in (from the other brokers) rate across all topics.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Controller Request rate from Broker",
+    "mbean": "kafka.controller:type=ControllerChannelManager,name=RequestRateAndQueueTimeMs,brokerId=([0-9]+)",
+    "normal_value": "The rate (requests per second) at which the ControllerChannelManager takes requests from the queue of the given broker. And the time it takes for a request to stay in this queue before it is taken from the queue.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Controller Event queue size",
+    "mbean": "kafka.controller:type=ControllerEventManager,name=EventQueueSize",
+    "normal_value": "Size of the ControllerEventManager\u2019s queue.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Controller Event queue time",
+    "mbean": "kafka.controller:type=ControllerEventManager,name=EventQueueTimeMs",
+    "normal_value": "Time that takes for any event (except the Idle event) to wait in the ControllerEventManager\u2019s queue before being processed",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Error rate",
+    "mbean": "kafka.network:type=RequestMetrics,name=ErrorsPerSec,request=([-.\\w]+),error=([-.\\w]+)",
+    "normal_value": "Number of errors in responses counted per-request-type, per-error-code. If a response contains multiple errors, all are counted. error=NONE indicates successful responses.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Produce request rate",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=TotalProduceRequestsPerSec,topic=([-.\\w]+)",
+    "normal_value": "Produce request rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [
+      "kafka.server.BrokerTopicMetrics.TotalProduceRequestsPerSec.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Fetch request rate",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=TotalFetchRequestsPerSec,topic=([-.\\w]+)",
+    "normal_value": "Fetch request (from clients or followers) rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [
+      "kafka.server.BrokerTopicMetrics.TotalFetchRequestsPerSec.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Failed produce request rate",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=FailedProduceRequestsPerSec,topic=([-.\\w]+)",
+    "normal_value": "Failed Produce request rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [
+      "kafka.server.BrokerTopicMetrics.FailedProduceRequestsPerSec.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Failed fetch request rate",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=FailedFetchRequestsPerSec,topic=([-.\\w]+)",
+    "normal_value": "Failed Fetch request (from clients or followers) rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [
+      "kafka.server.BrokerTopicMetrics.FailedFetchRequestsPerSec.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Request size in bytes",
+    "mbean": "kafka.network:type=RequestMetrics,name=RequestBytes,request=([-.\\w]+)",
+    "normal_value": "Size of requests for each request type.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Temporary memory size in bytes",
+    "mbean": "kafka.network:type=RequestMetrics,name=TemporaryMemoryBytes,request={Produce|Fetch}",
+    "normal_value": "Temporary memory used for message format conversions and decompression.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Message conversion time",
+    "mbean": "kafka.network:type=RequestMetrics,name=MessageConversionsTimeMs,request={Produce|Fetch}",
+    "normal_value": "Time in milliseconds spent on message format conversions.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Message conversion rate",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name={Produce|Fetch}MessageConversionsPerSec,topic=([-.\\w]+)",
+    "normal_value": "Message format conversion rate, for Produce or Fetch requests, per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Request Queue Size",
+    "mbean": "kafka.network:type=RequestChannel,name=RequestQueueSize",
+    "normal_value": "Size of the request queue.",
+    "dynatrace_keys": [
+      "kafka.network.RequestChannel.RequestQueueSize.Value"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Byte out rate to clients",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=BytesOutPerSec,topic=([-.\\w]+)",
+    "normal_value": "Byte out (to the clients) rate per topic. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [
+      "kafka.server.BrokerTopicMetrics.BytesOutPerSec.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Byte out rate to other brokers",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=ReplicationBytesOutPerSec",
+    "normal_value": "Byte out (to the other brokers) rate across all topics",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Rejected byte rate",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=BytesRejectedPerSec,topic=([-.\\w]+)",
+    "normal_value": "Rejected byte rate per topic, due to the record batch size being greater than max.message.bytes configuration. Omitting \u2019topic=(\u2026)\u2019 will yield the all-topic rate.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Message validation failure rate due to no key specified for compacted topic",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=NoKeyCompactedTopicRecordsPerSec",
+    "normal_value": "0",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Message validation failure rate due to invalid magic number",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=InvalidMagicNumberRecordsPerSec",
+    "normal_value": "0",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Message validation failure rate due to incorrect crc checksum",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=InvalidMessageCrcRecordsPerSec",
+    "normal_value": "0",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Message validation failure rate due to non-continuous offset or sequence number in batch",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=InvalidOffsetOrSequenceRecordsPerSec",
+    "normal_value": "0",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "# of offline log directories",
+    "mbean": "kafka.log:type=LogManager,name=OfflineLogDirectoryCount",
+    "normal_value": "0",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Leader election rate",
+    "mbean": "kafka.controller:type=ControllerStats,name=LeaderElectionRateAndTimeMs",
+    "normal_value": "non-zero when there are broker failures",
+    "dynatrace_keys": [
+      "kafka.controller.ControllerStats.LeaderElectionRateAndTimeMs.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Unclean leader election rate",
+    "mbean": "kafka.controller:type=ControllerStats,name=UncleanLeaderElectionsPerSec",
+    "normal_value": "0",
+    "dynatrace_keys": [
+      "kafka.controller.ControllerStats.UncleanLeaderElectionsPerSec.OneMinuteRate"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Is controller active on broker",
+    "mbean": "kafka.controller:type=KafkaController,name=ActiveControllerCount",
+    "normal_value": "only one broker in the cluster should have 1",
+    "dynatrace_keys": [
+      "kafka.controller.KafkaController.ActiveControllerCount.Value"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "# of under replicated partitions (|ISR| < |all replicas|)",
+    "mbean": "kafka.server:type=ReplicaManager,name=UnderReplicatedPartitions",
+    "normal_value": "0",
+    "dynatrace_keys": [
+      "kafka.server.ReplicaManager.UnderReplicatedPartitions"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "# of under minIsr partitions (|ISR| < min.insync.replicas)",
+    "mbean": "kafka.server:type=ReplicaManager,name=UnderMinIsrPartitionCount",
+    "normal_value": "0",
+    "dynatrace_keys": [
+      "kafka.server.ReplicaManager.UnderMinIsrPartitionCount"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "# of at minIsr partitions (|ISR| = min.insync.replicas)",
+    "mbean": "kafka.server:type=ReplicaManager,name=AtMinIsrPartitionCount",
+    "normal_value": "0",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Producer Id counts",
+    "mbean": "kafka.server:type=ReplicaManager,name=ProducerIdCount",
+    "normal_value": "Count of all producer ids created by transactional and idempotent producers in each replica on the broker",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Partition counts",
+    "mbean": "kafka.server:type=ReplicaManager,name=PartitionCount",
+    "normal_value": "mostly even across brokers",
+    "dynatrace_keys": [
+      "kafka.server.ReplicaManager.PartitionCount"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Offline Replica counts",
+    "mbean": "kafka.server:type=ReplicaManager,name=OfflineReplicaCount",
+    "normal_value": "0",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Leader replica counts",
+    "mbean": "kafka.server:type=ReplicaManager,name=LeaderCount",
+    "normal_value": "mostly even across brokers",
+    "dynatrace_keys": [
+      "kafka.server.ReplicaManager.LeaderCount.Value"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "ISR shrink rate",
+    "mbean": "kafka.server:type=ReplicaManager,name=IsrShrinksPerSec",
+    "normal_value": "If a broker goes down, ISR for some of the partitions will shrink. When that broker is up again, ISR will be expanded once the replicas are fully caught up. Other than that, the expected value for both ISR shrink rate and expansion rate is 0.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "ISR expansion rate",
+    "mbean": "kafka.server:type=ReplicaManager,name=IsrExpandsPerSec",
+    "normal_value": "See above",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Failed ISR update rate",
+    "mbean": "kafka.server:type=ReplicaManager,name=FailedIsrUpdatesPerSec",
+    "normal_value": "0",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Max lag in messages btw follower and leader replicas",
+    "mbean": "kafka.server:type=ReplicaFetcherManager,name=MaxLag,clientId=Replica",
+    "normal_value": "lag should be proportional to the maximum batch size of a produce request.",
+    "dynatrace_keys": [
+      "kafka.server.ReplicaFetcherManager.MaxLag.Replica.Value"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Lag in messages per follower replica",
+    "mbean": "kafka.server:type=FetcherLagMetrics,name=ConsumerLag,clientId=([-.\\w]+),topic=([-.\\w]+),partition=([0-9]+)",
+    "normal_value": "lag should be proportional to the maximum batch size of a produce request.",
+    "dynatrace_keys": [
+      "kafka.server.FetcherLagMetrics.ConsumerLag.Value"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Requests waiting in the producer purgatory",
+    "mbean": "kafka.server:type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=Produce",
+    "normal_value": "non-zero if ack=-1 is used",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Requests waiting in the fetch purgatory",
+    "mbean": "kafka.server:type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=Fetch",
+    "normal_value": "size depends on fetch.wait.max.ms in the consumer",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Request total time",
+    "mbean": "kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}",
+    "normal_value": "broken into queue, local, remote and response send time",
+    "dynatrace_keys": [
+      "kafka.network.RequestMetrics.TotalTimeMs.Produce.Count",
+      "kafka.network.RequestMetrics.TotalTimeMs.FetchConsumer.Count",
+      "kafka.network.RequestMetrics.TotalTimeMs.FetchFollower.Count"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "Time the request waits for the follower",
+    "mbean": "kafka.network:type=RequestMetrics,name=RemoteTimeMs,request={Produce|FetchConsumer|FetchFollower}",
+    "normal_value": "non-zero for produce requests when ack=-1",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "The average fraction of time the network processors are idle",
+    "mbean": "kafka.network:type=SocketServer,name=NetworkProcessorAvgIdlePercent",
+    "normal_value": "between 0 and 1, ideally > 0.3",
+    "dynatrace_keys": [
+      "kafka.network.SocketServer.NetworkProcessorAvgIdlePercent"
+    ],
+    "match": "exact MBean path"
+  },
+  {
+    "description": "The number of connections disconnected on a processor due to a client not re-authenticating and then using the connection beyond its expiration time for anything other than re-authentication",
+    "mbean": "kafka.server:type=socket-server-metrics,listener=[SASL_PLAINTEXT|SASL_SSL],networkProcessor=<#>,name=expired-connections-killed-count",
+    "normal_value": "ideally 0 when re-authentication is enabled, implying there are no longer any older, pre-2.2.0 clients connecting to this (listener, processor) combination",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "The total number of connections disconnected, across all processors, due to a client not re-authenticating and then using the connection beyond its expiration time for anything other than re-authentication",
+    "mbean": "kafka.network:type=SocketServer,name=ExpiredConnectionsKilledCount",
+    "normal_value": "ideally 0 when re-authentication is enabled, implying there are no longer any older, pre-2.2.0 clients connecting to this broker",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "The average fraction of time the request handler threads are idle",
+    "mbean": "kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent",
+    "normal_value": "between 0 and 1, ideally > 0.3",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Bandwidth quota metrics per (user, client-id), user or client-id",
+    "mbean": "kafka.server:type={Produce|Fetch},user=([-.\\w]+),client-id=([-.\\w]+)",
+    "normal_value": "Two attributes. throttle-time indicates the amount of time in ms the client was throttled. Ideally = 0. byte-rate indicates the data produce/consume rate of the client in bytes/sec. For (user, client-id) quotas, both user and client-id are specified. If per-client-id quota is applied to the client, user is not specified. If per-user quota is applied, client-id is not specified.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Request quota metrics per (user, client-id), user or client-id",
+    "mbean": "kafka.server:type=Request,user=([-.\\w]+),client-id=([-.\\w]+)",
+    "normal_value": "Two attributes. throttle-time indicates the amount of time in ms the client was throttled. Ideally = 0. request-time indicates the percentage of time spent in broker network and I/O threads to process requests from client group. For (user, client-id) quotas, both user and client-id are specified. If per-client-id quota is applied to the client, user is not specified. If per-user quota is applied, client-id is not specified.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Requests exempt from throttling",
+    "mbean": "kafka.server:type=Request",
+    "normal_value": "exempt-throttle-time indicates the percentage of time spent in broker network and I/O threads to process requests that are exempt from throttling.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "ZooKeeper client request latency",
+    "mbean": "kafka.server:type=ZooKeeperClientMetrics,name=ZooKeeperRequestLatencyMs",
+    "normal_value": "Latency in milliseconds for ZooKeeper requests from broker.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "ZooKeeper connection status",
+    "mbean": "kafka.server:type=SessionExpireListener,name=SessionState",
+    "normal_value": "Connection status of broker\u2019s ZooKeeper session which may be one of Disconnected|SyncConnected|AuthFailed|ConnectedReadOnly|SaslAuthenticated|Expired.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Max time to load group metadata",
+    "mbean": "kafka.server:type=group-coordinator-metrics,name=partition-load-time-max",
+    "normal_value": "maximum time, in milliseconds, it took to load offsets and group metadata from the consumer offset partitions loaded in the last 30 seconds (including time spent waiting for the loading task to be scheduled)",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Avg time to load group metadata",
+    "mbean": "kafka.server:type=group-coordinator-metrics,name=partition-load-time-avg",
+    "normal_value": "average time, in milliseconds, it took to load offsets and group metadata from the consumer offset partitions loaded in the last 30 seconds (including time spent waiting for the loading task to be scheduled)",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Max time to load transaction metadata",
+    "mbean": "kafka.server:type=transaction-coordinator-metrics,name=partition-load-time-max",
+    "normal_value": "maximum time, in milliseconds, it took to load transaction metadata from the consumer offset partitions loaded in the last 30 seconds (including time spent waiting for the loading task to be scheduled)",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Avg time to load transaction metadata",
+    "mbean": "kafka.server:type=transaction-coordinator-metrics,name=partition-load-time-avg",
+    "normal_value": "average time, in milliseconds, it took to load transaction metadata from the consumer offset partitions loaded in the last 30 seconds (including time spent waiting for the loading task to be scheduled)",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Rate of transactional verification errors",
+    "mbean": "kafka.server:type=AddPartitionsToTxnManager,name=VerificationFailureRate",
+    "normal_value": "Rate of verifications that returned in failure either from the AddPartitionsToTxn API response or through errors in the AddPartitionsToTxnManager. In steady state 0, but transient errors are expected during rolls and reassignments of the transactional state partition.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Time to verify a transactional request",
+    "mbean": "kafka.server:type=AddPartitionsToTxnManager,name=VerificationTimeMs",
+    "normal_value": "The amount of time queueing while a possible previous request is in-flight plus the round trip to the transaction coordinator to verify (or not verify)",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Consumer Group Offset Count",
+    "mbean": "kafka.server:type=GroupMetadataManager,name=NumOffsets",
+    "normal_value": "Total number of committed offsets for Consumer Groups",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Consumer Group Count",
+    "mbean": "kafka.server:type=GroupMetadataManager,name=NumGroups",
+    "normal_value": "Total number of Consumer Groups",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Consumer Group Count, per State",
+    "mbean": "kafka.server:type=GroupMetadataManager,name=NumGroups[PreparingRebalance,CompletingRebalance,Empty,Stable,Dead]",
+    "normal_value": "The number of Consumer Groups in each state: PreparingRebalance, CompletingRebalance, Empty, Stable, Dead",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Number of reassigning partitions",
+    "mbean": "kafka.server:type=ReplicaManager,name=ReassigningPartitions",
+    "normal_value": "The number of reassigning leader partitions on a broker.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Outgoing byte rate of reassignment traffic",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=ReassignmentBytesOutPerSec",
+    "normal_value": "0; non-zero when a partition reassignment is in progress.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Incoming byte rate of reassignment traffic",
+    "mbean": "kafka.server:type=BrokerTopicMetrics,name=ReassignmentBytesInPerSec",
+    "normal_value": "0; non-zero when a partition reassignment is in progress.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Size of a partition on disk (in bytes)",
+    "mbean": "kafka.log:type=Log,name=Size,topic=([-.\\w]+),partition=([0-9]+)",
+    "normal_value": "The size of a partition on disk, measured in bytes.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Number of log segments in a partition",
+    "mbean": "kafka.log:type=Log,name=NumLogSegments,topic=([-.\\w]+),partition=([0-9]+)",
+    "normal_value": "The number of log segments in a partition.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "First offset in a partition",
+    "mbean": "kafka.log:type=Log,name=LogStartOffset,topic=([-.\\w]+),partition=([0-9]+)",
+    "normal_value": "The first offset in a partition.",
+    "dynatrace_keys": [],
+    "match": "none"
+  },
+  {
+    "description": "Last offset in a partition",
+    "mbean": "kafka.log:type=Log,name=LogEndOffset,topic=([-.\\w]+),partition=([0-9]+)",
+    "normal_value": "The last offset in a partition.",
+    "dynatrace_keys": [
+      "kafka.log.Log.LogEndOffset"
+    ],
+    "match": "exact MBean path"
+  }
+]
