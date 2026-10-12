@@ -51,6 +51,8 @@ own LAN address), while Terminal can. This matches macOS's Local Network privacy
 Desktop. Two ways to fix it:
 1. Permanent: System Settings > Privacy & Security > Local Network > enable Docker (Docker Desktop restart), then set
    `KEV_BASE_URL=http://192.168.5.147:8003` in `.env`.
-2. Used now: an SSH tunnel on the Mac, which containers reach through `host.docker.internal`:
-   `ssh -N -L 127.0.0.1:18003:127.0.0.1:8003 -i ~/.ssh/spark_hermes_ed25519 timo@spark-337a.local` with
-   `KEV_BASE_URL=http://host.docker.internal:18003`.
+2. Used now: `scripts/kev-tunnel.sh install`. It installs a per-user LaunchAgent (`com.opstriage.kev-tunnel`) that
+   keeps `ssh -N -L 127.0.0.1:18003:127.0.0.1:8003 timo@spark-337a.local` alive (launchd restarts it within
+   seconds if it drops, and starts it at login). Containers use `KEV_BASE_URL=http://host.docker.internal:18003`.
+   `scripts/kev-tunnel.sh check` tests Mac -> Kev and container -> Kev; `uninstall` removes it. The LaunchAgent
+   runs `/usr/bin/ssh` directly because launchd may not read scripts under `~/Desktop` (macOS TCC).
