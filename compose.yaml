@@ -1,6 +1,6 @@
 name: opstriage
 
-# Local stack (spec 12.2.7). The poller joins in Module 2; the Docker socket mount for real restarts in Module 4.
+# Local stack (spec 12.2.7). The Docker socket mount for real restarts arrives in Module 4.
 x-python-service: &python-service
   env_file: [.env]
   restart: unless-stopped
@@ -49,6 +49,13 @@ services:
       mcp-notification: { condition: service_healthy }
       mcp-ticketing: { condition: service_healthy }
       mcp-remediation: { condition: service_healthy }
+
+  poller:                                 # POLLER__SOURCE=fake replays fixtures/dynatrace/grail locally
+    <<: *python-service
+    build: { context: ., dockerfile: services/poller/Dockerfile }
+    depends_on:                           # replaces the anchor's depends_on, so repeat postgres
+      postgres: { condition: service_healthy }
+      intake-api: { condition: service_healthy }
 
   mcp-notification:
     <<: *python-service

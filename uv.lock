@@ -8,6 +8,7 @@ members = [
     "opstriage-contracts",
     "opstriage-intake",
     "opstriage-notification",
+    "opstriage-poller",
     "opstriage-remediation",
     "opstriage-shared",
     "opstriage-ticketing",
@@ -983,6 +984,25 @@ requires-dist = [
     { name = "opstriage-shared", editable = "packages/shared" },
     { name = "tenacity", specifier = "==9.2.1" },
     { name = "uvicorn", specifier = "==0.54.0" },
+]
+
+[[package]]
+name = "opstriage-poller"
+version = "0.1.0"
+source = { editable = "services/poller" }
+dependencies = [
+    { name = "httpx2" },
+    { name = "opstriage-contracts" },
+    { name = "opstriage-shared" },
+    { name = "tenacity" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "httpx2", specifier = "==2.13.1" },
+    { name = "opstriage-contracts", editable = "packages/contracts" },
+    { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "tenacity", specifier = "==9.2.1" },
 ]
 
 [[package]]

@@ -1,0 +1,17 @@
+fetch dt.davis.problems, from: now() - ${lookback_hours}h
+| sort timestamp asc
+| summarize {
+    status      = takeLast(event.status),
+    dup         = takeLast(dt.davis.is_duplicate),
+    name        = takeLast(event.name),
+    display_id  = takeLast(display_id),
+    category    = takeLast(event.category),
+    severity    = takeLast(event.severity),
+    start       = takeLast(event.start),
+    end         = takeLast(event.end),
+    affected    = takeLast(smartscape.affected_entities),
+    root_cause  = takeLast(root_cause.smartscape_entity),
+    maintenance = takeLast(maintenance.is_under_maintenance),
+    last_update = max(timestamp)
+  }, by: { event.id }
+| filter isFalseOrNull(dup) and status == "ACTIVE"

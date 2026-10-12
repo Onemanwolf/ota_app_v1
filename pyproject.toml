@@ -38,7 +38,7 @@ python_version = "3.13"
 plugins = ["pydantic.mypy"]
 explicit_package_bases = true
 exclude = ["/tests/"]   # test modules share names across services; pytest still runs them
-mypy_path = "packages/contracts/src:packages/shared/src:services/dev-webhook-sink/src:services/intake-api/src:services/agent-runtime/src:services/mcp-notification/src:services/mcp-ticketing/src:services/mcp-remediation/src"
+mypy_path = "packages/contracts/src:packages/shared/src:services/dev-webhook-sink/src:services/intake-api/src:services/agent-runtime/src:services/mcp-notification/src:services/mcp-ticketing/src:services/mcp-remediation/src:services/poller/src"
 
 [[tool.mypy.overrides]]
 module = ["azure_postgresql_auth.*", "azure.*", "testcontainers.*", "docker.*"]
@@ -57,7 +57,7 @@ addopts = "--import-mode=importlib -m 'not compose'"   # -m compose on the CLI o
 [tool.importlinter]
 root_packages = [
   "opstriage_contracts", "opstriage_shared", "opstriage_intake", "opstriage_triage", "opstriage_notification",
-  "opstriage_ticketing", "opstriage_remediation",
+  "opstriage_ticketing", "opstriage_remediation", "opstriage_poller",
 ]
 include_external_packages = true
 
@@ -78,6 +78,7 @@ source_modules = [
   "opstriage_notification.domain", "opstriage_notification.application",
   "opstriage_ticketing.domain", "opstriage_ticketing.application",
   "opstriage_remediation.domain", "opstriage_remediation.application",
+  "opstriage_poller.domain", "opstriage_poller.application",
 ]
 forbidden_modules = [
   "fastapi", "starlette", "langgraph", "mcp", "psycopg", "psycopg_pool", "docker", "azure", "httpx2", "openai",
@@ -89,6 +90,7 @@ name = "Bounded contexts do not import each other"
 type = "independence"
 modules = [
   "opstriage_intake", "opstriage_triage", "opstriage_notification", "opstriage_ticketing", "opstriage_remediation",
+  "opstriage_poller",
 ]
 
 [[tool.importlinter.contracts]]
@@ -96,7 +98,7 @@ name = "Domain does not depend on adapters, entrypoints or the graph"
 type = "forbidden"
 source_modules = [
   "opstriage_intake.domain", "opstriage_triage.domain", "opstriage_notification.domain",
-  "opstriage_ticketing.domain", "opstriage_remediation.domain",
+  "opstriage_ticketing.domain", "opstriage_remediation.domain", "opstriage_poller.domain",
 ]
 forbidden_modules = [
   "opstriage_intake.adapters", "opstriage_intake.entrypoints",
@@ -104,4 +106,5 @@ forbidden_modules = [
   "opstriage_notification.adapters", "opstriage_notification.entrypoints",
   "opstriage_ticketing.adapters", "opstriage_ticketing.entrypoints",
   "opstriage_remediation.adapters", "opstriage_remediation.entrypoints",
+  "opstriage_poller.adapters", "opstriage_poller.entrypoints",
 ]

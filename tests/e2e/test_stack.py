@@ -118,3 +118,35 @@ async def test_security_controls(client: httpx2.AsyncClient) -> None:
     big = json.dumps({"pad": "x" * 300_000}).encode()
     assert (await client.post(url, content=big, headers=WEBHOOK)).status_code == 413
     assert (await client.get(f"{AGENT}/v1/runs/whatever")).status_code == 401
+
+
+async def test_poller_fed_the_grail_fixture_batch_through_the_pipeline(client: httpx2.AsyncClient) -> None:
+    """Module 2 DoD: the poller (POLLER__SOURCE=fake) feeds the fixture batch end to end."""
+    for display_id, expected_plan in (
+        ("P-2610130", ["notify", "remediate", "ticket"]),
+        ("P-2610131", ["notify"]),
+    ):
+        async with asyncio.timeout(90):  # the poller cycles every POLLER__INTERVAL_SECONDS
+            while True:
+                runs = [r for r in await _runs_for(display_id) if r]
+                if runs:
+                    break
+                await asyncio.sleep(2)
+        assert runs[0]["plan"] == expected_plan
+
+
+async def _runs_for(display_id: str) -> list[dict[str, Any]]:
+    """Read the poller-created alert and its run through the public APIs."""
+    import psycopg
+
+    async with await psycopg.AsyncConnection.connect(
+        os.environ.get("E2E_DB_DSN", "postgresql://opstriage:opstriage@localhost:5432/opstriage")
+    ) as conn:
+        cur = await conn.execute(
+            "SELECT alert_id FROM intake.alert_inbox "
+            "WHERE display_id = %s AND source = 'dynatrace.poller.grail' AND state = 'done'",
+            (display_id,),
+        )
+        ids = [str(row[0]) for row in await cur.fetchall()]
+    async with httpx2.AsyncClient(timeout=10) as c:
+        return [await run_of(c, alert_id) for alert_id in ids]
