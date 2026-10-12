@@ -1,0 +1,35 @@
+{
+  "source": "dynatrace-workflow",
+  "event_id": "-1203948571029384756_1760265000000V2",
+  "display_id": "P-2610123",
+  "status": "ACTIVE",
+  "name": "Container demo-orders-api unavailable during patching",
+  "category": "AVAILABILITY",
+  "severity": 4,
+  "start": "2026-10-12T10:30:00Z",
+  "end": null,
+  "affected": [
+    {
+      "id": "CONTAINER-8A1F00C2D3E4B5A6",
+      "type": "container",
+      "name": "demo-orders-api"
+    },
+    {
+      "id": "HOST-017198AD253CBD63",
+      "type": "host",
+      "name": "vm-local-demo"
+    }
+  ],
+  "root_cause": {
+    "id": "CONTAINER-8A1F00C2D3E4B5A6",
+    "type": "container",
+    "name": "demo-orders-api"
+  },
+  "tags": {
+    "app": "orders",
+    "env": "local",
+    "maintenance": "true"
+  },
+  "problem_url": "https://example.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-2610123",
+  "maintenance": true
+}

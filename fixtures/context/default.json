@@ -1,0 +1,6 @@
+{
+  "logs": [
+    "2026-10-12T10:00:01Z ERROR orders-api container exited with code 137 (OOMKilled)",
+    "2026-10-12T10:00:02Z WARN orders-api health check failed: connection refused"
+  ]
+}

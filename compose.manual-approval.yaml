@@ -1,0 +1,6 @@
+# Manual approval scenario (Postman folder 8): restarts wait for POST /v1/runs/{run_id}/approval.
+# Usage: docker compose -f compose.yaml -f compose.manual-approval.yaml up -d agent-runtime
+services:
+  agent-runtime:
+    environment:
+      TRIAGE__APPROVAL__MODE: manual_api

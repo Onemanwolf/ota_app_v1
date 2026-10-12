@@ -1,0 +1,32 @@
+{
+  "source": "dynatrace-workflow",
+  "event_id": "-7770192837465019285_1760268600000V2",
+  "display_id": "P-2610126",
+  "status": "ACTIVE",
+  "name": "Container legacy-reports unavailable",
+  "category": "AVAILABILITY",
+  "severity": 3,
+  "start": "2026-10-12T11:30:00Z",
+  "end": null,
+  "affected": [
+    {
+      "id": "CONTAINER-FFEE00112233AA44",
+      "type": "container",
+      "name": "legacy-reports"
+    },
+    {
+      "id": "HOST-99AA88BB77CC66DD",
+      "type": "host",
+      "name": "vm-legacy-01"
+    }
+  ],
+  "root_cause": {
+    "id": "CONTAINER-FFEE00112233AA44",
+    "type": "container",
+    "name": "legacy-reports"
+  },
+  "tags": {
+    "app": "reports"
+  },
+  "problem_url": "https://example.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-2610126"
+}

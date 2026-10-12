@@ -1,0 +1,23 @@
+version: 1
+rules:                          # evaluated in order by pre_route; first match wins
+  - id: maintenance-suppress     # every rule must have a non-null action; has_target logic lives in policy_gate
+    when: { tag_equals: { maintenance: "true" } }
+    action: suppress
+thresholds:
+  restart_container:
+    min_action_confidence: 0.90        # placeholder until evals set it
+    min_auto_remediable: 0.80
+    max_noise: 0.20
+    max_severity_score: 2.5            # an outage (3) goes to a human first
+  open_ticket:
+    min_action_confidence: 0.60
+escalation:
+  on_cannot_tell: true
+  on_threshold_failure: true
+  severity_score_at_least: 2.5
+ticket:
+  open_when_severity_score_at_least: 1.5
+remediation:
+  verify_delay_seconds: 30
+  execute_poll_max_seconds: 420     # then escalate with outcome unknown; keep well below TRIAGE__RUN_TIMEOUT_SECONDS (600)
+  request_dry_run: false            # the agent asks for a real run; REMEDIATION__DRY_RUN on the server still wins

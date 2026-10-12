@@ -1,0 +1,8 @@
+# Crash-recovery test (Module 1 DoD): short run timeout and lease so a killed run is re-claimed quickly.
+# Usage: docker compose -f compose.yaml -f compose.chaos.yaml up -d agent-runtime
+services:
+  agent-runtime:
+    environment:
+      TRIAGE__RUN_TIMEOUT_SECONDS: "20"
+      TRIAGE__INBOX__LEASE_SECONDS: "30"
+      TRIAGE__MCP__TIMEOUT_SECONDS: "15"

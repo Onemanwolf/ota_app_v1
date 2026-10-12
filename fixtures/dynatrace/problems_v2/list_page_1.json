@@ -1,0 +1,33 @@
+{
+  "totalCount": 2,
+  "pageSize": 1,
+  "nextPageKey": "___next_page_key_2___",
+  "problems": [
+    {
+      "problemId": "-2718281828459045235_1760270400000V2",
+      "displayId": "P-2610130",
+      "title": "Container demo-orders-api unavailable",
+      "impactLevel": "INFRASTRUCTURE",
+      "severityLevel": "AVAILABILITY",
+      "status": "OPEN",
+      "affectedEntities": [
+        {
+          "entityId": {
+            "id": "CONTAINER-8A1F00C2D3E4B5A6",
+            "type": "CONTAINER"
+          },
+          "name": "demo-orders-api"
+        }
+      ],
+      "rootCauseEntity": {
+        "entityId": {
+          "id": "CONTAINER-8A1F00C2D3E4B5A6",
+          "type": "CONTAINER"
+        },
+        "name": "demo-orders-api"
+      },
+      "startTime": 1760270400000,
+      "endTime": -1
+    }
+  ]
+}

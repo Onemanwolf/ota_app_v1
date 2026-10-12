@@ -1,0 +1,26 @@
+[project]
+name = "opstriage-notification"
+version = "0.1.0"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "opstriage-contracts",
+  "opstriage-shared",
+  "uvicorn==0.54.0",
+  "mcp==2.3.0",
+  "httpx2==2.13.1",
+  "tenacity==9.2.1",
+]
+
+[project.scripts]
+opstriage-notification = "opstriage_notification.entrypoints.main:main"
+
+[tool.uv.sources]
+opstriage-contracts = { workspace = true }
+opstriage-shared = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/opstriage_notification"]

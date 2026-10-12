@@ -8,3 +8,5 @@ Spec section 17 lists the architectural ones. This file tracks questions raised 
 | 2 | Plan | Kev's `confidence` is not the chosen option's probability (sample: p=0.295, confidence=0.060). Which value gates restarts? | Spec mapping (`confidence`) until the Module 3 evals; ADR 0006 then |
 | 3 | Plan | Kev returns `latency_ms` as a float; `TriageDecision.latency_ms` is `int` | Adapter rounds; contract unchanged |
 | 4 | Module 2 | Real Grail and Problems API v2 runs and the identifier ADR (spec 12.3.6 items 2 and 3) | Deferred: no tenant credentials in local scope |
+| 5 | Module 1 | The approval resumer assumes one agent-runtime replica. Several replicas need `pg_try_advisory_lock` around each sweep (spec 13.3 step 4) | Single replica locally |
+| 6 | Module 1 | Module 2 poller and a real Grail context source are out of local scope; `get_problem` reads the inbox instead of Grail | Fake context source |

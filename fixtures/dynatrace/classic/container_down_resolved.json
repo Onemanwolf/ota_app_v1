@@ -1,0 +1,52 @@
+{
+  "pid": "-3141592653589793238_1760263200000V2",
+  "problem_id": "P-2610127",
+  "state": "RESOLVED",
+  "title": "Container demo-orders-api unavailable",
+  "severity": "AVAILABILITY",
+  "impact": "INFRASTRUCTURE",
+  "url": "https://example.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-2610127",
+  "tags": "app:orders, env:local, opstriage:managed",
+  "impacted_entities": [
+    {
+      "type": "CONTAINER",
+      "name": "demo-orders-api",
+      "entity": "CONTAINER-8A1F00C2D3E4B5A6"
+    }
+  ],
+  "details": {
+    "problemId": "-3141592653589793238_1760263200000V2",
+    "displayId": "P-2610127",
+    "title": "Container demo-orders-api unavailable",
+    "status": "CLOSED",
+    "severityLevel": "AVAILABILITY",
+    "impactLevel": "INFRASTRUCTURE",
+    "startTime": 1760263200000,
+    "endTime": 1760263650000,
+    "affectedEntities": [
+      {
+        "entityId": {
+          "id": "CONTAINER-8A1F00C2D3E4B5A6",
+          "type": "CONTAINER"
+        },
+        "name": "demo-orders-api"
+      },
+      {
+        "entityId": {
+          "id": "HOST-017198AD253CBD63",
+          "type": "HOST"
+        },
+        "name": "vm-local-demo"
+      }
+    ],
+    "rootCauseEntity": {
+      "entityId": {
+        "id": "CONTAINER-8A1F00C2D3E4B5A6",
+        "type": "CONTAINER"
+      },
+      "name": "demo-orders-api"
+    },
+    "managementZones": [],
+    "entityTags": []
+  }
+}

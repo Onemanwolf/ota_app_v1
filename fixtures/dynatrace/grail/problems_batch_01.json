@@ -1,0 +1,49 @@
+[
+  {
+    "event.id": "-2718281828459045235_1760270400000V2",
+    "status": "ACTIVE",
+    "dup": false,
+    "name": "Container demo-orders-api unavailable",
+    "display_id": "P-2610130",
+    "category": "AVAILABILITY",
+    "severity": 4,
+    "start": "2026-10-12T12:00:00Z",
+    "end": null,
+    "affected": [
+      {
+        "id": "CONTAINER-8A1F00C2D3E4B5A6",
+        "type": "container",
+        "name": "demo-orders-api"
+      },
+      {
+        "id": "HOST-017198AD253CBD63",
+        "type": "host",
+        "name": "vm-local-demo"
+      }
+    ],
+    "root_cause": {
+      "id": "CONTAINER-8A1F00C2D3E4B5A6",
+      "type": "container",
+      "name": "demo-orders-api"
+    },
+    "maintenance": false,
+    "last_update": "2026-10-12T12:01:00Z"
+  },
+  {
+    "event.id": "-1414213562373095048_1760271300000V2",
+    "status": "ACTIVE",
+    "dup": false,
+    "name": "Response time degradation on checkout",
+    "display_id": "P-2610131",
+    "category": "SLOWDOWN",
+    "severity": 2,
+    "start": "2026-10-12T12:15:00Z",
+    "end": null,
+    "affected": [
+      "SERVICE-5C1E2A3B4D5F6071"
+    ],
+    "root_cause": "SERVICE-5C1E2A3B4D5F6071",
+    "maintenance": false,
+    "last_update": "2026-10-12T12:16:00Z"
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "source": "dynatrace-workflow",
+  "event_id": "-5550192837465019283_1760266800000V2",
+  "display_id": "P-2610124",
+  "status": "ACTIVE",
+  "name": "Multiple services unavailable in orders application",
+  "category": "AVAILABILITY",
+  "severity": 5,
+  "start": "2026-10-12T11:00:00Z",
+  "end": null,
+  "affected": [
+    {
+      "id": "CONTAINER-8A1F00C2D3E4B5A6",
+      "type": "container",
+      "name": "demo-orders-api"
+    },
+    {
+      "id": "HOST-017198AD253CBD63",
+      "type": "host",
+      "name": "vm-local-demo"
+    },
+    {
+      "id": "SERVICE-0A0B0C0D0E0F1011",
+      "type": "service",
+      "name": "orders-db"
+    },
+    {
+      "id": "SERVICE-1A1B1C1D1E1F2021",
+      "type": "service",
+      "name": "payments"
+    }
+  ],
+  "root_cause": {
+    "id": "SERVICE-0A0B0C0D0E0F1011",
+    "type": "service",
+    "name": "orders-db"
+  },
+  "tags": {
+    "app": "orders",
+    "env": "local"
+  },
+  "problem_url": "https://example.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-2610124"
+}

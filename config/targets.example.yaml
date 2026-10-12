@@ -1,0 +1,35 @@
+# Local restart target registry (spec 12.5.2). The registry is the ONLY source of restartable targets.
+# Local stacks reference only local_docker targets, so they never need Azure or SSH credentials.
+# Azure and SSH examples live in targets.dev.yaml.
+version: 1
+targets:
+  - id: demo-orders-api                 # must match ^[a-z0-9][a-z0-9_.-]{0,62}$
+    description: Local demo container
+    match:                              # deterministic matching against ProblemEvent entities
+      entity_ids: ["CONTAINER-8A1F00C2D3E4B5A6"]
+      host_entity_ids: ["HOST-017198AD253CBD63"]
+      container_names: ["demo-orders-api"]
+    executor:
+      kind: local_docker
+      container: demo-orders-api
+    policy:
+      autonomy: approval_required
+      cooldown_minutes: 15
+      max_restarts_per_day: 5
+      restart_timeout_seconds: 20
+
+  # Second local target so the ambiguous-target scenario has two matches. No such container runs.
+  - id: demo-orders-worker
+    description: Local demo worker (exists only to exercise ambiguity)
+    match:
+      entity_ids: ["CONTAINER-9B2E11D3E4F5A6B7"]
+      host_entity_ids: ["HOST-017198AD253CBD63"]
+      container_names: ["demo-orders-worker"]
+    executor:
+      kind: local_docker
+      container: demo-orders-worker
+    policy:
+      autonomy: notify_only
+      cooldown_minutes: 15
+      max_restarts_per_day: 5
+      restart_timeout_seconds: 20

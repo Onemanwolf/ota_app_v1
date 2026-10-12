@@ -1,6 +1,21 @@
 name: opstriage
 
-# Module 0 stack. Python services are added module by module (spec 12.2.7 has the end state).
+# Local stack (spec 12.2.7). The poller joins in Module 2; the Docker socket mount for real restarts in Module 4.
+x-python-service: &python-service
+  env_file: [.env]
+  restart: unless-stopped
+  depends_on:
+    postgres: { condition: service_healthy }
+  volumes:
+    - ./config:/app/config:ro
+    - ./fixtures:/app/fixtures:ro
+
+x-http-health: &http-health
+  test: ["CMD", "python", "-c", "import os,urllib.request; urllib.request.urlopen('http://localhost:' + os.environ.get('SERVER__PORT','8000') + '/healthz')"]
+  interval: 10s
+  retries: 10
+  start_period: 10s
+
 services:
   postgres:
     image: postgres:17
@@ -14,6 +29,56 @@ services:
       test: ["CMD-SHELL", "pg_isready -U opstriage"]
       interval: 5s
       retries: 20
+
+  intake-api:
+    <<: *python-service
+    build: { context: ., dockerfile: services/intake-api/Dockerfile }
+    ports: ["8000:8000"]
+    healthcheck: *http-health
+
+  agent-runtime:
+    <<: *python-service
+    build: { context: ., dockerfile: services/agent-runtime/Dockerfile }
+    ports: ["8010:8010"]
+    environment:
+      SERVER__PORT: "8010"
+    healthcheck: *http-health
+    depends_on:
+      postgres: { condition: service_healthy }
+      intake-api: { condition: service_healthy }      # owns the inbox table the worker consumes
+      mcp-notification: { condition: service_healthy }
+      mcp-ticketing: { condition: service_healthy }
+      mcp-remediation: { condition: service_healthy }
+
+  mcp-notification:
+    <<: *python-service
+    build: { context: ., dockerfile: services/mcp-notification/Dockerfile }
+    environment:
+      AUTH__INBOUND_TOKENS: '["dev-mcp-notification"]'
+      SERVER__PORT: "8101"
+      SERVER__ALLOWED_HOSTS: '["localhost:*","mcp-notification:*"]'
+    ports: ["8101:8101"]
+    healthcheck: *http-health
+
+  mcp-ticketing:
+    <<: *python-service
+    build: { context: ., dockerfile: services/mcp-ticketing/Dockerfile }
+    environment:
+      AUTH__INBOUND_TOKENS: '["dev-mcp-ticketing"]'
+      SERVER__PORT: "8102"
+      SERVER__ALLOWED_HOSTS: '["localhost:*","mcp-ticketing:*"]'
+    ports: ["8102:8102"]
+    healthcheck: *http-health
+
+  mcp-remediation:
+    <<: *python-service
+    build: { context: ., dockerfile: services/mcp-remediation/Dockerfile }
+    environment:
+      AUTH__INBOUND_TOKENS: '["dev-mcp-remediation"]'
+      SERVER__PORT: "8103"
+      SERVER__ALLOWED_HOSTS: '["localhost:*","mcp-remediation:*"]'
+    ports: ["8103:8103"]
+    healthcheck: *http-health
 
   mailpit:                                # mock email (SMTP 1025, UI and API 8025)
     image: axllent/mailpit

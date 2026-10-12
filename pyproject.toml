@@ -30,13 +30,15 @@ known-first-party = ["opstriage_contracts", "opstriage_shared", "opstriage_*"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/tests/**" = ["S101", "S105", "S106"]
+"postman/build_collection.py" = ["E501"]   # embedded Postman JavaScript test scripts
 
 [tool.mypy]
 strict = true
 python_version = "3.13"
 plugins = ["pydantic.mypy"]
 explicit_package_bases = true
-mypy_path = "packages/contracts/src:packages/shared/src:services/dev-webhook-sink/src"
+exclude = ["/tests/"]   # test modules share names across services; pytest still runs them
+mypy_path = "packages/contracts/src:packages/shared/src:services/dev-webhook-sink/src:services/intake-api/src:services/agent-runtime/src:services/mcp-notification/src:services/mcp-ticketing/src:services/mcp-remediation/src"
 
 [[tool.mypy.overrides]]
 module = ["azure_postgresql_auth.*", "azure.*", "testcontainers.*", "docker.*"]
@@ -50,10 +52,13 @@ markers = [
   "integration: needs Docker (testcontainers)",
   "compose: needs the full docker compose stack running",
 ]
-addopts = "--import-mode=importlib"
+addopts = "--import-mode=importlib -m 'not compose'"   # -m compose on the CLI overrides this
 
 [tool.importlinter]
-root_packages = ["opstriage_contracts", "opstriage_shared"]
+root_packages = [
+  "opstriage_contracts", "opstriage_shared", "opstriage_intake", "opstriage_triage", "opstriage_notification",
+  "opstriage_ticketing", "opstriage_remediation",
+]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
@@ -62,4 +67,41 @@ type = "forbidden"
 source_modules = ["opstriage_contracts"]
 forbidden_modules = [
   "opstriage_shared", "fastapi", "starlette", "langgraph", "mcp", "psycopg", "docker", "azure", "httpx2", "openai",
+]
+
+[[tool.importlinter.contracts]]
+name = "Domain and application layers import no frameworks or SDKs"
+type = "forbidden"
+source_modules = [
+  "opstriage_intake.domain", "opstriage_intake.application",
+  "opstriage_triage.domain", "opstriage_triage.application",
+  "opstriage_notification.domain", "opstriage_notification.application",
+  "opstriage_ticketing.domain", "opstriage_ticketing.application",
+  "opstriage_remediation.domain", "opstriage_remediation.application",
+]
+forbidden_modules = [
+  "fastapi", "starlette", "langgraph", "mcp", "psycopg", "psycopg_pool", "docker", "azure", "httpx2", "openai",
+  "uvicorn",
+]
+
+[[tool.importlinter.contracts]]
+name = "Bounded contexts do not import each other"
+type = "independence"
+modules = [
+  "opstriage_intake", "opstriage_triage", "opstriage_notification", "opstriage_ticketing", "opstriage_remediation",
+]
+
+[[tool.importlinter.contracts]]
+name = "Domain does not depend on adapters, entrypoints or the graph"
+type = "forbidden"
+source_modules = [
+  "opstriage_intake.domain", "opstriage_triage.domain", "opstriage_notification.domain",
+  "opstriage_ticketing.domain", "opstriage_remediation.domain",
+]
+forbidden_modules = [
+  "opstriage_intake.adapters", "opstriage_intake.entrypoints",
+  "opstriage_triage.adapters", "opstriage_triage.entrypoints", "opstriage_triage.graph",
+  "opstriage_notification.adapters", "opstriage_notification.entrypoints",
+  "opstriage_ticketing.adapters", "opstriage_ticketing.entrypoints",
+  "opstriage_remediation.adapters", "opstriage_remediation.entrypoints",
 ]
