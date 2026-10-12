@@ -1,0 +1,40 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "duplicate": {
+      "default": false,
+      "title": "Duplicate",
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "open",
+        "resolved"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "ticket_id": {
+      "title": "Ticket Id",
+      "type": "string"
+    },
+    "url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Url"
+    }
+  },
+  "required": [
+    "ticket_id",
+    "status"
+  ],
+  "title": "TicketResult",
+  "type": "object"
+}

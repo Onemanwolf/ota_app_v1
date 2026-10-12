@@ -1,0 +1,87 @@
+{
+  "$defs": {
+    "ApprovalProof": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {
+          "title": "Approval Id",
+          "type": "string"
+        },
+        "approved_at": {
+          "format": "date-time",
+          "title": "Approved At",
+          "type": "string"
+        },
+        "approved_by": {
+          "title": "Approved By",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "auto_approve",
+            "manual_api",
+            "teams_link",
+            "teams_bot"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "approval_id",
+        "approved_by",
+        "approved_at",
+        "mode"
+      ],
+      "title": "ApprovalProof",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approval": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ApprovalProof"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "dry_run": {
+      "default": true,
+      "title": "Dry Run",
+      "type": "boolean"
+    },
+    "idempotency_key": {
+      "maxLength": 200,
+      "minLength": 8,
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "problem_id": {
+      "title": "Problem Id",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 500,
+      "title": "Reason",
+      "type": "string"
+    },
+    "target_id": {
+      "pattern": "^[a-z0-9][a-z0-9_.-]{0,62}$",
+      "title": "Target Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "target_id",
+    "idempotency_key",
+    "problem_id",
+    "reason"
+  ],
+  "title": "RestartRequest",
+  "type": "object"
+}

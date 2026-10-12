@@ -1,0 +1,95 @@
+{
+  "$defs": {
+    "NotificationKind": {
+      "enum": [
+        "problem_opened",
+        "action_proposed",
+        "action_result",
+        "problem_resolved",
+        "escalation"
+      ],
+      "title": "NotificationKind",
+      "type": "string"
+    },
+    "Severity": {
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "channels": {
+      "default": [
+        "teams",
+        "email"
+      ],
+      "items": {
+        "enum": [
+          "teams",
+          "email"
+        ],
+        "type": "string"
+      },
+      "title": "Channels",
+      "type": "array"
+    },
+    "email_recipients": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Email Recipients",
+      "type": "array"
+    },
+    "facts": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Facts",
+      "type": "object"
+    },
+    "idempotency_key": {
+      "maxLength": 200,
+      "minLength": 8,
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/NotificationKind"
+    },
+    "links": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Links",
+      "type": "object"
+    },
+    "severity": {
+      "$ref": "#/$defs/Severity"
+    },
+    "summary": {
+      "maxLength": 4000,
+      "title": "Summary",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 200,
+      "title": "Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "idempotency_key",
+    "kind",
+    "severity",
+    "title",
+    "summary"
+  ],
+  "title": "NotificationRequest",
+  "type": "object"
+}

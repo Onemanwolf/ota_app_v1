@@ -1,0 +1,35 @@
+name: opstriage
+
+# Module 0 stack. Python services are added module by module (spec 12.2.7 has the end state).
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: opstriage
+      POSTGRES_PASSWORD: opstriage
+      POSTGRES_DB: opstriage
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opstriage"]
+      interval: 5s
+      retries: 20
+
+  mailpit:                                # mock email (SMTP 1025, UI and API 8025)
+    image: axllent/mailpit
+    ports: ["8025:8025", "1025:1025"]
+
+  webhook-sink:                           # mock Microsoft Teams Workflows webhook
+    build: { context: ., dockerfile: services/dev-webhook-sink/Dockerfile }
+    ports: ["${SINK_HOST_PORT:-8090}:8090"]   # host port is configurable (8090 may be taken)
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8090/healthz')"]
+      interval: 10s
+      retries: 10
+
+  demo-target:                            # the only container the local executor may restart
+    image: nginx:alpine
+    container_name: demo-orders-api
+
+volumes:
+  pgdata: {}

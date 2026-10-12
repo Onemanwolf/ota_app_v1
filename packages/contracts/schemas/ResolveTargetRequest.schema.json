@@ -1,0 +1,55 @@
+{
+  "$defs": {
+    "EntityRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ],
+      "title": "EntityRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "entities": {
+      "items": {
+        "$ref": "#/$defs/EntityRef"
+      },
+      "title": "Entities",
+      "type": "array"
+    },
+    "problem_id": {
+      "title": "Problem Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "problem_id",
+    "entities"
+  ],
+  "title": "ResolveTargetRequest",
+  "type": "object"
+}

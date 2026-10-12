@@ -1,0 +1,64 @@
+{
+  "$defs": {
+    "ChannelOutcome": {
+      "additionalProperties": false,
+      "properties": {
+        "channel": {
+          "enum": [
+            "teams",
+            "email"
+          ],
+          "title": "Channel",
+          "type": "string"
+        },
+        "delivered": {
+          "title": "Delivered",
+          "type": "boolean"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "channel",
+        "delivered"
+      ],
+      "title": "ChannelOutcome",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "duplicate": {
+      "default": false,
+      "title": "Duplicate",
+      "type": "boolean"
+    },
+    "idempotency_key": {
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "outcomes": {
+      "items": {
+        "$ref": "#/$defs/ChannelOutcome"
+      },
+      "title": "Outcomes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "idempotency_key",
+    "outcomes"
+  ],
+  "title": "NotificationResult",
+  "type": "object"
+}

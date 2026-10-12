@@ -1,0 +1,25 @@
+[project]
+name = "opstriage-shared"
+version = "0.1.0"
+description = "Shared kernel: settings base, logging, telemetry, DB pool and migrations, service auth"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "pydantic-settings==2.15.0",
+  "structlog==26.1.0",
+  "psycopg[binary]==3.3.6",
+  "psycopg-pool==3.3.3",
+  "fastapi==0.143.0",
+  "opentelemetry-sdk==1.45.1",
+  "opentelemetry-exporter-otlp-proto-http==1.45.1",
+]
+
+[project.optional-dependencies]
+# Azure only: Entra ID authentication to PostgreSQL. Local stacks never install it.
+entra = ["azure-identity==1.26.0", "azure-postgresql-auth==1.1.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/opstriage_shared"]

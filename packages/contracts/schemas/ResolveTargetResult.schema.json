@@ -1,0 +1,79 @@
+{
+  "$defs": {
+    "TargetSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "autonomy": {
+          "enum": [
+            "notify_only",
+            "approval_required",
+            "autonomous"
+          ],
+          "title": "Autonomy",
+          "type": "string"
+        },
+        "container": {
+          "title": "Container",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "executor": {
+          "title": "Executor",
+          "type": "string"
+        },
+        "host_entity_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Host Entity Ids",
+          "type": "array"
+        },
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target_id",
+        "description",
+        "executor",
+        "autonomy",
+        "container"
+      ],
+      "title": "TargetSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ambiguous": {
+      "default": false,
+      "title": "Ambiguous",
+      "type": "boolean"
+    },
+    "recent_restarts_24h": {
+      "default": 0,
+      "title": "Recent Restarts 24H",
+      "type": "integer"
+    },
+    "target": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TargetSummary"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "target"
+  ],
+  "title": "ResolveTargetResult",
+  "type": "object"
+}

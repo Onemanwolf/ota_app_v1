@@ -1,0 +1,14 @@
+.env
+.env.local
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.import_linter_cache/
+dist/
+build/
+*.egg-info/
+evals/reports/*.xml
+.DS_Store

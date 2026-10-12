@@ -1,0 +1,44 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "maxLength": 8000,
+      "title": "Description",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "maxLength": 200,
+      "minLength": 8,
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "priority": {
+      "default": "P3",
+      "enum": [
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "problem_id": {
+      "title": "Problem Id",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 200,
+      "title": "Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "idempotency_key",
+    "problem_id",
+    "title",
+    "description"
+  ],
+  "title": "TicketRequest",
+  "type": "object"
+}

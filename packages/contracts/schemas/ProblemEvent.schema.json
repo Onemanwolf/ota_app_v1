@@ -1,0 +1,189 @@
+{
+  "$defs": {
+    "AlertSource": {
+      "enum": [
+        "dynatrace.workflow",
+        "dynatrace.classic_webhook",
+        "dynatrace.poller.grail",
+        "dynatrace.poller.classic",
+        "simulator"
+      ],
+      "title": "AlertSource",
+      "type": "string"
+    },
+    "EntityRef": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ],
+      "title": "EntityRef",
+      "type": "object"
+    },
+    "ProblemStatus": {
+      "enum": [
+        "ACTIVE",
+        "CLOSED"
+      ],
+      "title": "ProblemStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Canonical, source-agnostic problem observation. Anti-corruption adapters produce it.",
+  "properties": {
+    "affected_entities": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EntityRef"
+      },
+      "title": "Affected Entities",
+      "type": "array"
+    },
+    "category": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Category"
+    },
+    "display_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "User-facing ID such as P-2307288",
+      "title": "Display Id"
+    },
+    "ended_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ended At"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "problem_id": {
+      "description": "Grail event.id, classic {PID} or Problems API v2 problemId",
+      "title": "Problem Id",
+      "type": "string"
+    },
+    "problem_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Problem Url"
+    },
+    "root_cause_entity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EntityRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "severity": {
+      "anyOf": [
+        {
+          "maximum": 5,
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Severity"
+    },
+    "source": {
+      "$ref": "#/$defs/AlertSource"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ProblemStatus"
+    },
+    "tags": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "object"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source",
+    "problem_id",
+    "status",
+    "title",
+    "started_at",
+    "observed_at"
+  ],
+  "title": "ProblemEvent",
+  "type": "object"
+}
