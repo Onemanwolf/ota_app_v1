@@ -23,7 +23,7 @@ class DecisionSource(StrEnum):
 class TriageDecision(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = "1.1"  # 1.1 adds rationale
     source: DecisionSource
     action: Action
     action_probabilities: dict[Action, float] = Field(default_factory=dict)
@@ -34,3 +34,6 @@ class TriageDecision(BaseModel):
     rule_id: str | None = None  # set when a deterministic rule decided
     model: str | None = None  # provider model name for audit
     latency_ms: int | None = None
+    rationale: str | None = Field(
+        default=None, max_length=1000
+    )  # signature facts or the model's stated reason

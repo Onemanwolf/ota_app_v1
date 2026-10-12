@@ -16,7 +16,7 @@ class InboxSettings(BaseModel):
 
 
 class DecisionSettings(BaseModel):
-    provider: Literal["rules", "systemone"] = "rules"
+    provider: Literal["rules", "systemone", "llm"] = "rules"  # llm = OpenAI-compatible chat + runbook
     base_url: str = "http://kev:8009"
     path: str = "/v1/systemone"
     model: str = "kev-latest"
@@ -24,6 +24,8 @@ class DecisionSettings(BaseModel):
     api_key: SecretStr | None = None
     timeout_seconds: float = Field(default=10.0, gt=0)
     shuffle_options: bool = False
+    runbook_file: Path = Path("/app/config/triage-runbook.md")  # llm provider: system-prompt runbook
+    max_tokens: int = Field(default=300, ge=50, le=2000)  # llm provider
 
 
 class ContextSettings(BaseModel):

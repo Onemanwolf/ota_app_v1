@@ -16,6 +16,7 @@
 # Settings (environment variables, defaults in brackets):
 #   SPARK_HOST [spark-337a.local]  SPARK_USER [timo]  SPARK_KEY [~/.ssh/spark_hermes_ed25519]
 #   LOCAL_PORT [18003]  REMOTE_PORT [8003]  (Kev's published port on the Spark)
+#   EXTRA_FORWARDS ["18001:8001"]  more local:remote pairs on the same connection (Qwen vLLM)
 set -euo pipefail
 
 SPARK_HOST="${SPARK_HOST:-spark-337a.local}"
@@ -23,6 +24,8 @@ SPARK_USER="${SPARK_USER:-timo}"
 SPARK_KEY="${SPARK_KEY:-$HOME/.ssh/spark_hermes_ed25519}"
 LOCAL_PORT="${LOCAL_PORT:-18003}"
 REMOTE_PORT="${REMOTE_PORT:-8003}"
+# Extra "local:remote" forwards on the same SSH connection. Default: Qwen (vLLM OpenAI API) for the LLM decision model.
+EXTRA_FORWARDS="${EXTRA_FORWARDS:-18001:8001}"
 
 LABEL="com.opstriage.kev-tunnel"
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
@@ -53,8 +56,12 @@ ssh_args() {
     -o ConnectTimeout=10
     -o StrictHostKeyChecking=accept-new
     -i "$SPARK_KEY"
-    -L "127.0.0.1:$LOCAL_PORT:127.0.0.1:$REMOTE_PORT"
-    "$SPARK_USER@$SPARK_HOST")
+    -L "127.0.0.1:$LOCAL_PORT:127.0.0.1:$REMOTE_PORT")
+  local pair
+  for pair in $EXTRA_FORWARDS; do
+    SSH_ARGS+=(-L "127.0.0.1:${pair%%:*}:127.0.0.1:${pair##*:}")
+  done
+  SSH_ARGS+=("$SPARK_USER@$SPARK_HOST")
 }
 
 cmd_run() {  # foreground tunnel, for debugging
@@ -149,6 +156,14 @@ cmd_check() {
   cmd_status
   command -v docker >/dev/null || die "docker not found"
   say "container check: http://host.docker.internal:$LOCAL_PORT/v1/models"
+  local pair
+  for pair in $EXTRA_FORWARDS; do
+    if curl -fsS -m 5 "http://127.0.0.1:${pair%%:*}/v1/models" >/dev/null 2>&1; then
+      say "extra:   OK  127.0.0.1:${pair%%:*} -> $SPARK_HOST:${pair##*:}"
+    else
+      say "extra:   DOWN 127.0.0.1:${pair%%:*} -> $SPARK_HOST:${pair##*:} (service stopped on the Spark?)"
+    fi
+  done
   if docker run --rm alpine:3.20 sh -c \
       "wget -q -T 5 -O - http://host.docker.internal:$LOCAL_PORT/v1/models | grep -q kev-latest"; then
     say "container: OK  (set KEV_BASE_URL=http://host.docker.internal:$LOCAL_PORT in .env)"

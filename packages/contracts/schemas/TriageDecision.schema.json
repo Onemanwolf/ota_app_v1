@@ -102,6 +102,19 @@
       "default": null,
       "title": "Noise Probability"
     },
+    "rationale": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rationale"
+    },
     "rule_id": {
       "anyOf": [
         {
@@ -115,8 +128,11 @@
       "title": "Rule Id"
     },
     "schema_version": {
-      "const": "1.0",
-      "default": "1.0",
+      "default": "1.1",
+      "enum": [
+        "1.0",
+        "1.1"
+      ],
       "title": "Schema Version",
       "type": "string"
     },

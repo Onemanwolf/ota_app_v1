@@ -141,3 +141,23 @@ def test_test_notification_and_duplicates_are_suppressed_by_rule() -> None:
     assert (
         POLICY.match_rule(EVENT.model_copy(update={"title": "Process unavailable"}), has_target=True) is None
     )
+
+
+def test_rule_and_signature_decisions_skip_model_confidence_gates() -> None:
+    ticket = TriageDecision(
+        source=DecisionSource.RULES, action=Action.OPEN_TICKET, rule_id="kafka.urp-persistent"
+    )
+    assert POLICY.plan(EVENT, ticket, NONE) == ["notify", "ticket"]
+    restart = TriageDecision(
+        source=DecisionSource.RULES, action=Action.RESTART_CONTAINER, rule_id="kafka.single-broker-down"
+    )
+    assert POLICY.plan(EVENT, restart, target()) == ["notify", "remediate"]
+    assert POLICY.plan(EVENT, restart, AMBIGUOUS) == ["notify", "escalate"]  # ambiguity still wins
+    assert POLICY.plan(EVENT, restart, target("notify_only")) == ["notify"]  # autonomy still wins
+
+
+def test_model_decisions_without_confidence_cannot_ticket_or_restart() -> None:
+    ticket = TriageDecision(source=DecisionSource.MODEL, action=Action.OPEN_TICKET)
+    assert POLICY.plan(EVENT, ticket, NONE) == ["notify"]
+    restart = TriageDecision(source=DecisionSource.MODEL, action=Action.RESTART_CONTAINER)
+    assert POLICY.plan(EVENT, restart, target()) == ["notify", "escalate"]

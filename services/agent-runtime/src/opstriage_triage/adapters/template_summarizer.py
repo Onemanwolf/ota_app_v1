@@ -19,6 +19,8 @@ class TemplateSummarizer:
             parts.append(f"{len(event.affected_entities)} affected entities.")
         if decision:
             parts.append(f"Triage decision: {decision['action']} (source: {decision['source']}).")
+            if decision.get("rationale"):
+                parts.append(f"Why: {decision['rationale']}")
         logs = (context or {}).get("logs") or []
         if logs:
             parts.append(f"{len(logs)} recent error or warning log lines are attached to the run.")

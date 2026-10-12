@@ -17,6 +17,7 @@ from opstriage_triage.adapters.approvals_pg import PostgresApprovalStore
 from opstriage_triage.adapters.auth_headers import entra, no_auth, static_bearer
 from opstriage_triage.adapters.fake_context import FakeProblemContextSource
 from opstriage_triage.adapters.inbox_pg import PostgresInbox
+from opstriage_triage.adapters.llm_decision import LlmDecisionModel
 from opstriage_triage.adapters.mcp_tools import (
     McpEndpoint,
     McpNotificationGateway,
@@ -53,6 +54,16 @@ def build_decision_model(settings: Settings, http: httpx2.AsyncClient) -> Decisi
         auth = entra()
     else:
         auth = no_auth()
+    if d.provider == "llm":
+        return LlmDecisionModel(
+            http,
+            url=f"{d.base_url.rstrip('/')}{d.path}",
+            model=d.model,
+            runbook=d.runbook_file.read_text(encoding="utf-8"),
+            auth_header=auth,
+            timeout_seconds=d.timeout_seconds,
+            max_tokens=d.max_tokens,
+        )
     return SystemOneDecisionModel(
         http,
         url=f"{d.base_url.rstrip('/')}{d.path}",

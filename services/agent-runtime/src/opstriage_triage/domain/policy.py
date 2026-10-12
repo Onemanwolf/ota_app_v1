@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from opstriage_contracts.problems import ProblemEvent, ProblemStatus
 from opstriage_contracts.tools import ResolveTargetResult, Severity
-from opstriage_contracts.triage import Action, TriageDecision
+from opstriage_contracts.triage import Action, DecisionSource, TriageDecision
 
 Destination = Literal["notify", "ticket", "escalate", "remediate"]
 SEVERITY_NAMES = {1: "1 (Critical)", 2: "2 (High)", 3: "3 (Medium)", 4: "4 (Low)", 5: "5 (Informational)"}
@@ -123,13 +123,17 @@ class Policy(_Model):
                 elif target is None or target.autonomy == "notify_only":
                     if severe:
                         plan.append("escalate")
-                elif self.restart_thresholds_pass(decision):
+                elif decision.source is DecisionSource.RULES or self.restart_thresholds_pass(decision):
+                    # rules/signatures are deterministic and audited by id; model decisions need thresholds
                     plan.append("remediate")
                 elif self.escalation.on_threshold_failure:
                     plan.append("escalate")
             case Action.OPEN_TICKET:
                 conf = decision.action_confidence
-                if conf is not None and conf >= self.thresholds.open_ticket.min_action_confidence:
+                passes = conf is not None and conf >= self.thresholds.open_ticket.min_action_confidence
+                if (
+                    decision.source is DecisionSource.RULES or passes
+                ):  # rules are audited; models need confidence
                     plan.append("ticket")
             case Action.ESCALATE_HUMAN:
                 plan.append("escalate")

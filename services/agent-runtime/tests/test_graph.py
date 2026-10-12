@@ -170,3 +170,43 @@ async def test_injected_log_text_does_not_change_the_plan(
     injected, _, _ = await run(other, event_factory("injection_logs_active"))
     assert injected["plan"] == clean["plan"]
     assert [r.target_id for r in other.remediation.requests] == ["demo-orders-api"]
+
+
+class _StubModel:
+    def __init__(self, action: str) -> None:
+        self.action, self.calls = action, 0
+
+    async def decide(self, request: Any) -> Any:
+        from opstriage_contracts.triage import Action, DecisionSource, TriageDecision
+
+        self.calls += 1
+        return TriageDecision(
+            source=DecisionSource.MODEL, action=Action(self.action), rationale="model says so"
+        )
+
+
+async def test_kafka_signature_decides_before_the_model(
+    fakes: Any, event_factory: Callable[..., Any]
+) -> None:
+    model = _StubModel("notify_only")
+    fakes.context.logs = (
+        "[2026-10-12 15:11:07,627] ERROR Shutdown broker because all log dirs in /var/lib/kafka/data "
+        "have failed (kafka.log.LogManager)",
+    )
+    result, _, _ = await run(fakes, event_factory("container_down_active"), decision_model=model)
+    assert model.calls == 0
+    assert (
+        result["decision"]["rule_id"] == "kafka.log-dir-failed"
+        and result["decision"]["action"] == "escalate_human"
+    )
+    assert "remediate" not in result["plan"] and fakes.remediation.requests == []
+
+
+async def test_model_proposed_restart_escalates_without_calibrated_confidence(
+    fakes: Any, event_factory: Callable[..., Any]
+) -> None:
+    result, _, _ = await run(
+        fakes, event_factory("container_down_active"), decision_model=_StubModel("restart_container")
+    )
+    assert result["decision"]["source"] == "model"
+    assert "remediate" not in result["plan"] and "escalate" in result["plan"]

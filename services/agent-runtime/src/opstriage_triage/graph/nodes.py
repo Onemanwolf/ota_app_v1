@@ -8,6 +8,7 @@ from langgraph.runtime import Runtime
 from opstriage_contracts.problems import ProblemEvent, ProblemStatus
 from opstriage_contracts.tools import ResolveTargetResult
 from opstriage_contracts.triage import DecisionSource, TriageDecision
+from opstriage_triage.domain import kafka_signatures
 from opstriage_triage.domain.context import ProblemContext
 from opstriage_triage.domain.rules import fallback_decision
 from opstriage_triage.domain.state_text import build_state_text
@@ -33,10 +34,20 @@ async def pre_route(state: TriageState, runtime: Runtime[TriageDeps]) -> dict[st
     resolved = state.get("target") or {}
     has_target = bool(resolved.get("target")) and not resolved.get("ambiguous", False)
     rule = runtime.context.policy.match_rule(event, has_target=has_target)
-    if rule is None:
-        return {}
-    decision = TriageDecision(source=DecisionSource.RULES, action=rule.action, rule_id=rule.id)
-    return {"decision": decision.model_dump(mode="json")}
+    if rule is not None:
+        decision = TriageDecision(source=DecisionSource.RULES, action=rule.action, rule_id=rule.id)
+        return {"decision": decision.model_dump(mode="json")}
+    if state.get("context"):
+        sig = kafka_signatures.match(ProblemContext.model_validate(state["context"]))
+        if sig is not None:  # deterministic Kafka signature: auditable id + the facts that fired it
+            decision = TriageDecision(
+                source=DecisionSource.RULES,
+                action=sig.action,
+                rule_id=sig.signature,
+                rationale="; ".join(sig.facts),
+            )
+            return {"decision": decision.model_dump(mode="json")}
+    return {}
 
 
 def after_pre_route(state: TriageState) -> list[str]:

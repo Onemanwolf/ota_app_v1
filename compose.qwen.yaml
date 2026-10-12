@@ -1,0 +1,14 @@
+# Production design F: Kafka signatures decide known patterns; Qwen (runbook in config/triage-runbook.md) handles the
+# rest. Qwen restart proposals escalate (no calibrated confidence); signature restarts still need approval.
+# Usage: docker compose -f compose.yaml -f compose.qwen.yaml up -d agent-runtime   (needs scripts/kev-tunnel.sh)
+# If Qwen is stopped (e.g. while fine-tuning Kev), decisions fall back to signatures + safe rules.
+services:
+  agent-runtime:
+    environment:
+      TRIAGE__DECISION__PROVIDER: llm
+      TRIAGE__DECISION__BASE_URL: ${QWEN_BASE_URL:-http://host.docker.internal:18001}
+      TRIAGE__DECISION__PATH: /v1/chat/completions
+      TRIAGE__DECISION__MODEL: qwen3.8-flash-next
+      TRIAGE__DECISION__AUTH_MODE: none
+      TRIAGE__DECISION__TIMEOUT_SECONDS: "30"
+      TRIAGE__DECISION__RUNBOOK_FILE: /app/config/triage-runbook.md
