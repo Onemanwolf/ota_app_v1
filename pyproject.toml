@@ -29,7 +29,7 @@ select = ["E", "F", "I", "B", "UP", "ASYNC", "S", "RUF"]
 known-first-party = ["opstriage_contracts", "opstriage_shared", "opstriage_*"]
 
 [tool.ruff.lint.per-file-ignores]
-"**/tests/**" = ["S101", "S105", "S106"]
+"**/tests/**" = ["S101", "S105", "S106", "E501"]   # test names and fixtures read better unwrapped
 "postman/build_collection.py" = ["E501"]   # embedded Postman JavaScript test scripts
 "evals/generate_dataset.py" = ["E501"]     # scenario text
 "**/domain/questions.py" = ["E501"]         # decision-model prompts, verbatim from spec 12.4.2

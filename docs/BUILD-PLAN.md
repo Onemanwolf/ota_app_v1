@@ -5,6 +5,7 @@
 | Spec | `OTA-APP-001-application-spec.md` (v1.0, 2026-10-12) |
 | Scope | Modules 0 to 4, run fully on the Mac with Docker Compose. Module 5 (real Dynatrace) and all Azure work are out of scope. Module 6 is optional. |
 | Decision model | Real Kev-4B on the DGX Spark (`kev-latest`) |
+
 | Everything else | Mocked or faked locally |
 | Test driver | Postman (plus the same collection run headless with `newman`) |
 | Date | 2026-10-12 |

@@ -25,9 +25,10 @@ being a duplicate. Folders 2 and 3 re-use folder 1's IDs on purpose (dedup and t
 | 5 Routing scenarios | `TRIAGE__DECISION__PROVIDER=rules` | plan per scenario (spec 13.2) |
 | 6 Kev decisions | `docker compose -f compose.yaml -f compose.kev.yaml up -d agent-runtime`, Kev reachable from Docker at `KEV_BASE_URL` (`scripts/kev-tunnel.sh check`) | decisions come from `kev-latest` with all six probabilities; outage and no-target never remediate; injection only touches the registry target; maintenance is suppressed before Kev |
 | 7 Security and negative | | 401, 422, 413, prompt injection does not widen the plan |
+| 9 Live restart and guard rails | `docker compose -f compose.yaml -f compose.live-restart.yaml up -d mcp-remediation`; at most once per 15 min (cooldown) | demo-orders-api restarted and verified, result card, a second problem is rejected by the cooldown |
 | 8 Manual approval | `docker compose -f compose.yaml -f compose.manual-approval.yaml up -d agent-runtime` | interrupt, approve, resume, second decision 409 |
 
-Folder 9 (real restarts and guard rails) arrives in Module 4.
+Kill switch: add `-f compose.kill-switch.yaml` and run folder 1; the remediation outcome is `rejected` (`disabled`).
 
 ## Headless (newman)
 ```bash

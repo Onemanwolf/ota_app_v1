@@ -1010,6 +1010,7 @@ name = "opstriage-remediation"
 version = "0.1.0"
 source = { editable = "services/mcp-remediation" }
 dependencies = [
+    { name = "docker" },
     { name = "mcp" },
     { name = "opstriage-contracts" },
     { name = "opstriage-shared" },
@@ -1019,6 +1020,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "docker", specifier = "==7.2.0" },
     { name = "mcp", specifier = "==2.3.0" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-shared", editable = "packages/shared" },

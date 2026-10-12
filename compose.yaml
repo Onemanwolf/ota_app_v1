@@ -1,6 +1,6 @@
 name: opstriage
 
-# Local stack (spec 12.2.7). The Docker socket mount for real restarts arrives in Module 4.
+# Local stack (spec 12.2.7).
 x-python-service: &python-service
   env_file: [.env]
   restart: unless-stopped
@@ -86,6 +86,12 @@ services:
       SERVER__ALLOWED_HOSTS: '["localhost:*","mcp-remediation:*"]'
     ports: ["8103:8103"]
     healthcheck: *http-health
+    user: "0:0"                           # local only: needed to use the mounted Docker socket
+    # Local executor only: mounting the Docker socket is root-equivalent on the host. The service refuses to
+    # build the local_docker executor unless APP_ENV=local and REMEDIATION__ALLOW_LOCAL_DOCKER=true.
+    volumes:
+      - ./config:/app/config:ro
+      - /var/run/docker.sock:/var/run/docker.sock
 
   mailpit:                                # mock email (SMTP 1025, UI and API 8025)
     image: axllent/mailpit

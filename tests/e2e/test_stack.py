@@ -70,7 +70,13 @@ async def test_container_down_flows_end_to_end_within_10_seconds(client: httpx2.
     run = await run_of(client, alert_id)
     assert run["state"] == "completed" and run["decision"]["action"] == "restart_container"
     outcomes = {o["step"]: o for o in run["outcomes"]}
-    assert outcomes["notify"]["ok"] and outcomes["remediate"]["status"] == "dry_run"
+    assert outcomes["notify"]["ok"]
+    remediate = outcomes["remediate"]
+    # Default stack: dry run. Within 15 min of a REAL restart (Postman folder 9) the target's cooldown, which the
+    # server checks before the dry-run step (spec 12.5.2), rejects even dry runs.
+    assert remediate["status"] == "dry_run" or (
+        remediate["status"] == "rejected" and remediate["reason"].startswith("cooldown")
+    )
     assert outcomes["remediate"]["approved"] is True
 
     cards = (await client.get(f"{SINK}/requests")).json()

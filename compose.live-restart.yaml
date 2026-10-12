@@ -1,0 +1,6 @@
+# Real restarts of demo-orders-api (Module 4 DoD, Postman folder 9). Dry run OFF on the remediation server.
+# Usage: docker compose -f compose.yaml -f compose.live-restart.yaml up -d mcp-remediation
+services:
+  mcp-remediation:
+    environment:
+      REMEDIATION__DRY_RUN: "false"

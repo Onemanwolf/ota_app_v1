@@ -1,0 +1,58 @@
+{
+  "attachments": [
+    {
+      "content": {
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "actions": [
+          {
+            "title": "Triage run",
+            "type": "Action.OpenUrl",
+            "url": "http://localhost:8010/v1/runs/run-1"
+          },
+          {
+            "title": "Dynatrace problem",
+            "type": "Action.OpenUrl",
+            "url": "https://example.apps.dynatrace.com/ui/apps/dynatrace.davis.problems/problem/P-2610121"
+          }
+        ],
+        "body": [
+          {
+            "color": "Attention",
+            "size": "Medium",
+            "text": "[P-2610121] Container demo-orders-api unavailable",
+            "type": "TextBlock",
+            "weight": "Bolder",
+            "wrap": true
+          },
+          {
+            "text": "Dynatrace reports AVAILABILITY problem \"Container demo-orders-api unavailable\" (ACTIVE).",
+            "type": "TextBlock",
+            "wrap": true
+          },
+          {
+            "facts": [
+              {
+                "title": "Problem",
+                "value": "P-2610121"
+              },
+              {
+                "title": "Decision",
+                "value": "restart_container (model, confidence 0.16)"
+              },
+              {
+                "title": "Restart target",
+                "value": "demo-orders-api (autonomy approval_required)"
+              }
+            ],
+            "type": "FactSet"
+          }
+        ],
+        "type": "AdaptiveCard",
+        "version": "1.5"
+      },
+      "contentType": "application/vnd.microsoft.card.adaptive",
+      "contentUrl": null
+    }
+  ],
+  "type": "message"
+}

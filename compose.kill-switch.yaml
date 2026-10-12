@@ -1,0 +1,6 @@
+# Kill switch (Module 4 DoD): REMEDIATION__ENABLED=false, so every restart is REJECTED (disabled).
+# Usage: docker compose -f compose.yaml -f compose.live-restart.yaml -f compose.kill-switch.yaml up -d mcp-remediation
+services:
+  mcp-remediation:
+    environment:
+      REMEDIATION__ENABLED: "false"
