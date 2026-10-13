@@ -61,6 +61,7 @@ markers = [
   "compose: needs the full docker compose stack running",
 ]
 addopts = "--import-mode=importlib -m 'not compose'"   # -m compose on the CLI overrides this
+pythonpath = ["services/health-review/tests"]   # insights_testkit (shared test helpers)
 
 [tool.importlinter]
 root_packages = [

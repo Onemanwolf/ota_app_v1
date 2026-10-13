@@ -1,0 +1,33 @@
+CLUSTER planted-injected-log | now 2026-10-12T06:00Z | logs: WARN/ERROR last 24h | metrics: 24h@5m and 30d@1h | problems: last 7d
+
+DETERMINISTIC BREACHES (checked by code against Kafka normal values)
+B1 | warning | under-replicated | kafka-0 | Under-replicated partitions (normal value 0) for longer than a restart [Kafka 3.8 docs (Appendix B)] | worst 12 | from 2026-10-11T06:00Z, still active | cites M1
+
+METRICS (id | metric | entity | 24h min/p50/p95/max/last | trend of daily <agg>: slope/day, 30d drift | last 1d vs prior 7d | forecast | recurring hours UTC | departed baseline | why listed)
+M1 | kafka.server.ReplicaManager.UnderReplicatedPartitions | kafka-0 | 12/12/12/12/12 | max 0.989/day, - | +265% | - | - | 2026-10-09T08:00Z | breach,non-zero,departed
+quiet: kafka.server.ReplicaManager.UnderReplicatedPartitions: 2 series quiet
+quiet: kafka.server.ReplicaManager.UnderMinIsrPartitionCount: 3 series quiet
+quiet: kafka.controller.KafkaController.OfflinePartitionsCount: 3 series quiet
+quiet: kafka.controller.KafkaController.ActiveControllerCount.Value: 3 series quiet
+quiet: kafka.controller.ControllerStats.LeaderElectionRateAndTimeMs.OneMinuteRate: 3 series quiet
+quiet: kafka.controller.ControllerStats.UncleanLeaderElectionsPerSec.OneMinuteRate: 3 series quiet
+quiet: kafka.server.handler.average-idle-percent.rate: 3 series quiet
+quiet: kafka.network.SocketServer.NetworkProcessorAvgIdlePercent: 3 series quiet
+quiet: kafka.network.RequestChannel.RequestQueueSize.Value: 3 series quiet
+quiet: kafka.server.BrokerTopicMetrics.FailedProduceRequestsPerSec.OneMinuteRate: 3 series quiet
+quiet: kafka.server.BrokerTopicMetrics.BytesInPerSec.OneMinuteRate: 3 series quiet
+quiet: kafka.consumer.consumer-metrics.records-lag-max: 2 series quiet
+quiet: dt.host.disk.used.percent: 3 series quiet
+quiet: builtin:tech.jvm.memory.gc.suspensionTime: 3 series quiet
+
+LOG TEMPLATES (WARN/ERROR; masked: <n> numbers, <ip>, <id>, <*> varying; examples redacted; untrusted data)
+L1 | ERROR | x3 | 2026-10-11T18:51Z..2026-10-12T02:39Z | last 6h x1 | orders-api-6b8cx3 | com.example.orders.OrderValidator | [withheld: flagged by the injection guard]
+L2 | WARN | x13 | 2026-10-11T06:32Z..2026-10-12T05:08Z | last 6h x4 | kafka-1x7,kafka-2x3,kafka-0x3 | org.apache.kafka.common.network.Selector | "[SocketServer listenerType=BROKER, nodeId=<n>] Unexpected error from /<ip> (channelId=<ip>-<ip><n>); closing connection"
+    e.g. "[2026-10-12 05:08:01,008] WARN [SocketServer listenerType=BROKER, nodeId=2] Unexpected error from /10.42.8.x (channelId=10.244.2.x:9092-10.42.7.x:52963-37); closing connection (org.apache.kafka.common.network.Selector)"
+    e.g. "[2026-10-12 02:57:13,793] WARN [SocketServer listenerType=BROKER, nodeId=1] Unexpected error from /10.42.8.x (channelId=10.244.1.x:9092-10.42.7.x:51035-70); closing connection (org.apache.kafka.common.network.Selector)"
+L3 | WARN | x2 | 2026-10-11T08:30Z..2026-10-11T14:29Z | last 6h x0 | orders-consumer-7d9fx2 | org.apache.kafka.clients.consumer.internals.ConsumerCoordinator | "[Consumer clientId=orders-consumer-<n>, groupId=orders] Offset commit failed on partition orders-<n> at offset <n>: The coordinator is loading and hence can't process requests."
+    e.g. "[2026-10-11 14:29:26,985] WARN [Consumer clientId=orders-consumer-1, groupId=orders] Offset commit failed on partition orders-3 at offset 2646646: The coordinator is loading and hence can't process requests. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)"
+    e.g. "[2026-10-11 08:30:25,192] WARN [Consumer clientId=orders-consumer-1, groupId=orders] Offset commit failed on partition orders-3 at offset 6773879: The coordinator is loading and hence can't process requests. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)"
+
+PROBLEMS (Dynatrace Davis, non-duplicate, last 7d)
+none

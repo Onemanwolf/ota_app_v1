@@ -69,6 +69,27 @@ def slope_per_day(points: Sequence[Point]) -> float | None:
     return sum((x - mx) * (y - my) for x, y in zip(xs, ys, strict=True)) / sxx
 
 
+def slope_t(points: Sequence[Point]) -> float | None:
+    """Slope divided by its standard error (a t statistic). Large |t| means the trend is clear of the noise;
+    noisy daily peaks give big slopes by chance, so a trend needs both size and a high |t|."""
+    if len(points) < 4:
+        return None
+    slope = slope_per_day(points)
+    if slope is None:
+        return None
+    t0 = points[0][0]
+    xs = [(t - t0) / DAY for t, _ in points]
+    ys = [v for _, v in points]
+    mx, my = statistics.fmean(xs), statistics.fmean(ys)
+    intercept = my - slope * mx
+    residual = sum((y - (intercept + slope * x)) ** 2 for x, y in zip(xs, ys, strict=True))
+    sxx = sum((x - mx) ** 2 for x in xs)
+    stderr = math.sqrt(residual / (len(points) - 2) / sxx)
+    if stderr == 0:
+        return math.copysign(math.inf, slope) if slope else 0.0
+    return slope / stderr
+
+
 def window(points: Sequence[Point], start: datetime, end: datetime | None = None) -> list[Point]:
     return [(t, v) for t, v in points if t >= start and (end is None or t < end)]
 
@@ -152,12 +173,13 @@ def recurring_hours(
 
 
 def first_departure(
-    series: MetricSeries, sigmas: float = 4.0, baseline_fraction: float = 0.25
+    series: MetricSeries, sigmas: float = 4.0, baseline_fraction: float = 0.25, min_run: int = 3
 ) -> datetime | None:
-    """First timestamp after the baseline period whose value leaves mean ± sigmas·stdev of that period.
+    """Start of the first run of `min_run` consecutive points outside mean ± sigmas·stdev of the baseline.
 
-    Used to order signals for root-cause analysis (which moved first). A flat baseline uses 5% of its mean
-    (or 1e-9 when the mean is 0) as the spread, so any real change counts.
+    Used to order signals for root-cause analysis (which moved first). Requiring a run ignores single noise
+    spikes. A flat baseline uses 5% of its mean (or 1e-9 when the mean is 0) as the spread, so any sustained
+    change counts.
     """
     points = list(series.points())
     n_base = max(3, int(len(points) * baseline_fraction))
@@ -166,9 +188,16 @@ def first_departure(
     base = [v for _, v in points[:n_base]]
     mean = statistics.fmean(base)
     spread = statistics.pstdev(base) or max(abs(mean) * 0.05, 1e-9)
+    run_start: datetime | None = None
+    run = 0
     for t, v in points[n_base:]:
         if abs(v - mean) > sigmas * spread:
-            return t
+            run_start = t if run == 0 else run_start
+            run += 1
+            if run >= min_run:
+                return run_start
+        else:
+            run = 0
     return None
 
 

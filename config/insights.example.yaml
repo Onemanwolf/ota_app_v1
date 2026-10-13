@@ -1,0 +1,11 @@
+# Clusters health-review analyses (OTA-APP-002). Queries filter on these first: Grail bills by data scanned.
+# With INSIGHTS__SOURCE=fake the fixture clusters in fixtures/insights are added automatically, so this list
+# is only used against a real tenant (INSIGHTS__SOURCE=grail).
+clusters:
+  - name: prod-kafka-01
+    namespace: streaming
+    containers: [kafka]
+    entity_ids:                                  # broker process group instances (placeholder ids)
+      - PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10
+      - PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11
+      - PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12

@@ -970,17 +970,21 @@ name = "opstriage-health-review"
 version = "0.1.0"
 source = { editable = "services/health-review" }
 dependencies = [
+    { name = "httpx2" },
     { name = "opstriage-contracts" },
     { name = "opstriage-dynatrace" },
     { name = "opstriage-shared" },
+    { name = "pyyaml" },
     { name = "uvicorn" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "httpx2", specifier = "==2.13.1" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-dynatrace", editable = "packages/dynatrace" },
     { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "pyyaml", specifier = "==6.0.3" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
 

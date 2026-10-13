@@ -47,7 +47,9 @@ class AnalystSettings(BaseModel):
 
 
 class GuardSettings(BaseModel):
+    provider: Literal["http", "keyword"] = "http"  # keyword: offline fake that flags known phrasing only
     base_url: str = "http://host.docker.internal:18004"
+    timeout_seconds: float = Field(default=20, gt=0)
 
 
 class RetentionSettings(BaseModel):
@@ -73,6 +75,7 @@ class WebSettings(BaseModel):
 class InsightsOptions(BaseModel):
     source: Literal["fake", "grail"] = "fake"
     fixtures_dir: Path = Path("/app/fixtures/insights")
+    config_file: Path = Path("/app/config/insights.example.yaml")  # clusters to review
     service_tokens: list[SecretStr] = Field(default_factory=list)  # JSON API bearer tokens
     grail: InsightsGrailSettings = InsightsGrailSettings()
     schedule: ScheduleSettings = ScheduleSettings()

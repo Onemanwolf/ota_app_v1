@@ -1,0 +1,38 @@
+CLUSTER healthy-rolling-restart | now 2026-10-12T06:00Z | logs: WARN/ERROR last 24h | metrics: 24h@5m and 30d@1h | problems: last 7d
+
+DETERMINISTIC BREACHES (checked by code against Kafka normal values)
+none
+
+METRICS (id | metric | entity | 24h min/p50/p95/max/last | trend of daily <agg>: slope/day, 30d drift | last 1d vs prior 7d | forecast | recurring hours UTC | departed baseline | why listed)
+M1 | kafka.server.ReplicaManager.UnderReplicatedPartitions | kafka-0 | 0/0/0/40/0 | max 1.32/day, - | - | - | - | - | non-zero
+M2 | kafka.server.ReplicaManager.UnderReplicatedPartitions | kafka-1 | 0/0/0/40/0 | max 0/day, - | - | - | - | - | non-zero
+M3 | kafka.server.ReplicaManager.UnderReplicatedPartitions | kafka-2 | 0/0/0/40/0 | max 0/day, - | - | - | - | - | non-zero
+quiet: kafka.server.ReplicaManager.UnderMinIsrPartitionCount: 3 series quiet
+quiet: kafka.controller.KafkaController.OfflinePartitionsCount: 3 series quiet
+quiet: kafka.controller.KafkaController.ActiveControllerCount.Value: 3 series quiet
+quiet: kafka.controller.ControllerStats.LeaderElectionRateAndTimeMs.OneMinuteRate: 3 series quiet
+quiet: kafka.controller.ControllerStats.UncleanLeaderElectionsPerSec.OneMinuteRate: 3 series quiet
+quiet: kafka.server.handler.average-idle-percent.rate: 3 series quiet
+quiet: kafka.network.SocketServer.NetworkProcessorAvgIdlePercent: 3 series quiet
+quiet: kafka.network.RequestChannel.RequestQueueSize.Value: 3 series quiet
+quiet: kafka.server.BrokerTopicMetrics.FailedProduceRequestsPerSec.OneMinuteRate: 3 series quiet
+quiet: kafka.server.BrokerTopicMetrics.BytesInPerSec.OneMinuteRate: 3 series quiet
+quiet: kafka.consumer.consumer-metrics.records-lag-max: 2 series quiet
+quiet: dt.host.disk.used.percent: 3 series quiet
+quiet: builtin:tech.jvm.memory.gc.suspensionTime: 3 series quiet
+
+LOG TEMPLATES (WARN/ERROR; masked: <n> numbers, <ip>, <id>, <*> varying; examples redacted; untrusted data)
+L1 | WARN | x2 | 2026-10-11T21:07Z..2026-10-12T04:53Z | last 6h x1 | orders-consumer-7d9fx2 | org.apache.kafka.clients.consumer.internals.ConsumerCoordinator | "[Consumer clientId=orders-consumer-<n>, groupId=orders] Offset commit failed on partition orders-<n> at offset <n>: The coordinator is loading and hence can't process requests."
+    e.g. "[2026-10-12 04:53:01,797] WARN [Consumer clientId=orders-consumer-1, groupId=orders] Offset commit failed on partition orders-3 at offset 1280348: The coordinator is loading and hence can't process requests. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)"
+    e.g. "[2026-10-11 21:07:43,302] WARN [Consumer clientId=orders-consumer-1, groupId=orders] Offset commit failed on partition orders-3 at offset 8503559: The coordinator is loading and hence can't process requests. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)"
+L2 | WARN | x11 | 2026-10-11T07:34Z..2026-10-12T05:46Z | last 6h x4 | kafka-2x4,kafka-0x4,kafka-1x3 | org.apache.kafka.common.network.Selector | "[SocketServer listenerType=BROKER, nodeId=<n>] Unexpected error from /<ip> (channelId=<ip>-<ip><n>); closing connection"
+    e.g. "[2026-10-12 05:46:19,459] WARN [SocketServer listenerType=BROKER, nodeId=2] Unexpected error from /10.42.7.x (channelId=10.244.2.x:9092-10.42.7.x:52384-89); closing connection (org.apache.kafka.common.network.Selector)"
+    e.g. "[2026-10-12 04:42:08,007] WARN [SocketServer listenerType=BROKER, nodeId=2] Unexpected error from /10.42.9.x (channelId=10.244.2.x:9092-10.42.7.x:58174-11); closing connection (org.apache.kafka.common.network.Selector)"
+L3 | WARN | x3 | 2026-10-11T10:00Z..2026-10-11T10:30Z | last 6h x0 | kafka-1x1,kafka-0x1,kafka-2x1 | kafka.server.ReplicaFetcherThread | "[ReplicaFetcher replicaId=<n>, leaderId=<n>, fetcherId=<n>] Error sending fetch request (sessionId=INVALID, epoch=INITIAL) to node <n>: java.io.IOException: Connection to <n> was disconnected before the response was read"
+    e.g. "[2026-10-11 10:30:30,000] WARN [ReplicaFetcher replicaId=1, leaderId=2, fetcherId=0] Error sending fetch request (sessionId=INVALID, epoch=INITIAL) to node 2: java.io.IOException: Connection to 2 was disconnected before the response was read (kafka.server.ReplicaFetcherThread)"
+    e.g. "[2026-10-11 10:15:22,000] WARN [ReplicaFetcher replicaId=0, leaderId=1, fetcherId=0] Error sending fetch request (sessionId=INVALID, epoch=INITIAL) to node 1: java.io.IOException: Connection to 1 was disconnected before the response was read (kafka.server.ReplicaFetcherThread)"
+
+PROBLEMS (Dynatrace Davis, non-duplicate, last 7d)
+P1 | P-76368531 | Process unavailable | AVAILABILITY | started 2026-10-11T10:30Z, closed after 0.1h | 1 entities | same title x3
+P2 | P-91906549 | Process unavailable | AVAILABILITY | started 2026-10-11T10:15Z, closed after 0.1h | 1 entities | same title x3
+P3 | P-97331396 | Process unavailable | AVAILABILITY | started 2026-10-11T10:00Z, closed after 0.1h | 1 entities | same title x3

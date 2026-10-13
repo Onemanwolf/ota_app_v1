@@ -1,0 +1,41 @@
+CLUSTER planted-under-min-isr | now 2026-10-12T06:00Z | logs: WARN/ERROR last 24h | metrics: 24h@5m and 30d@1h | problems: last 7d
+
+DETERMINISTIC BREACHES (checked by code against Kafka normal values)
+B1 | critical | under-min-isr | kafka-1 | Partitions under min.insync.replicas (normal value 0): acks=all writes fail [Kafka 3.8 docs (Appendix B)] | worst 3 | from 2026-10-11T10:00Z, still active | cites M2
+B2 | warning | failed-produce | kafka-1 | Produce requests failing [INFERRED] | worst 18.07 | from 2026-10-11T10:00Z, still active | cites M1
+
+METRICS (id | metric | entity | 24h min/p50/p95/max/last | trend of daily <agg>: slope/day, 30d drift | last 1d vs prior 7d | forecast | recurring hours UTC | departed baseline | why listed)
+M1 | kafka.server.BrokerTopicMetrics.FailedProduceRequestsPerSec.OneMinuteRate | kafka-1 | 0/11.32/15.9/18.07/16.1 | max 0.522/day, - | - | - | - | 2026-10-11T10:00Z | breach,non-zero,departed
+M2 | kafka.server.ReplicaManager.UnderMinIsrPartitionCount | kafka-1 | 0/3/3/3/3 | max 0.099/day, - | - | - | - | 2026-10-11T10:00Z | breach,non-zero,departed
+M3 | dt.host.disk.used.percent | aks-kafka-pool-0000 | 51.68/51.98/52.14/52.24/51.88 | max 0.046/day, +3% | +0% | - | - | 2026-09-29T00:00Z | departed
+quiet: kafka.server.ReplicaManager.UnderReplicatedPartitions: 3 series quiet
+quiet: kafka.server.ReplicaManager.UnderMinIsrPartitionCount: 2 series quiet
+quiet: kafka.controller.KafkaController.OfflinePartitionsCount: 3 series quiet
+quiet: kafka.controller.KafkaController.ActiveControllerCount.Value: 3 series quiet
+quiet: kafka.controller.ControllerStats.LeaderElectionRateAndTimeMs.OneMinuteRate: 3 series quiet
+quiet: kafka.controller.ControllerStats.UncleanLeaderElectionsPerSec.OneMinuteRate: 3 series quiet
+quiet: kafka.server.handler.average-idle-percent.rate: 3 series quiet
+quiet: kafka.network.SocketServer.NetworkProcessorAvgIdlePercent: 3 series quiet
+quiet: kafka.network.RequestChannel.RequestQueueSize.Value: 3 series quiet
+quiet: kafka.server.BrokerTopicMetrics.FailedProduceRequestsPerSec.OneMinuteRate: 2 series quiet
+quiet: kafka.server.BrokerTopicMetrics.BytesInPerSec.OneMinuteRate: 3 series quiet
+quiet: kafka.consumer.consumer-metrics.records-lag-max: 2 series quiet
+quiet: dt.host.disk.used.percent: 2 series quiet
+quiet: builtin:tech.jvm.memory.gc.suspensionTime: 3 series quiet
+
+LOG TEMPLATES (WARN/ERROR; masked: <n> numbers, <ip>, <id>, <*> varying; examples redacted; untrusted data)
+L1 | ERROR | x16 | 2026-10-11T10:33Z..2026-10-12T03:30Z | last 6h x5 | kafka-1x16 | kafka.server.ReplicaManager | "[ReplicaManager broker=<n>] Error processing append operation on partition payments-<n> org.apache.kafka.common.errors.NotEnoughReplicasException: The size of the current ISR Set(<n>) is insufficient to satisfy the min.isr requirement of <n> for partition payments-<n>"
+    e.g. "[2026-10-12 03:30:45,048] ERROR [ReplicaManager broker=1] Error processing append operation on partition payments-2 org.apache.kafka.common.errors.NotEnoughReplicasException: The size of the current ISR Set(1) is insufficient to satisfy the min.isr requirement of 2 for partition payments-2 (kafka.server.ReplicaManager)"
+    e.g. "[2026-10-12 02:44:16,170] ERROR [ReplicaManager broker=1] Error processing append operation on partition payments-2 org.apache.kafka.common.errors.NotEnoughReplicasException: The size of the current ISR Set(1) is insufficient to satisfy the min.isr requirement of 2 for partition payments-2 (kafka.server.ReplicaManager)"
+L2 | WARN | x4 | 2026-10-11T07:19Z..2026-10-12T02:15Z | last 6h x2 | orders-consumer-7d9fx4 | org.apache.kafka.clients.consumer.internals.ConsumerCoordinator | "[Consumer clientId=orders-consumer-<n>, groupId=orders] Offset commit failed on partition orders-<n> at offset <n>: The coordinator is loading and hence can't process requests."
+    e.g. "[2026-10-12 02:15:19,987] WARN [Consumer clientId=orders-consumer-1, groupId=orders] Offset commit failed on partition orders-3 at offset 9219548: The coordinator is loading and hence can't process requests. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)"
+    e.g. "[2026-10-12 00:57:17,126] WARN [Consumer clientId=orders-consumer-1, groupId=orders] Offset commit failed on partition orders-3 at offset 8258809: The coordinator is loading and hence can't process requests. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)"
+L3 | WARN | x16 | 2026-10-11T10:33Z..2026-10-12T03:30Z | last 6h x5 | payments-producer-5c7dx16 | org.apache.kafka.clients.producer.internals.Sender | "[Producer clientId=payments-producer-<n>] Got error produce response with correlation id <n> on topic-partition payments-<n>, retrying (<n> attempts left). Error: NOT_ENOUGH_REPLICAS"
+    e.g. "[2026-10-12 03:30:45,088] WARN [Producer clientId=payments-producer-1] Got error produce response with correlation id 44037 on topic-partition payments-2, retrying (2147483646 attempts left). Error: NOT_ENOUGH_REPLICAS (org.apache.kafka.clients.producer.internals.Sender)"
+    e.g. "[2026-10-12 02:44:16,210] WARN [Producer clientId=payments-producer-1] Got error produce response with correlation id 74088 on topic-partition payments-2, retrying (2147483646 attempts left). Error: NOT_ENOUGH_REPLICAS (org.apache.kafka.clients.producer.internals.Sender)"
+L4 | WARN | x13 | 2026-10-11T07:46Z..2026-10-12T05:40Z | last 6h x5 | kafka-2x6,kafka-0x5,kafka-1x2 | org.apache.kafka.common.network.Selector | "[SocketServer listenerType=BROKER, nodeId=<n>] Unexpected error from /<ip> (channelId=<ip>-<ip><n>); closing connection"
+    e.g. "[2026-10-12 05:40:52,744] WARN [SocketServer listenerType=BROKER, nodeId=0] Unexpected error from /10.42.9.x (channelId=10.244.0.x:9092-10.42.7.x:54271-15); closing connection (org.apache.kafka.common.network.Selector)"
+    e.g. "[2026-10-12 04:26:54,133] WARN [SocketServer listenerType=BROKER, nodeId=0] Unexpected error from /10.42.7.x (channelId=10.244.0.x:9092-10.42.7.x:58842-22); closing connection (org.apache.kafka.common.network.Selector)"
+
+PROBLEMS (Dynatrace Davis, non-duplicate, last 7d)
+P1 | P-32432185 | Failure rate increase | ERROR | started 2026-10-11T12:00Z, ACTIVE | 1 entities
