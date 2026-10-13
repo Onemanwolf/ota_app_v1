@@ -21,8 +21,14 @@ _MIGRATION_FILE = re.compile(r"^\d{3}_[a-z0-9_]+\.sql$")
 Pool = AsyncConnectionPool[AsyncConnection[DictRow]]
 
 
-async def open_pool(settings: DatabaseSettings, *, search_path: str | None = None) -> Pool:
-    """Open a pool; callers close it in their lifespan. Created closed, then opened (non-deprecated)."""
+async def open_pool(
+    settings: DatabaseSettings, *, search_path: str | None = None, credential: Any = None
+) -> Pool:
+    """Open a pool; callers close it in their lifespan. Created closed, then opened (non-deprecated).
+
+    `credential`: the process's Azure token credential (`AzureCredentials.credential`, ADR 0013), entra mode.
+    Without one, a managed identity credential is built from `DB__ENTRA_CLIENT_ID`.
+    """
     kwargs: dict[str, Any] = {"autocommit": True, "row_factory": dict_row, "prepare_threshold": None}
     if search_path:
         kwargs["options"] = f"-c search_path={search_path}"
@@ -35,7 +41,7 @@ async def open_pool(settings: DatabaseSettings, *, search_path: str | None = Non
         from azure_postgresql_auth.psycopg3 import AsyncEntraConnection
 
         connection_class = AsyncEntraConnection
-        kwargs["credential"] = ManagedIdentityCredential(client_id=settings.entra_client_id)
+        kwargs["credential"] = credential or ManagedIdentityCredential(client_id=settings.entra_client_id)
 
     pool: Pool = AsyncConnectionPool(
         conninfo=settings.dsn.get_secret_value(),
@@ -48,6 +54,19 @@ async def open_pool(settings: DatabaseSettings, *, search_path: str | None = Non
     )
     await pool.open(wait=True, timeout=30)
     return pool
+
+
+async def connect(settings: DatabaseSettings, *, credential: Any = None) -> AsyncConnection[Any]:
+    """One autocommit connection outside the pool (for LISTEN), with the same auth strategy as `open_pool`."""
+    dsn = settings.dsn.get_secret_value()
+    if settings.auth_mode == "entra":
+        from azure.identity.aio import ManagedIdentityCredential
+        from azure_postgresql_auth.psycopg3 import AsyncEntraConnection
+
+        cred = credential or ManagedIdentityCredential(client_id=settings.entra_client_id)
+        conn: AsyncConnection[Any] = await AsyncEntraConnection.connect(dsn, credential=cred, autocommit=True)
+        return conn
+    return await AsyncConnection.connect(dsn, autocommit=True)
 
 
 async def migrate(pool: Pool, schema: str, migrations_dir: Path) -> list[str]:

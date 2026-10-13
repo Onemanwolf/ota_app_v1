@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from datetime import time, timedelta
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
 
 from opstriage_dynatrace.grail import GrailSettings
 from opstriage_llm import LlmEndpoint
-from opstriage_shared.settings import BaseServiceSettings
+from opstriage_shared.settings import BaseServiceSettings, Platform
 
 DEV_SESSION_SECRET = "change-me-dev-only"  # noqa: S105  (placeholder; refused outside app_env=local)
 
@@ -118,6 +118,36 @@ class ServerSettings(BaseModel):
 class Settings(BaseServiceSettings):
     insights: InsightsOptions = InsightsOptions()
     server: ServerSettings = ServerSettings()
+
+    @classmethod
+    def platform_defaults(cls, platform: Platform) -> dict[str, Any]:
+        if platform != "azure":
+            return {}
+        return {
+            "insights": {
+                "source": "grail",
+                "config_file": "/app/config/insights.yaml",  # baked from config/insights.<env>.yaml
+                # Foundry gpt-main through the OpenAI v1 API (OTA-AZ-001 9.2); BASE_URL is per environment.
+                "analyst": {"model": "gpt-main", "auth_mode": "entra", "extra_body": {}, "concurrency": 2},
+                "notify": {"mcp_url": "http://mcp-notification/mcp"},
+            }
+        }
+
+    def platform_violations(self) -> list[str]:
+        i, problems = self.insights, list[str]()
+        if i.source == "fake":
+            problems.append("INSIGHTS__SOURCE must be grail")
+        if i.guard.provider == "keyword":
+            problems.append("INSIGHTS__GUARD__PROVIDER=keyword is an offline fake")
+        if i.analyst.provider == "llm" and i.analyst.auth_mode == "none":
+            problems.append("INSIGHTS__ANALYST__AUTH_MODE must not be none")
+        if "host.docker.internal" in i.analyst.base_url:
+            problems.append("INSIGHTS__ANALYST__BASE_URL points at the local Spark tunnel")
+        return problems
+
+    def entra_settings(self) -> list[str]:
+        a = self.insights.analyst
+        return ["INSIGHTS__ANALYST__AUTH_MODE"] if a.provider == "llm" and a.auth_mode == "entra" else []
 
     @model_validator(mode="after")
     def _check(self) -> Settings:

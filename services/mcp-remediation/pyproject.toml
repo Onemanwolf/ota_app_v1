@@ -9,7 +9,13 @@ dependencies = [
   "mcp==2.3.0",
   "pyyaml==6.0.3",
   "docker==7.2.0",
+  "httpx2==2.13.1",
+  "tenacity==9.2.1",
 ]
+
+[project.optional-dependencies]
+# PLATFORM=azure images only (docker build --build-arg PLATFORM=azure): managed identity for PostgreSQL.
+azure = ["opstriage-shared[entra]"]
 
 [project.scripts]
 opstriage-remediation = "opstriage_remediation.entrypoints.main:main"

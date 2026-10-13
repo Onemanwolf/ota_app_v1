@@ -7,6 +7,7 @@ from collections.abc import Awaitable, Callable
 from opstriage_llm.settings import LlmEndpoint
 
 AuthHeader = Callable[[], Awaitable[dict[str, str]]]
+TokenSource = Callable[[str], Awaitable[str]]  # scope -> bearer token (opstriage_shared TokenProvider.token)
 COGNITIVE_SCOPE = "https://cognitiveservices.azure.com/.default"
 
 
@@ -31,9 +32,19 @@ def static_header(name: str, value: str) -> AuthHeader:
     return _h
 
 
-def entra(scope: str = COGNITIVE_SCOPE) -> AuthHeader:
-    """Entra ID bearer tokens (Azure OpenAI, Foundry). azure-identity is imported lazily: install the `entra`
-    extra; local stacks never need it."""
+def entra(scope: str = COGNITIVE_SCOPE, tokens: TokenSource | None = None) -> AuthHeader:
+    """Entra ID bearer tokens (Azure OpenAI, Foundry).
+
+    `tokens` is the process's shared credential (ADR 0013); without it, DefaultAzureCredential
+    is used. azure-identity is imported lazily: install the `entra` extra; local stacks never need it."""
+    if tokens is not None:
+        source = tokens
+
+        async def _shared() -> dict[str, str]:
+            return {"Authorization": f"Bearer {await source(scope)}"}
+
+        return _shared
+
     from azure.identity.aio import DefaultAzureCredential, get_bearer_token_provider
 
     provider = get_bearer_token_provider(DefaultAzureCredential(), scope)  # caches and refreshes
@@ -44,7 +55,7 @@ def entra(scope: str = COGNITIVE_SCOPE) -> AuthHeader:
     return _h
 
 
-def auth_for(endpoint: LlmEndpoint) -> AuthHeader:
+def auth_for(endpoint: LlmEndpoint, tokens: TokenSource | None = None) -> AuthHeader:
     key = endpoint.api_key.get_secret_value() if endpoint.api_key else ""
     match endpoint.auth_mode:
         case "bearer":
@@ -52,6 +63,6 @@ def auth_for(endpoint: LlmEndpoint) -> AuthHeader:
         case "api_key":
             return static_header(endpoint.api_key_header, key)
         case "entra":
-            return entra(endpoint.entra_scope)
+            return entra(endpoint.entra_scope, tokens)
         case _:
             return no_auth()

@@ -10,6 +10,10 @@ dependencies = [
   "tenacity==9.2.1",
 ]
 
+[project.optional-dependencies]
+# PLATFORM=azure images only (docker build --build-arg PLATFORM=azure): managed identity for PostgreSQL.
+azure = ["opstriage-shared[entra]"]
+
 [project.scripts]
 opstriage-poller = "opstriage_poller.entrypoints.main:main"
 

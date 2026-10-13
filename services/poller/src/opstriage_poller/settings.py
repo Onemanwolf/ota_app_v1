@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
 
 from opstriage_dynatrace.grail import GrailSettings
-from opstriage_shared.settings import BaseServiceSettings
+from opstriage_shared.settings import BaseServiceSettings, Platform
 
 __all__ = ["GrailSettings", "Settings"]
 
@@ -32,6 +32,13 @@ class PollerOptions(BaseModel):
 
 class Settings(BaseServiceSettings):
     poller: PollerOptions = PollerOptions()
+
+    @classmethod
+    def platform_defaults(cls, platform: Platform) -> dict[str, Any]:
+        return {"poller": {"source": "grail"}} if platform == "azure" else {}
+
+    def platform_violations(self) -> list[str]:
+        return ["POLLER__SOURCE must not be fake"] if self.poller.source == "fake" else []
 
     @model_validator(mode="after")
     def _check(self) -> Settings:

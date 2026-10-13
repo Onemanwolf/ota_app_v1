@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
 
-from opstriage_shared.settings import BaseServiceSettings, ServiceAuthSettings
+from opstriage_shared.settings import BaseServiceSettings, Platform, ServiceAuthSettings
 
 
 class TeamsSettings(BaseModel):
@@ -19,7 +19,8 @@ class EmailSettings(BaseModel):
     default_recipients: list[str] = Field(default_factory=list)
     smtp_host: str = "mailpit"
     smtp_port: int = 1025
-    acs_endpoint: str | None = None
+    acs_endpoint: str | None = None  # https://<acs-resource>.communication.azure.com (provider=acs)
+    acs_api_version: str = "2023-03-31"  # ACS Email REST API version
 
 
 class NotificationOptions(BaseModel):
@@ -50,6 +51,28 @@ class Settings(BaseServiceSettings):
             )
         if self.notification.email.provider == "smtp" and self.app_env != "local":
             raise ValueError("the smtp email provider (no TLS, no auth) is only permitted when APP_ENV=local")
-        if self.notification.email.provider == "acs":
-            raise ValueError("the acs email provider arrives with the Azure deployment (OTA-AZ-001)")
+        email = self.notification.email
+        if email.provider == "acs":
+            if not (email.acs_endpoint or "").startswith("https://"):
+                raise ValueError(
+                    "NOTIFICATION__EMAIL__ACS_ENDPOINT (https://...) is required for the acs provider"
+                )
+            if not email.from_address.strip():
+                raise ValueError("NOTIFICATION__EMAIL__FROM_ADDRESS is required for the acs provider")
+            if self.platform != "azure":
+                # ACS is reached with the app's managed identity; PLATFORM=local has no cloud credentials.
+                raise ValueError("the acs email provider requires PLATFORM=azure (managed identity)")
         return self
+
+    @classmethod
+    def platform_defaults(cls, platform: Platform) -> dict[str, Any]:
+        if platform == "azure":
+            return {
+                "notification": {"email": {"provider": "acs"}, "teams": {"provider": "workflows_webhook"}}
+            }
+        return {}
+
+    def platform_violations(self) -> list[str]:
+        if self.notification.email.provider == "smtp":
+            return ["NOTIFICATION__EMAIL__PROVIDER must not be smtp (use acs or log)"]
+        return []

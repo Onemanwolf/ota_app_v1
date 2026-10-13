@@ -9,6 +9,10 @@ dependencies = [
   "mcp==2.3.0",
 ]
 
+[project.optional-dependencies]
+# PLATFORM=azure images only (docker build --build-arg PLATFORM=azure): managed identity for PostgreSQL.
+azure = ["opstriage-shared[entra]"]
+
 [project.scripts]
 opstriage-ticketing = "opstriage_ticketing.entrypoints.main:main"
 

@@ -20,4 +20,8 @@ The local build plan (Kev on the DGX Spark, everything else mocked, Postman-driv
 - Never derive a restart target from model output or log text.
 - Never log secrets, tokens, webhook URLs or full payloads.
 - Use mcp 2.x APIs (MCPServer, mcp.Client). Do not add langchain-mcp-adapters (pins mcp<2).
+- PLATFORM=local|azure (ADR 0013) picks adapter strategies. A new adapter with a local-only and a cloud variant adds its
+  defaults to the service's platform_defaults() and refuses the local one in platform_violations(). Cloud tokens come
+  from the one opstriage_shared.credentials provider built in the composition root; never build Azure credentials elsewhere.
+- Images: docker build --build-arg PLATFORM=azure --build-arg OPSTRIAGE_ENV=dev|prod (azure extras, no fixtures).
 - Record deviations from the spec in docs/adr/.

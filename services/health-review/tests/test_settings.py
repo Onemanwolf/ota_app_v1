@@ -63,3 +63,51 @@ def test_dev_session_secret_is_refused_outside_local() -> None:
         }
     )
     assert ok.app_env == "dev"
+
+
+AZURE: dict[str, Any] = {
+    "platform": "azure",
+    "app_env": "prod",
+    "db": {"dsn": "postgresql://id-health-review@psql/opstriage", "auth_mode": "entra"},
+}
+
+
+def _azure(**insights: Any) -> Settings:
+    defaults = {
+        "grail": {"oauth_client_id": "id", "oauth_client_secret": "s"},
+        "web": {"session_secret": "x" * 48},
+        "analyst": {"base_url": "https://aif-opstriage-prod.openai.azure.com/openai"},
+    }
+    return Settings(_env_file=None, **{**AZURE, "insights": {**defaults, **insights}})  # no developer .env
+
+
+def test_azure_profile_selects_grail_foundry_entra_and_baked_config() -> None:
+    i = _azure().insights
+    assert (i.source, i.config_file.as_posix()) == ("grail", "/app/config/insights.yaml")
+    assert (i.analyst.model, i.analyst.auth_mode, i.analyst.extra_body) == ("gpt-main", "entra", {})
+    assert i.notify.mcp_url == "http://mcp-notification/mcp"
+
+
+def test_azure_profile_keeps_explicit_choices() -> None:
+    assert _azure(analyst={"provider": "none", "base_url": "https://x"}).insights.analyst.provider == "none"
+
+
+@pytest.mark.parametrize(
+    ("insights", "message"),
+    [
+        ({"source": "fake"}, "INSIGHTS__SOURCE must be grail"),
+        ({"guard": {"provider": "keyword"}}, "keyword is an offline fake"),
+        ({"analyst": {"auth_mode": "none", "base_url": "https://x"}}, "AUTH_MODE must not be none"),
+        ({"analyst": {"base_url": "http://host.docker.internal:18001"}}, "local Spark tunnel"),
+    ],
+)
+def test_azure_refuses_local_strategies(insights: dict[str, Any], message: str) -> None:
+    with pytest.raises(ValidationError, match=message):
+        _azure(**insights)
+
+
+def test_local_refuses_an_entra_analyst() -> None:
+    with pytest.raises(ValidationError, match="INSIGHTS__ANALYST__AUTH_MODE=entra needs PLATFORM=azure"):
+        Settings(
+            _env_file=None, db={"dsn": "postgresql://unused"}, insights={"analyst": {"auth_mode": "entra"}}
+        )

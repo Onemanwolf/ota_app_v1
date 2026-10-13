@@ -5,11 +5,11 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
-from typing import Literal
+from collections.abc import Awaitable, Callable
+from typing import Any, Literal
 from uuid import UUID
 
 import psycopg
-from pydantic import SecretStr
 
 from opstriage_contracts.problems import ProblemEvent
 from opstriage_shared.db import Pool
@@ -53,15 +53,15 @@ class PostgresInbox:
     def __init__(
         self,
         pool: Pool,
-        dsn: SecretStr,
+        listen_connect: Callable[[], Awaitable[psycopg.AsyncConnection[Any]]],
         *,
         lease_seconds: int,
         max_attempts: int,
         retry_backoff_seconds: float = 10.0,
     ) -> None:
-        self._pool, self._dsn = pool, dsn
+        self._pool, self._connect = pool, listen_connect  # opstriage_shared.db.connect: same auth as the pool
         self._lease, self._max, self._backoff = lease_seconds, max_attempts, retry_backoff_seconds
-        self._listener: psycopg.AsyncConnection[tuple[object, ...]] | None = None
+        self._listener: psycopg.AsyncConnection[Any] | None = None
         self._listen_lock = asyncio.Lock()
 
     async def claim_next(self) -> ClaimedAlert | None:
@@ -81,9 +81,7 @@ class PostgresInbox:
         async with self._listen_lock:
             try:
                 if self._listener is None or self._listener.closed:
-                    self._listener = await psycopg.AsyncConnection.connect(
-                        self._dsn.get_secret_value(), autocommit=True
-                    )
+                    self._listener = await self._connect()
                     await self._listener.execute("LISTEN alert_inbox")
                 async for _ in self._listener.notifies(timeout=max_wait, stop_after=1):
                     return

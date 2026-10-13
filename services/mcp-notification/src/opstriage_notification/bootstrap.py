@@ -7,6 +7,7 @@ from pathlib import Path
 
 import httpx2
 
+from opstriage_notification.adapters.acs_email import AcsEmailSender
 from opstriage_notification.adapters.deliveries import PostgresDeliveryStore
 from opstriage_notification.adapters.log_senders import LogEmailSender, LogTeamsSender
 from opstriage_notification.adapters.smtp_email import SmtpEmailSender
@@ -15,6 +16,7 @@ from opstriage_notification.application.send_notification import SendNotificatio
 from opstriage_notification.domain.rate_limit import TokenBucketLimiter
 from opstriage_notification.ports import EmailSender, TeamsSender
 from opstriage_notification.settings import Settings
+from opstriage_shared.credentials import TokenProvider, credentials_for
 from opstriage_shared.db import Pool, migrate, open_pool
 
 MIGRATIONS = Path(__file__).resolve().parent / "migrations"  # shipped inside the package
@@ -25,6 +27,7 @@ class Container:
         self._settings = settings
         self._pool: Pool | None = None
         self._http: httpx2.AsyncClient | None = None
+        self._creds: TokenProvider | None = None
         self._send: SendNotification | None = None
 
     @property
@@ -35,7 +38,9 @@ class Container:
 
     async def start(self) -> None:
         n = self._settings.notification
-        self._pool = await open_pool(self._settings.db)
+        # One credential provider per process (ADR 0013), shared by the DB pool and the ACS sender.
+        self._creds = creds = credentials_for(self._settings)
+        self._pool = await open_pool(self._settings.db, credential=getattr(creds, "credential", None))
         await migrate(self._pool, "notification", MIGRATIONS)
         self._http = httpx2.AsyncClient(timeout=httpx2.Timeout(15))
 
@@ -45,6 +50,10 @@ class Container:
         email: EmailSender = LogEmailSender()
         if n.email.provider == "smtp":
             email = SmtpEmailSender(n.email.smtp_host, n.email.smtp_port)
+        elif n.email.provider == "acs" and n.email.acs_endpoint is not None:
+            email = AcsEmailSender(
+                self._http, n.email.acs_endpoint, creds, api_version=n.email.acs_api_version
+            )
 
         self._send = SendNotification(
             teams,
@@ -61,3 +70,5 @@ class Container:
             await self._http.aclose()
         if self._pool is not None:
             await self._pool.close()
+        if self._creds is not None:
+            await self._creds.close()

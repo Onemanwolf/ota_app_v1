@@ -13,9 +13,11 @@ import yaml
 from opstriage_remediation.adapters.executions_pg import PostgresExecutionStore
 from opstriage_remediation.adapters.registry import registry as executor_registry
 from opstriage_remediation.application.service import GuardSettings, RemediationService
-from opstriage_remediation.domain.targets import TargetRegistry
+from opstriage_remediation.domain.targets import ExecutorKind, TargetRegistry
+from opstriage_remediation.ports.executor import RestartExecutor
 from opstriage_remediation.settings import Settings
 from opstriage_shared.clock import SystemClock
+from opstriage_shared.credentials import TokenProvider, credentials_for
 from opstriage_shared.db import Pool, migrate, open_pool
 
 MIGRATIONS = Path(__file__).resolve().parent / "migrations"  # shipped inside the package
@@ -26,6 +28,18 @@ log = structlog.get_logger()
 
 def load_registry(path: Path) -> TargetRegistry:
     return TargetRegistry.model_validate(yaml.safe_load(path.read_text(encoding="utf-8")))
+
+
+def check_registry_for_platform(registry: TargetRegistry, settings: Settings) -> None:
+    """PLATFORM=azure refuses local_docker targets at startup: the docker socket is root (ADR 0013)."""
+    if settings.platform != "azure":
+        return
+    local = [t.id for t in registry.targets if t.executor.kind is ExecutorKind.LOCAL_DOCKER]
+    if local:
+        raise ValueError(
+            f"PLATFORM=azure refuses local_docker targets in {settings.remediation.targets_file}: "
+            + ", ".join(local)
+        )
 
 
 def guard_settings(settings: Settings) -> GuardSettings:
@@ -48,6 +62,8 @@ class Container:
         self._pool: Pool | None = None
         self._service: RemediationService | None = None
         self._reconciler: asyncio.Task[None] | None = None
+        self._creds: TokenProvider | None = None
+        self._executors: dict[ExecutorKind, RestartExecutor] = {}
 
     @property
     def service(self) -> RemediationService:
@@ -58,8 +74,11 @@ class Container:
     async def start(self, *, background: bool = True) -> None:
         s = self._settings
         registry = await asyncio.to_thread(load_registry, s.remediation.targets_file)
-        executors = executor_registry.build_all(s, registry.executor_kinds())  # fails fast on unknown kinds
-        self._pool = await open_pool(s.db)
+        check_registry_for_platform(registry, s)
+        self._creds = credentials_for(s)  # ONE credential per process (ADR 0013)
+        # fails fast on unknown kinds
+        executors = self._executors = executor_registry.build_all(s, registry.executor_kinds(), self._creds)
+        self._pool = await open_pool(s.db, credential=getattr(self._creds, "credential", None))
         await migrate(self._pool, "remediation", MIGRATIONS)
         self._service = RemediationService(
             registry, PostgresExecutionStore(self._pool), executors, SystemClock(), guard_settings(s)
@@ -92,6 +111,12 @@ class Container:
             await self._service.drain()
         if self._pool is not None:
             await self._pool.close()
+        for executor in self._executors.values():
+            close = getattr(executor, "close", None)
+            if close is not None:
+                await close()
+        if self._creds is not None:
+            await self._creds.close()
 
 
 def build_container(settings: Settings) -> Container:

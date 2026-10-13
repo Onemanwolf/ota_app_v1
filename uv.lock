@@ -1023,6 +1023,12 @@ dependencies = [
     { name = "uvicorn" },
 ]
 
+[package.optional-dependencies]
+azure = [
+    { name = "opstriage-llm", extra = ["entra"] },
+    { name = "opstriage-shared", extra = ["entra"] },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "httpx2", specifier = "==2.13.1" },
@@ -1031,11 +1037,14 @@ requires-dist = [
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-dynatrace", editable = "packages/dynatrace" },
     { name = "opstriage-llm", editable = "packages/llm" },
+    { name = "opstriage-llm", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/llm" },
     { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "opstriage-shared", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/shared" },
     { name = "python-multipart", specifier = "==0.0.32" },
     { name = "pyyaml", specifier = "==6.0.3" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
+provides-extras = ["azure"]
 
 [[package]]
 name = "opstriage-intake"
@@ -1047,12 +1056,19 @@ dependencies = [
     { name = "uvicorn" },
 ]
 
+[package.optional-dependencies]
+azure = [
+    { name = "opstriage-shared", extra = ["entra"] },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "opstriage-shared", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/shared" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
+provides-extras = ["azure"]
 
 [[package]]
 name = "opstriage-llm"
@@ -1091,15 +1107,22 @@ dependencies = [
     { name = "uvicorn" },
 ]
 
+[package.optional-dependencies]
+azure = [
+    { name = "opstriage-shared", extra = ["entra"] },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "httpx2", specifier = "==2.13.1" },
     { name = "mcp", specifier = "==2.3.0" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "opstriage-shared", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/shared" },
     { name = "tenacity", specifier = "==9.2.1" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
+provides-extras = ["azure"]
 
 [[package]]
 name = "opstriage-poller"
@@ -1113,14 +1136,21 @@ dependencies = [
     { name = "tenacity" },
 ]
 
+[package.optional-dependencies]
+azure = [
+    { name = "opstriage-shared", extra = ["entra"] },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "httpx2", specifier = "==2.13.1" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-dynatrace", editable = "packages/dynatrace" },
     { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "opstriage-shared", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/shared" },
     { name = "tenacity", specifier = "==9.2.1" },
 ]
+provides-extras = ["azure"]
 
 [[package]]
 name = "opstriage-remediation"
@@ -1128,22 +1158,33 @@ version = "0.1.0"
 source = { editable = "services/mcp-remediation" }
 dependencies = [
     { name = "docker" },
+    { name = "httpx2" },
     { name = "mcp" },
     { name = "opstriage-contracts" },
     { name = "opstriage-shared" },
     { name = "pyyaml" },
+    { name = "tenacity" },
     { name = "uvicorn" },
+]
+
+[package.optional-dependencies]
+azure = [
+    { name = "opstriage-shared", extra = ["entra"] },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "docker", specifier = "==7.2.0" },
+    { name = "httpx2", specifier = "==2.13.1" },
     { name = "mcp", specifier = "==2.3.0" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "opstriage-shared", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/shared" },
     { name = "pyyaml", specifier = "==6.0.3" },
+    { name = "tenacity", specifier = "==9.2.1" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
+provides-extras = ["azure"]
 
 [[package]]
 name = "opstriage-shared"
@@ -1190,13 +1231,20 @@ dependencies = [
     { name = "uvicorn" },
 ]
 
+[package.optional-dependencies]
+azure = [
+    { name = "opstriage-shared", extra = ["entra"] },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "mcp", specifier = "==2.3.0" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "opstriage-shared", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/shared" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
+provides-extras = ["azure"]
 
 [[package]]
 name = "opstriage-triage"
@@ -1208,11 +1256,18 @@ dependencies = [
     { name = "langgraph-checkpoint-postgres" },
     { name = "mcp" },
     { name = "opstriage-contracts" },
+    { name = "opstriage-dynatrace" },
     { name = "opstriage-llm" },
     { name = "opstriage-shared" },
     { name = "pyyaml" },
     { name = "tenacity" },
     { name = "uvicorn" },
+]
+
+[package.optional-dependencies]
+azure = [
+    { name = "opstriage-llm", extra = ["entra"] },
+    { name = "opstriage-shared", extra = ["entra"] },
 ]
 
 [package.metadata]
@@ -1222,12 +1277,16 @@ requires-dist = [
     { name = "langgraph-checkpoint-postgres", specifier = "==3.1.2" },
     { name = "mcp", specifier = "==2.3.0" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
+    { name = "opstriage-dynatrace", editable = "packages/dynatrace" },
     { name = "opstriage-llm", editable = "packages/llm" },
+    { name = "opstriage-llm", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/llm" },
     { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "opstriage-shared", extras = ["entra"], marker = "extra == 'azure'", editable = "packages/shared" },
     { name = "pyyaml", specifier = "==6.0.3" },
     { name = "tenacity", specifier = "==9.2.1" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
+provides-extras = ["azure"]
 
 [[package]]
 name = "opstriage-webhook-sink"

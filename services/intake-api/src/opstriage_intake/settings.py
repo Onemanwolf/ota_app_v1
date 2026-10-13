@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from pydantic import BaseModel, Field, SecretStr
 
-from opstriage_shared.settings import BaseServiceSettings
+from opstriage_shared.settings import BaseServiceSettings, Platform
 
 
 class IntakeOptions(BaseModel):
@@ -24,6 +25,13 @@ class IntakeServerSettings(BaseModel):
 class Settings(BaseServiceSettings):
     intake: IntakeOptions = IntakeOptions()
     server: IntakeServerSettings = IntakeServerSettings()
+
+    @classmethod
+    def platform_defaults(cls, platform: Platform) -> dict[str, Any]:
+        return {"intake": {"enable_dev_endpoints": False}} if platform == "azure" else {}
+
+    def platform_violations(self) -> list[str]:
+        return ["INTAKE__ENABLE_DEV_ENDPOINTS must be false"] if self.intake.enable_dev_endpoints else []
 
     @property
     def dev_endpoints_enabled(self) -> bool:

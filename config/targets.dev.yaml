@@ -1,29 +1,23 @@
-# Reference registry from spec 12.5.2 (Azure VM and SSH targets). Not used by the local stack.
+# Dev restart targets (spec 12.5.2; OTA-AZ-001 sections 7.9 and 9): the Azure dev environment. Baked into the image as
+# /app/config/targets.yaml. PLACEHOLDERS ONLY: replace every <sub>, <rg> and <vm> before deploying.
+# Until replaced, the azure_run_command executor refuses these targets (the resource ID does not validate).
+#
+# Rules for this file:
+# - azure_run_command only. PLATFORM=azure refuses local_docker targets at startup.
+# - Every resource_id needs the "OpsTriage VM Run Command" role assignment for id-mcp-remediation
+#   (var.restart_target_vm_ids in Terraform must list exactly these VMs; CI checks both directions).
+# - Every container must also be in the ALLOWED list of /usr/local/sbin/restart-allowed.sh on that VM.
+# - Policy stays conservative: approval_required (REMEDIATION__MAX_AUTONOMY caps it anyway).
 version: 1
 targets:
-  - id: demo-orders-api                 # must match ^[a-z0-9][a-z0-9_.-]{0,62}$
-    description: Local demo container
-    match:                              # deterministic matching against ProblemEvent entities
-      entity_ids: ["CONTAINER-8A1F00C2D3E4B5A6"]
-      host_entity_ids: ["HOST-017198AD253CBD63"]
-      container_names: ["demo-orders-api"]
-    executor:
-      kind: local_docker                # local_docker | azure_run_command | arc_run_command | ssh
-      container: demo-orders-api
-    policy:
-      autonomy: approval_required       # notify_only | approval_required | autonomous
-      cooldown_minutes: 15
-      max_restarts_per_day: 5
-      restart_timeout_seconds: 20
-
-  - id: orders-api-vm01
-    description: Orders API on vm-orders-01 (Azure VM)
+  - id: orders-api-vm01                 # PLACEHOLDER target; must match ^[a-z0-9][a-z0-9_.-]{0,62}$
+    description: "PLACEHOLDER: Orders API on <vm> (Azure VM)"
     match:
-      host_entity_ids: ["HOST-0A1B2C3D4E5F6071"]
+      host_entity_ids: ["HOST-0000000000000000"]   # PLACEHOLDER: Dynatrace host entity ID of the VM
       container_names: ["orders-api"]
     executor:
       kind: azure_run_command
-      resource_id: /subscriptions/<sub>/resourceGroups/rg-orders/providers/Microsoft.Compute/virtualMachines/vm-orders-01
+      resource_id: /subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.Compute/virtualMachines/<vm>
       container: orders-api
     policy:
       autonomy: approval_required
@@ -31,17 +25,17 @@ targets:
       max_restarts_per_day: 3
       restart_timeout_seconds: 30
 
-  - id: billing-worker-onprem01
-    description: Billing worker on an on-premises VM without Arc
+  - id: orders-worker-vm01              # PLACEHOLDER target
+    description: "PLACEHOLDER: Orders worker on <vm> (Azure VM)"
     match:
-      host_names: ["onprem-billing-01"]
-      container_names: ["billing-worker"]
+      host_entity_ids: ["HOST-0000000000000000"]   # PLACEHOLDER
+      container_names: ["orders-worker"]
     executor:
-      kind: ssh
-      host: onprem-billing-01.corp.example
-      container: billing-worker
+      kind: azure_run_command
+      resource_id: /subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.Compute/virtualMachines/<vm>
+      container: orders-worker
     policy:
-      autonomy: notify_only
-      cooldown_minutes: 60
-      max_restarts_per_day: 2
+      autonomy: approval_required
+      cooldown_minutes: 30
+      max_restarts_per_day: 3
       restart_timeout_seconds: 30

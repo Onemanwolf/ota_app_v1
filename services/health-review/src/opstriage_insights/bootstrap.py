@@ -39,7 +39,8 @@ from opstriage_insights.ports.notifier import Notifier
 from opstriage_insights.ports.sources import LogSource, MetricSource, ProblemSource
 from opstriage_insights.ports.store import ReviewStore
 from opstriage_insights.settings import Settings
-from opstriage_llm import ChatJsonClient
+from opstriage_llm import ChatJsonClient, TokenSource, auth_for
+from opstriage_shared.credentials import TokenProvider, credentials_for
 from opstriage_shared.db import Pool, migrate, open_pool
 
 MIGRATIONS = Path(__file__).resolve().parent / "migrations"  # shipped inside the package
@@ -57,6 +58,7 @@ class Container:
     purge: Purge
     scheduler: Scheduler | None = None
     http: httpx2.AsyncClient | None = None
+    credentials: TokenProvider | None = None
 
     async def close(self) -> None:
         if self.scheduler is not None:
@@ -65,6 +67,8 @@ class Container:
         if self.http is not None:
             await self.http.aclose()
         await self.pool.close()
+        if self.credentials is not None:
+            await self.credentials.close()
 
 
 def _now() -> datetime:
@@ -97,12 +101,14 @@ def build_guard(settings: Settings, http: httpx2.AsyncClient) -> Guard:
     )
 
 
-def build_analyst(settings: Settings, http: httpx2.AsyncClient) -> Analyst | None:
+def build_analyst(
+    settings: Settings, http: httpx2.AsyncClient, tokens: TokenSource | None = None
+) -> Analyst | None:
     a = settings.insights.analyst
     if a.provider == "none":
         return None
     runbook = a.runbook_file.read_text(encoding="utf-8") if a.runbook_file.is_file() else ""
-    return LlmAnalyst(ChatJsonClient(http, a), runbook)
+    return LlmAnalyst(ChatJsonClient(http, a, auth_for(a, tokens)), runbook)
 
 
 def build_notifier(settings: Settings) -> Notifier | None:
@@ -114,7 +120,8 @@ def build_notifier(settings: Settings) -> Notifier | None:
 
 async def build_container(settings: Settings, migrations_dir: Path = MIGRATIONS) -> Container:
     i = settings.insights
-    pool = await open_pool(settings.db)
+    creds = credentials_for(settings)  # one per process: managed identity on PLATFORM=azure (ADR 0013)
+    pool = await open_pool(settings.db, credential=getattr(creds, "credential", None))
     await migrate(pool, "insights", migrations_dir)
     http = httpx2.AsyncClient()
     logs, metrics, problems, clusters = build_sources(settings, http)
@@ -137,7 +144,7 @@ async def build_container(settings: Settings, migrations_dir: Path = MIGRATIONS)
     notify = NotifyPolicy(i.notify.enabled, i.notify.min_risk, i.notify.top_findings, i.web.base_url)
     run = RunReview(
         prepare,
-        build_analyst(settings, http),
+        build_analyst(settings, http, creds.token),
         store,
         build_notifier(settings),
         retention,
@@ -166,4 +173,5 @@ async def build_container(settings: Settings, migrations_dir: Path = MIGRATIONS)
             clock=_now,
         ),
         http=http,
+        credentials=creds,
     )

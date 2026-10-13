@@ -15,6 +15,10 @@ dependencies = [
   "httpx2==2.13.1",
 ]
 
+[project.optional-dependencies]
+# PLATFORM=azure images only (docker build --build-arg PLATFORM=azure): managed identity for PostgreSQL and Foundry.
+azure = ["opstriage-shared[entra]", "opstriage-llm[entra]"]
+
 [project.scripts]
 opstriage-health-review = "opstriage_insights.entrypoints.main:main"
 

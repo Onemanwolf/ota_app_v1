@@ -8,6 +8,10 @@ dependencies = [
   "uvicorn==0.54.0",
 ]
 
+[project.optional-dependencies]
+# PLATFORM=azure images only (docker build --build-arg PLATFORM=azure): managed identity for PostgreSQL.
+azure = ["opstriage-shared[entra]"]
+
 [project.scripts]
 opstriage-intake = "opstriage_intake.entrypoints.main:main"
 

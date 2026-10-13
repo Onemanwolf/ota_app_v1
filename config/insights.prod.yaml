@@ -1,0 +1,11 @@
+# Clusters health-review analyses in the Azure prod environment (INSIGHTS__SOURCE=grail).
+# PLACEHOLDER entity IDs: replace them with the real broker process group instance IDs from the tenant
+# before the first scheduled review (OTA-AZ-001 Section 0.2, P5).
+clusters:
+  - name: prod-kafka-01
+    namespace: streaming
+    containers: [kafka]
+    entity_ids:                                  # broker process group instances (placeholder ids)
+      - PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10
+      - PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11
+      - PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12

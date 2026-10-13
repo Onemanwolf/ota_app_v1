@@ -10,7 +10,7 @@ from pydantic import SecretStr
 from testcontainers.community.postgres import PostgresContainer
 
 from opstriage_contracts.problems import AlertSource, ProblemEvent, ProblemStatus
-from opstriage_shared.db import Pool, migrate, open_pool
+from opstriage_shared.db import Pool, connect, migrate, open_pool
 from opstriage_shared.settings import DatabaseSettings
 from opstriage_triage.adapters.approvals_pg import PostgresApprovalStore
 from opstriage_triage.adapters.inbox_pg import PostgresInbox
@@ -70,8 +70,13 @@ async def add(pool: Pool, e: ProblemEvent) -> UUID:
 
 
 def inbox(pool: Pool, pg: str, lease: int = 900, max_attempts: int = 3, backoff: float = 0) -> PostgresInbox:
+    settings = DatabaseSettings(dsn=SecretStr(pg))
     return PostgresInbox(
-        pool, SecretStr(pg), lease_seconds=lease, max_attempts=max_attempts, retry_backoff_seconds=backoff
+        pool,
+        lambda: connect(settings),
+        lease_seconds=lease,
+        max_attempts=max_attempts,
+        retry_backoff_seconds=backoff,
     )
 
 

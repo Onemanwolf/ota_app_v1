@@ -6,6 +6,7 @@ dependencies = [
   "opstriage-contracts",
   "opstriage-shared",
   "opstriage-llm",
+  "opstriage-dynatrace",
   "uvicorn==0.54.0",
   "langgraph==1.2.14",
   "langgraph-checkpoint-postgres==3.1.2",
@@ -15,6 +16,10 @@ dependencies = [
   "pyyaml==6.0.3",
 ]
 
+[project.optional-dependencies]
+# PLATFORM=azure images only (docker build --build-arg PLATFORM=azure): managed identity for PostgreSQL and Foundry.
+azure = ["opstriage-shared[entra]", "opstriage-llm[entra]"]
+
 [project.scripts]
 opstriage-triage = "opstriage_triage.entrypoints.main:main"
 opstriage-evals = "opstriage_triage.entrypoints.evals:main"
@@ -23,6 +28,7 @@ opstriage-evals = "opstriage_triage.entrypoints.evals:main"
 opstriage-contracts = { workspace = true }
 opstriage-shared = { workspace = true }
 opstriage-llm = { workspace = true }
+opstriage-dynatrace = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]
