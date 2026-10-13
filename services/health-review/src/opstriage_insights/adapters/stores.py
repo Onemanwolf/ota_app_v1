@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from datetime import datetime
+from dataclasses import asdict, dataclass, field
+from datetime import datetime, timedelta
 from typing import Any
 from uuid import UUID
 
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
-from opstriage_insights.ports.store import EvidenceSource, ReviewKind, ReviewRow, StoredReport
+from opstriage_insights.ports.store import EvidenceSource, PurgeCounts, ReviewKind, ReviewRow, StoredReport
 from opstriage_shared.db import Pool
 
 
@@ -144,6 +144,38 @@ class PostgresReviewStore:
             for r in rows
         ]
 
+    async def purge(self, now: datetime, tombstone: timedelta) -> PurgeCounts:
+        async with self._pool.connection() as conn, conn.transaction():
+            ev = await conn.execute("DELETE FROM insights.evidence WHERE expires_at <= %s", (now,))
+            rp = await conn.execute("DELETE FROM insights.reports WHERE expires_at <= %s", (now,))
+            ex = await conn.execute(
+                "UPDATE insights.reviews SET subject = NULL, error = NULL "
+                "WHERE expires_at <= %s AND (subject IS NOT NULL OR error IS NOT NULL)",
+                (now,),
+            )
+            rv = await conn.execute("DELETE FROM insights.reviews WHERE expires_at <= %s", (now - tombstone,))
+            counts = PurgeCounts(ev.rowcount, rp.rowcount, rv.rowcount, ex.rowcount)
+            await conn.execute(
+                "INSERT INTO insights.purge_log (ran_at, reviews_deleted, evidence_deleted, reports_deleted) "
+                "VALUES (%s, %s, %s, %s)",
+                (now, counts.reviews_deleted, counts.evidence_deleted, counts.reports_deleted),
+            )
+            await conn.execute("DELETE FROM insights.purge_log WHERE ran_at <= %s", (now - tombstone,))
+        return counts
+
+    async def expire_review(self, review_id: UUID, now: datetime) -> bool:
+        async with self._pool.connection() as conn, conn.transaction():
+            cur = await conn.execute(
+                "UPDATE insights.reviews SET expires_at = %s WHERE id = %s", (now, review_id)
+            )
+            await conn.execute(
+                "UPDATE insights.reports SET expires_at = %s WHERE review_id = %s", (now, review_id)
+            )
+            await conn.execute(
+                "UPDATE insights.evidence SET expires_at = %s WHERE review_id = %s", (now, review_id)
+            )
+        return cur.rowcount == 1
+
 
 @dataclass
 class MemoryReviewStore:
@@ -250,3 +282,34 @@ class MemoryReviewStore:
             (rep.get("counts") or {}).get("by_risk"),
             r.get("error"),
         )
+
+    purge_log: list[dict[str, Any]] = field(default_factory=list)
+
+    async def purge(self, now: datetime, tombstone: timedelta) -> PurgeCounts:
+        before = len(self.evidence)
+        self.evidence = [e for e in self.evidence if e["expires_at"] > now]
+        expired_reports = [k for k, r in self.reports.items() if r["expires_at"] <= now]
+        for k in expired_reports:
+            del self.reports[k]
+        blanked = 0
+        for r in self.reviews.values():
+            if r["expires_at"] <= now and (r.get("subject") is not None or r.get("error") is not None):
+                r["subject"], r["error"] = None, None
+                blanked += 1
+        old = [k for k, r in self.reviews.items() if r["expires_at"] <= now - tombstone]
+        for k in old:
+            del self.reviews[k]
+        counts = PurgeCounts(before - len(self.evidence), len(expired_reports), len(old), blanked)
+        self.purge_log.append({"ran_at": now, **asdict(counts)})
+        return counts
+
+    async def expire_review(self, review_id: UUID, now: datetime) -> bool:
+        if review_id not in self.reviews:
+            return False
+        self.reviews[review_id]["expires_at"] = now
+        if review_id in self.reports:
+            self.reports[review_id]["expires_at"] = now
+        for e in self.evidence:
+            if e["review_id"] == review_id:
+                e["expires_at"] = now
+        return True

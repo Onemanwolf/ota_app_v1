@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | Draft for review |
+| Status | Implemented (Module 5, 2026-10-13); as-built decisions and deviations in ADR 0011 |
 | Date | 2026-10-13 |
 | Depends on | OTA-APP-001 (contracts, shared, poller Grail client, mcp-notification, mcp-ticketing) |
 | Model | Qwen `qwen3.8-flash-next` on the DGX Spark (vLLM, OpenAI API, port 8001), the one already running |

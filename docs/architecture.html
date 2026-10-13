@@ -101,8 +101,8 @@ html { scroll-behavior: smooth }
   <h1>Ops Triage Agents</h1>
   <p class="lede">The app receives Dynatrace problems for a Kafka platform, decides what to do about each one, and acts through tools it does not own. A second job reviews Kafka logs and metrics daily and reports trends, risks and likely root causes. Everything a model says is checked by code before it reaches anyone.</p>
   <div class="stamp">
-    <span>after commit <b>b9acea7</b></span><span>modules <b>0–4, 5.1–5.6</b> built</span>
-    <span>tests <b>562</b> unit · <b>34</b> compose</span><span>import contracts <b>4</b> kept</span>
+    <span>modules <b>0–5</b> built</span><span>health review <b>OTA-APP-002</b> complete</span>
+    <span>tests <b>584</b> unit · <b>36</b> compose · Postman <b>10</b> folders</span><span>import contracts <b>4</b> kept</span>
   </div>
   <div class="diagram"><pre class="mermaid">flowchart LR
   DT[&quot;Dynatrace&lt;br/&gt;problems · logs · metrics&quot;]
@@ -563,7 +563,7 @@ html { scroll-behavior: smooth }
 
 <section id="retention">
   <h2>Retention</h2>
-  <p>Raw data is kept briefly; trend history is re-read from Dynatrace at review time and never copied. A purge job deletes expired rows every 15 minutes, and an expired report answers 410 Gone.</p>
+  <p>Raw data is kept briefly; trend history is re-read from Dynatrace at review time and never copied. A purge job runs every 15 minutes: it deletes expired evidence and reports, and turns an expired review into a tombstone (id, cluster, kind and times only) for 30 days, so its link answers 410 Gone instead of 404. The purge log records counts, never content.</p>
   <div class="diagram"><pre class="mermaid">gantt
   title One daily review: collected 06:00, completed 06:04
   dateFormat YYYY-MM-DD HH:mm
@@ -572,7 +572,9 @@ html { scroll-behavior: smooth }
   Kept until completion + 4 h :active, ev, 2026-10-12 06:00, 2026-10-12 10:04
   Never beyond collection + 28 h :crit, cap, 2026-10-12 06:00, 2026-10-13 10:00
   section Report
-  Viewable for 48 h :rep, 2026-10-12 06:04, 2026-10-14 06:04</pre></div>
+  Viewable for 48 h :rep, 2026-10-12 06:04, 2026-10-14 06:04
+  section Tombstone
+  Link answers 410 for 30 days :done, tomb, 2026-10-14 06:04, 2026-10-16 06:04</pre></div>
 </section>
 
 <section id="models">

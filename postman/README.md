@@ -28,6 +28,7 @@ being a duplicate. Folders 2 and 3 re-use folder 1's IDs on purpose (dedup and t
 | 7 Security and negative | | 401, 422, 413, prompt injection does not widen the plan |
 | 9 Live restart and guard rails | `docker compose -f compose.yaml -f compose.live-restart.yaml up -d mcp-remediation`; at most once per 15 min (cooldown) | demo-orders-api restarted and verified, result card, a second problem is rejected by the cooldown |
 | 8 Manual approval | `docker compose -f compose.yaml -f compose.manual-approval.yaml up -d agent-runtime` | interrupt, approve, resume, second decision 409 |
+| 10 Health review (OTA-APP-002) | the default stack (`health-review` on 8120) and `scripts/kev-tunnel.sh` for the analyst model (without it, reports hold code-checked findings only) | review completes with a critical under-min-ISR rule finding, Markdown report, Teams card, RCA with a rank-1 hypothesis, web view sign-in redirect with a strict CSP, expired report answers 410 |
 
 Kill switch: add `-f compose.kill-switch.yaml` and run folder 1; the remediation outcome is `rejected` (`disabled`).
 

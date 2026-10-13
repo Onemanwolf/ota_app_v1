@@ -27,6 +27,7 @@ class InsightsGrailSettings(GrailSettings):
 class ScheduleSettings(BaseModel):
     daily_at: time = time(6, 0)
     timezone: str = "UTC"
+    clusters: list[str] = Field(default_factory=list)  # reviewed daily; empty = no scheduled reviews
 
 
 class CollectSettings(BaseModel):
@@ -73,6 +74,7 @@ class RetentionSettings(BaseModel):
     evidence_max_age: timedelta = timedelta(hours=28)
     evidence_after_report: timedelta = timedelta(hours=4)
     purge_interval: timedelta = timedelta(minutes=15)
+    tombstone: timedelta = timedelta(days=30)  # expired reviews keep a content-free row (links answer 410)
 
 
 class TicketSettings(BaseModel):

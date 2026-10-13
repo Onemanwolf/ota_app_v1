@@ -95,3 +95,41 @@ async def test_postgres_store_completion_expiry_and_listing(pool: Pool) -> None:
     assert await store.list_reports(done + timedelta(hours=49), "c-pg") == []
     await store.fail_review(rid, "x")  # completed reviews are not overwritten
     assert (await store.get_review(rid)).status == "completed"  # type: ignore[union-attr]
+
+
+async def test_postgres_purge_and_tombstones(pool: Pool) -> None:
+    from datetime import UTC, datetime, timedelta
+    from uuid import UUID
+
+    from opstriage_insights.adapters.stores import PostgresReviewStore
+
+    await migrate(pool, "insights", MIGRATIONS)
+    store, t0 = PostgresReviewStore(pool), datetime(2026, 11, 1, 6, tzinfo=UTC)
+    await store.purge(t0, timedelta(days=30))  # baseline: rows left by other tests expire first
+    rid = UUID(int=88)
+    await store.start_review(rid, "rca", "c-purge", {"display_id": "P-1"}, t0, t0 + timedelta(hours=28))
+    await store.save_evidence(rid, "logs", t0, t0 + timedelta(hours=28), {"records": []})
+    done = t0 + timedelta(minutes=4)
+    await store.complete_review(
+        rid,
+        completed_at=done,
+        review_expires_at=done + timedelta(hours=48),
+        evidence_expires_at=done + timedelta(hours=4),
+        report={"worst_risk": None},
+        markdown="#",
+        dropped_uncited=0,
+        guard_withheld=0,
+    )
+    early = await store.purge(done + timedelta(hours=5), timedelta(days=30))
+    assert early.evidence_deleted == 1 and early.reports_deleted == 0
+    late = await store.purge(done + timedelta(hours=49), timedelta(days=30))
+    assert late.reports_deleted == 1 and late.reviews_expired == 1
+    tomb = await store.get_report(rid, done + timedelta(hours=49))
+    assert tomb is not None and tomb.expired
+    async with pool.connection() as conn:
+        cur = await conn.execute("SELECT subject FROM insights.reviews WHERE id = %s", (rid,))
+        assert (await cur.fetchone())["subject"] is None  # type: ignore[index]
+        cur = await conn.execute("SELECT count(*) AS n FROM insights.purge_log")
+        assert (await cur.fetchone())["n"] >= 2  # type: ignore[index]
+    final = await store.purge(done + timedelta(days=40), timedelta(days=30))
+    assert final.reviews_deleted >= 1 and await store.get_report(rid, done + timedelta(days=40)) is None

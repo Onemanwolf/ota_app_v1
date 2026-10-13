@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Literal, Protocol
 from uuid import UUID
 
@@ -23,6 +23,14 @@ class ReviewRow:
     worst_risk: str | None = None
     by_risk: dict[str, int] | None = None
     error: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class PurgeCounts:
+    evidence_deleted: int
+    reports_deleted: int
+    reviews_deleted: int  # tombstones older than the tombstone period
+    reviews_expired: int  # content removed, tombstone kept so links answer 410
 
 
 @dataclass(frozen=True, slots=True)
@@ -84,4 +92,13 @@ class ReviewStore(Protocol):
         self, now: datetime, cluster: str | None = None, limit: int = 50
     ) -> list[ReviewRow]:
         """Unexpired reviews, newest first (running and failed ones included, with their status)."""
+        ...
+
+    async def purge(self, now: datetime, tombstone: timedelta) -> PurgeCounts:
+        """Delete expired evidence and reports; blank expired reviews to tombstones (no content) and delete
+        tombstones older than `tombstone`; record the counts (never content) in the purge log."""
+        ...
+
+    async def expire_review(self, review_id: UUID, now: datetime) -> bool:
+        """Local/test only: make one review, its evidence and report expire at `now`."""
         ...

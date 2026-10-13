@@ -122,3 +122,22 @@ async def test_web_view_sign_in_list_and_report() -> None:
         re.findall(r'id="(ev-[a-z0-9]+)"', page.text)
     )
     assert "<script" not in page.text
+
+
+async def test_retention_purge_deletes_content_and_answers_410() -> None:
+    """Expire one review through the local dev endpoint: evidence and report go, links answer 410 (5.8)."""
+    headers = {"Authorization": "Bearer dev-insights-token"}
+    async with httpx2.AsyncClient(timeout=60, follow_redirects=False) as client:
+        digest = await client.post(f"{HEALTH_REVIEW}/v1/dev/digest/planted-disk-trend", headers=headers)
+        rid = digest.headers["x-review-id"]
+        counts = (await client.post(f"{HEALTH_REVIEW}/v1/dev/expire/{rid}", headers=headers)).json()
+        assert counts["evidence_deleted"] >= 3  # logs, metrics, problems bundles of this review
+        gone = await client.get(f"{HEALTH_REVIEW}/v1/reports/{rid}", headers=headers)
+        assert gone.status_code == 410
+        await client.post(
+            f"{HEALTH_REVIEW}/ui/login", data={"token": "dev-insights-token", "next": "/ui/reports"}
+        )
+        page = await client.get(f"{HEALTH_REVIEW}/ui/reports/{rid}")
+        listed = (await client.get(f"{HEALTH_REVIEW}/v1/reports", headers=headers)).json()["reports"]
+    assert page.status_code == 410 and "has expired" in page.text
+    assert rid not in {r["review_id"] for r in listed}

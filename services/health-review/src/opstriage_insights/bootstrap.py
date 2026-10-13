@@ -6,6 +6,7 @@ import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import httpx2
 
@@ -24,12 +25,14 @@ from opstriage_insights.adapters.llm_analyst import LlmAnalyst
 from opstriage_insights.adapters.notifier import McpNotifier
 from opstriage_insights.adapters.stores import PostgresReviewStore
 from opstriage_insights.application.collect import BuildDigest, CollectEvidence, PrepareReview
+from opstriage_insights.application.purge import Purge
 from opstriage_insights.application.run_rca import PlanRca
 from opstriage_insights.application.run_review import NotifyPolicy, RunReview
 from opstriage_insights.domain.model import ClusterScope
 from opstriage_insights.domain.redaction import Redactor
 from opstriage_insights.domain.retention import RetentionPolicy
 from opstriage_insights.entrypoints.api import Runner
+from opstriage_insights.entrypoints.scheduler import Scheduler
 from opstriage_insights.ports.analyst import Analyst
 from opstriage_insights.ports.guard import Guard
 from opstriage_insights.ports.notifier import Notifier
@@ -51,9 +54,13 @@ class Container:
     store: ReviewStore
     runner: Runner
     plan_rca: PlanRca
+    purge: Purge
+    scheduler: Scheduler | None = None
     http: httpx2.AsyncClient | None = None
 
     async def close(self) -> None:
+        if self.scheduler is not None:
+            await self.scheduler.stop()
         await self.runner.drain()
         if self.http is not None:
             await self.http.aclose()
@@ -138,13 +145,25 @@ async def build_container(settings: Settings, migrations_dir: Path = MIGRATIONS)
         concurrency=i.analyst.concurrency,
         notify=notify,
     )
+    runner = Runner(run)
+    purge = Purge(store, _now, r.tombstone)
     return Container(
         pool=pool,
         source=i.source,
         clusters=clusters,
         prepare=prepare,
         store=store,
-        runner=Runner(run),
+        runner=runner,
         plan_rca=PlanRca(problems, clusters, _now),
+        purge=purge,
+        scheduler=Scheduler(
+            purge,
+            runner,
+            [clusters[c] for c in i.schedule.clusters if c in clusters],
+            purge_interval=r.purge_interval,
+            daily_at=i.schedule.daily_at,
+            tz=ZoneInfo(i.schedule.timezone),
+            clock=_now,
+        ),
         http=http,
     )

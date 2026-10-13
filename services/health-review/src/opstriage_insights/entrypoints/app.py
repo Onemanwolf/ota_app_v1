@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
+from dataclasses import asdict
+from datetime import UTC, datetime
 from typing import Any
+from uuid import UUID
 
 import structlog
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Response, status
@@ -46,6 +49,15 @@ def dev_router(container: Container, guard: Callable[..., None]) -> APIRouter:
             headers={"X-Review-Id": str(prepared.review_id), "X-Digest-Tokens": str(d.tokens)},
         )
 
+    @router.post("/expire/{review_id}")
+    async def expire(review_id: UUID) -> dict[str, Any]:
+        """Make one review expire now and run the purge (retention tests without waiting 48 hours)."""
+        now = datetime.now(UTC)
+        if not await container.store.expire_review(review_id, now):
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "unknown review")
+        counts = await container.purge(now)
+        return {"review_id": str(review_id), **asdict(counts)}
+
     return router
 
 
@@ -81,6 +93,8 @@ def create_app(settings: Settings, container_factory: ContainerFactory = build_c
         )
         if settings.app_env == "local":
             app.include_router(dev_router(container, guard))
+        if container.scheduler is not None:
+            container.scheduler.start()
         log.info("health_review_started", source=container.source, clusters=len(container.clusters))
         try:
             yield

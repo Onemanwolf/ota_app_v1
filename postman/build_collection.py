@@ -111,8 +111,11 @@ def request(
     pre: str | None = None,
     test: str | None = None,
     description: str = "",
+    headers_extra: dict[str, str] | None = None,
+    follow_redirects: bool = True,
 ) -> dict[str, Any]:
     headers = [{"key": "Content-Type", "value": "application/json"}] if body is not None else []
+    headers += [{"key": k, "value": v} for k, v in (headers_extra or {}).items()]
     if auth:
         headers.append({"key": "Authorization", "value": f"Bearer {{{{{auth}}}}}"})
     item: dict[str, Any] = {
@@ -122,6 +125,8 @@ def request(
     }
     if body is not None:
         item["request"]["body"] = {"mode": "raw", "raw": body, "options": {"raw": {"language": "json"}}}
+    if not follow_redirects:
+        item["protocolProfileBehavior"] = {"followRedirects": False}
     if pre:
         item["event"].append(
             {"listen": "prerequest", "script": {"type": "text/javascript", "exec": pre.split("\n")}}
@@ -153,9 +158,11 @@ DEFAULTS = {
     "service_token": "dev-poller-token",
     "admin_token": "dev-admin-token",
     "wrong_token": "not-a-valid-token",
+    "insights": "http://localhost:8120",
+    "insights_token": "dev-insights-token",
 }
 
-COLLECTION_VERSION = 3  # bump when the structure changes, so the app shows which copy is imported
+COLLECTION_VERSION = 4  # bump when the structure changes, so the app shows which copy is imported
 
 # Runs before every request: fail with a readable message instead of "getaddrinfo ENOTFOUND {{intake}}".
 VARIABLE_GUARD = """const missing = ['intake', 'agent', 'sink', 'mailpit', 'mcp_ticketing'].filter(k => !pm.variables.get(k));
@@ -197,6 +204,143 @@ def post_wait_run(label: str, fixture: str, expected_plan: list[str]) -> list[di
             test=check_plan(expected_plan),
         ),
     ]
+
+
+def wait_review(var: str, tries: int = 100) -> tuple[str, str]:
+    """Polls GET /v1/reviews/{id} every 3 s until it is no longer running (reviews take ~30-60 s with Qwen)."""
+    pre = "setTimeout(() => {}, 3000);"
+    test = f"""const s = pm.response.json().status;
+const tries = Number(pm.collectionVariables.get('_tries') || 0);
+if (s === 'running' && tries < {tries}) {{
+  pm.collectionVariables.set('_tries', tries + 1);
+  postman.setNextRequest(pm.info.requestName);
+}} else {{
+  pm.collectionVariables.set('_tries', 0);
+  pm.test('review completed (was ' + s + ')', () => pm.expect(s).to.eql('completed'));
+}}"""
+    return pre, test
+
+
+def health_review_folder() -> dict[str, Any]:
+    wr_pre, wr_test = wait_review("review_id")
+    return folder(
+        "10 Health review (OTA-APP-002)",
+        [
+            request(
+                "Ready, fixture clusters loaded",
+                "GET",
+                "{{insights}}/readyz",
+                test="""pm.test('200', () => pm.response.to.have.status(200));
+pm.test('fixture clusters', () => pm.expect(pm.response.json().clusters).to.be.at.least(16));""",
+            ),
+            request(
+                "Start a review: planted-under-min-isr",
+                "POST",
+                "{{insights}}/v1/reviews",
+                auth="insights_token",
+                body=json.dumps({"cluster": "planted-under-min-isr"}),
+                test="""pm.test('202', () => pm.response.to.have.status(202));
+pm.collectionVariables.set('review_id', pm.response.json().review_id);""",
+            ),
+            request(
+                "Wait for the review",
+                "GET",
+                "{{insights}}/v1/reviews/{{review_id}}",
+                auth="insights_token",
+                pre=wr_pre,
+                test=wr_test,
+            ),
+            request(
+                "Report: critical rule finding, cited evidence, safeguards",
+                "GET",
+                "{{insights}}/v1/reports/{{review_id}}",
+                auth="insights_token",
+                test="""pm.test('200', () => pm.response.to.have.status(200));
+const r = pm.response.json();
+pm.test('worst risk critical (under-min-ISR rule)', () => pm.expect(r.worst_risk).to.eql('critical'));
+pm.test('breach evidence', () => pm.expect(r.evidence.some(e => e.type === 'breach' && e.rule === 'under-min-isr')).to.be.true);
+const ids = new Set(r.evidence.map(e => e.id));
+pm.test('every citation resolves', () => r.findings.forEach(f => f.citations.forEach(c => pm.expect(ids.has(c) || /^[BMLP]/.test(c)).to.be.true)));
+pm.test('safeguard counts present', () => pm.expect(r.counts).to.have.property('dropped_uncited'));
+pm.test('not cached', () => pm.expect(pm.response.headers.get('Cache-Control')).to.eql('no-store'));""",
+            ),
+            request(
+                "Report as Markdown",
+                "GET",
+                "{{insights}}/v1/reports/{{review_id}}",
+                auth="insights_token",
+                headers_extra={"Accept": "text/markdown"},
+                test="""pm.test('markdown', () => pm.expect(pm.response.text()).to.match(/^# Kafka health review: planted-under-min-isr/));""",
+            ),
+            request(
+                "Mock Teams got the health review card",
+                "GET",
+                "{{sink}}/requests",
+                test="""const id = pm.collectionVariables.get('review_id');
+const cards = pm.response.json().map(r => JSON.stringify(r.body));
+pm.test('card links to the report', () => pm.expect(cards.some(c => c.includes('Kafka health review: planted-under-min-isr') && c.includes(id))).to.be.true);""",
+            ),
+            request(
+                "Start a root-cause analysis: P-26101208",
+                "POST",
+                "{{insights}}/v1/analyses",
+                auth="insights_token",
+                body=json.dumps({"display_id": "P-26101208"}),
+                test="""pm.test('202', () => pm.response.to.have.status(202));
+const b = pm.response.json();
+pm.test('cluster resolved from the problem', () => pm.expect(b.cluster).to.eql('rca-follower-lag'));
+pm.collectionVariables.set('rca_id', b.review_id);""",
+            ),
+            request(
+                "Wait for the analysis",
+                "GET",
+                "{{insights}}/v1/reviews/{{rca_id}}",
+                auth="insights_token",
+                pre=wr_pre,
+                test=wr_test,
+            ),
+            request(
+                "RCA report: ranked hypotheses",
+                "GET",
+                "{{insights}}/v1/reports/{{rca_id}}",
+                auth="insights_token",
+                test="""const r = pm.response.json();
+pm.test('kind rca for P-26101208', () => { pm.expect(r.kind).to.eql('rca'); pm.expect(r.subject.display_id).to.eql('P-26101208'); });
+if (r.analyst_available) {
+  const h = r.findings.filter(f => f.kind === 'root_cause_hypothesis');
+  pm.test('a rank-1 hypothesis', () => pm.expect(h.length && h[0].rank).to.eql(1));
+}""",
+            ),
+            request(
+                "Web view asks for sign-in",
+                "GET",
+                "{{insights}}/ui/reports",
+                follow_redirects=False,
+                test="""pm.test('303 to sign-in', () => { pm.response.to.have.status(303); pm.expect(pm.response.headers.get('Location')).to.match(/^\\/ui\\/login/); });
+pm.test('strict CSP', () => pm.expect(pm.response.headers.get('Content-Security-Policy')).to.include("default-src 'none'"));""",
+            ),
+            request(
+                "Expire the review now (local dev endpoint)",
+                "POST",
+                "{{insights}}/v1/dev/expire/{{review_id}}",
+                auth="insights_token",
+                test="""pm.test('200', () => pm.response.to.have.status(200));
+const c = pm.response.json();
+pm.test('evidence and report deleted', () => { pm.expect(c.reports_deleted).to.be.at.least(1); });""",
+            ),
+            request(
+                "Expired report answers 410",
+                "GET",
+                "{{insights}}/v1/reports/{{review_id}}",
+                auth="insights_token",
+                test="""pm.test('410 Gone', () => pm.response.to.have.status(410));
+pm.test('no content', () => pm.expect(pm.response.text()).to.not.include('under-min-isr'));""",
+            ),
+        ],
+        "Health review and root-cause analysis on the fixture clusters (INSIGHTS__SOURCE=fake). Uses the analyst "
+        "model through scripts/kev-tunnel.sh; without it, reports contain code-checked findings only. "
+        "Sign in to the web view at {{insights}}/ui/login with the insights_token.",
+    )
 
 
 def build() -> dict[str, Any]:
@@ -747,7 +891,19 @@ pm.test('because of the cooldown', () => pm.expect(rem.reason).to.match(/^cooldo
             "description": "Mock Dynatrace webhooks against the local stack. Generated by postman/build_collection.py.",
             "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         },
-        "item": [health, happy, dedup, lifecycle, classic, routing, kev, security, approval, live],
+        "item": [
+            health,
+            happy,
+            dedup,
+            lifecycle,
+            classic,
+            routing,
+            kev,
+            security,
+            approval,
+            live,
+            health_review_folder(),
+        ],
         "event": [
             {
                 "listen": "prerequest",
@@ -755,7 +911,10 @@ pm.test('because of the cooldown', () => pm.expect(rem.reason).to.match(/^cooldo
             }
         ],
         "variable": [{"key": k, "value": v} for k, v in DEFAULTS.items()]
-        + [{"key": k, "value": ""} for k in ("event_id", "display_id", "alert_id", "_tries")],
+        + [
+            {"key": k, "value": ""}
+            for k in ("event_id", "display_id", "alert_id", "_tries", "review_id", "rca_id")
+        ],
     }
 
 

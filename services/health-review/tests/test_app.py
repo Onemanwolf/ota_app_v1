@@ -9,6 +9,7 @@ from opstriage_insights.adapters.fixtures import FixtureProblemSource
 from opstriage_insights.adapters.guard import KeywordGuard
 from opstriage_insights.adapters.stores import MemoryReviewStore
 from opstriage_insights.application.collect import BuildDigest, PrepareReview
+from opstriage_insights.application.purge import Purge
 from opstriage_insights.application.run_rca import PlanRca
 from opstriage_insights.application.run_review import RunReview
 from opstriage_insights.bootstrap import Container
@@ -62,6 +63,7 @@ async def _container(settings: Settings) -> Container:
         store=store,
         runner=Runner(run),
         plan_rca=PlanRca(FixtureProblemSource(STORE), dict(SCOPES), lambda: ANCHOR),
+        purge=Purge(store, lambda: ANCHOR),
     )
 
 
@@ -95,3 +97,11 @@ def test_dev_digest_endpoint_needs_a_token_and_a_known_cluster() -> None:
 def test_dev_digest_endpoint_is_not_mounted_outside_local() -> None:
     with TestClient(create_app(_settings("dev"), _container)) as client:
         assert client.post("/v1/dev/digest/planted-disk-trend", headers=TOKEN).status_code == 404
+
+
+def test_dev_expire_endpoint_expires_and_purges_one_review() -> None:
+    with TestClient(create_app(_settings(), _container)) as client:
+        rid = client.post("/v1/dev/digest/planted-disk-trend", headers=TOKEN).headers["x-review-id"]
+        assert client.post(f"/v1/dev/expire/{UUID(int=4242)}", headers=TOKEN).status_code == 404
+        body = client.post(f"/v1/dev/expire/{rid}", headers=TOKEN).json()
+    assert body["review_id"] == rid and body["evidence_deleted"] == 3
