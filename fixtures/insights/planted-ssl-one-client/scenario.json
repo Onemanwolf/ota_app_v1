@@ -1,0 +1,37 @@
+{
+  "cluster": "planted-ssl-one-client",
+  "kind": "planted",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "payments-producer fails SSL authentication every day at 09:00 (expired client keystore on one pod).",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [
+    {
+      "kind": "current_issue",
+      "min_risk": "low",
+      "evidence": {
+        "log": "failed authentication due to: SSL handshake failed"
+      }
+    }
+  ],
+  "forbid": {},
+  "counts": {
+    "logs": 22,
+    "problems": 0,
+    "series": 41
+  }
+}

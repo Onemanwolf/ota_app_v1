@@ -1,0 +1,38 @@
+{
+  "cluster": "planted-lag-growth",
+  "kind": "planted",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "billing-consumer lag grows for 5 days with no consumer errors (consumers under-provisioned).",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [
+    {
+      "kind": "trend",
+      "min_risk": "medium",
+      "evidence": {
+        "metric": "kafka.consumer.consumer-metrics.records-lag-max",
+        "entity": "billing-consumer"
+      }
+    }
+  ],
+  "forbid": {},
+  "counts": {
+    "logs": 15,
+    "problems": 0,
+    "series": 41
+  }
+}

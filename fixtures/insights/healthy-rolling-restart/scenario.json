@@ -1,0 +1,31 @@
+{
+  "cluster": "healthy-rolling-restart",
+  "kind": "healthy",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "Planned rolling restart 20h ago under maintenance: brief URP per broker, ISR recovered in minutes.",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [],
+  "forbid": {
+    "max_risk": "low"
+  },
+  "counts": {
+    "logs": 16,
+    "problems": 3,
+    "series": 41
+  }
+}

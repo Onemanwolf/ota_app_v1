@@ -1,0 +1,38 @@
+{
+  "cluster": "planted-disk-trend",
+  "kind": "planted",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "Disk on broker kafka-2's host climbs 1%/day for 14 days; 90% in about 12 days at this rate.",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [
+    {
+      "kind": "potential_issue",
+      "min_risk": "high",
+      "evidence": {
+        "metric": "dt.host.disk.used.percent",
+        "entity": "aks-kafka-pool-0002"
+      }
+    }
+  ],
+  "forbid": {},
+  "counts": {
+    "logs": 13,
+    "problems": 0,
+    "series": 41
+  }
+}

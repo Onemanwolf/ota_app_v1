@@ -1,0 +1,45 @@
+{
+  "cluster": "planted-controller-elections",
+  "kind": "planted",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "Leader elections cluster in bursts over the last 3 days; brokers miss heartbeats to the controller.",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [
+    {
+      "kind": "potential_issue",
+      "min_risk": "medium",
+      "evidence": {
+        "metric": "kafka.controller.ControllerStats.LeaderElectionRateAndTimeMs.OneMinuteRate",
+        "entity": "kafka-1"
+      }
+    },
+    {
+      "kind": "potential_issue",
+      "min_risk": "medium",
+      "evidence": {
+        "log": "Unable to send a heartbeat"
+      }
+    }
+  ],
+  "forbid": {},
+  "counts": {
+    "logs": 20,
+    "problems": 7,
+    "series": 41
+  }
+}

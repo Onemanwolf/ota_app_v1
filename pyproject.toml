@@ -34,6 +34,7 @@ known-first-party = ["opstriage_contracts", "opstriage_shared", "opstriage_*"]
 "evals/generate_dataset.py" = ["E501"]     # scenario text
 "evals/generate_kafka_dataset.py" = ["E501"]
 "fixtures/kafka/generate.py" = ["E501"]   # verbatim Kafka log lines and Dynatrace titles
+"fixtures/insights/generate.py" = ["E501"]  # verbatim Kafka log lines and scenario text
 "evals/compare_strategies.py" = ["E501"]  # prompts and runbook text
 "evals/kev_finetune/stress.py" = ["E501"]  # verbatim Kafka log lines
 "**/domain/questions.py" = ["E501"]         # decision-model prompts, verbatim from spec 12.4.2

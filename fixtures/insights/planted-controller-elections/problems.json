@@ -1,0 +1,107 @@
+[
+  {
+    "event.id": "8824295588282854102_1791774000000V2",
+    "display_id": "P-56021788",
+    "event.name": "Multiple infrastructure problems",
+    "event.category": "ERROR",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-12T03:00:00.000000000Z",
+    "event.end": "2026-10-12T03:12:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  },
+  {
+    "event.id": "2086747584010573411_1791734400000V2",
+    "display_id": "P-76549190",
+    "event.name": "Multiple infrastructure problems",
+    "event.category": "ERROR",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-11T16:00:00.000000000Z",
+    "event.end": "2026-10-11T16:12:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  },
+  {
+    "event.id": "6752251078120824328_1791694800000V2",
+    "display_id": "P-99262958",
+    "event.name": "Multiple infrastructure problems",
+    "event.category": "ERROR",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-11T05:00:00.000000000Z",
+    "event.end": "2026-10-11T05:12:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  },
+  {
+    "event.id": "1236364950121955307_1791655200000V2",
+    "display_id": "P-44866688",
+    "event.name": "Multiple infrastructure problems",
+    "event.category": "ERROR",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-10T18:00:00.000000000Z",
+    "event.end": "2026-10-10T18:12:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  },
+  {
+    "event.id": "6659345246349212717_1791615600000V2",
+    "display_id": "P-39825876",
+    "event.name": "Multiple infrastructure problems",
+    "event.category": "ERROR",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-10T07:00:00.000000000Z",
+    "event.end": "2026-10-10T07:12:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  },
+  {
+    "event.id": "6483277736206611202_1791576000000V2",
+    "display_id": "P-23478251",
+    "event.name": "Multiple infrastructure problems",
+    "event.category": "ERROR",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-09T20:00:00.000000000Z",
+    "event.end": "2026-10-09T20:12:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  },
+  {
+    "event.id": "7357986099637927500_1791536400000V2",
+    "display_id": "P-15135081",
+    "event.name": "Multiple infrastructure problems",
+    "event.category": "ERROR",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-09T09:00:00.000000000Z",
+    "event.end": "2026-10-09T09:12:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  }
+]

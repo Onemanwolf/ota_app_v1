@@ -1,0 +1,37 @@
+{
+  "cluster": "planted-fd-limit",
+  "kind": "planted",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "kafka-2 starts hitting the open-file limit; 'Too many open files' grows hour by hour.",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [
+    {
+      "kind": "potential_issue",
+      "min_risk": "high",
+      "evidence": {
+        "log": "Too many open files"
+      }
+    }
+  ],
+  "forbid": {},
+  "counts": {
+    "logs": 69,
+    "problems": 0,
+    "series": 41
+  }
+}

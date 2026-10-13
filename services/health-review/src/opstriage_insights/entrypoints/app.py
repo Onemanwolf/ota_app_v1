@@ -22,7 +22,7 @@ def create_app(settings: Settings, container_factory: ContainerFactory = build_c
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         container = await container_factory(settings)
         app.state.container = container
-        log.info("health_review_started", source=container.source)
+        log.info("health_review_started", source=container.source, clusters=len(container.clusters))
         try:
             yield
         finally:
@@ -41,6 +41,6 @@ def create_app(settings: Settings, container_factory: ContainerFactory = build_c
             raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "starting")
         async with container.pool.connection() as conn:
             await conn.execute("SELECT 1")
-        return {"status": "ready", "source": container.source}
+        return {"status": "ready", "source": container.source, "clusters": len(container.clusters)}
 
     return app

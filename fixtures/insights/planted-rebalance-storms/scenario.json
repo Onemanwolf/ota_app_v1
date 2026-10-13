@@ -1,0 +1,45 @@
+{
+  "cluster": "planted-rebalance-storms",
+  "kind": "planted",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "Every deploy of orders-consumer (3 in 24h) causes a rebalance storm and a lag spike.",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [
+    {
+      "kind": "trend",
+      "min_risk": "medium",
+      "evidence": {
+        "log": "consumer poll timeout has expired"
+      }
+    },
+    {
+      "kind": "trend",
+      "min_risk": "low",
+      "evidence": {
+        "metric": "kafka.consumer.consumer-metrics.records-lag-max",
+        "entity": "orders-consumer"
+      }
+    }
+  ],
+  "forbid": {},
+  "counts": {
+    "logs": 35,
+    "problems": 0,
+    "series": 41
+  }
+}

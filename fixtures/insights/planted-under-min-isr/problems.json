@@ -1,0 +1,16 @@
+[
+  {
+    "event.id": "4630173831226688832_1791720000000V2",
+    "display_id": "P-32432185",
+    "event.name": "Failure rate increase",
+    "event.category": "ERROR",
+    "event.status": "ACTIVE",
+    "event.start": "2026-10-11T12:00:00.000000000Z",
+    "event.end": null,
+    "affected_entity_ids": [
+      "SERVICE-2B3C4D5E6F708899"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  }
+]

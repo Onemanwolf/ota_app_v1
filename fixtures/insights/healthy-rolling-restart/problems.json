@@ -1,0 +1,44 @@
+[
+  {
+    "event.id": "5515330006540563177_1791712800000V2",
+    "display_id": "P-97331396",
+    "event.name": "Process unavailable",
+    "event.category": "AVAILABILITY",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-11T10:00:00.000000000Z",
+    "event.end": "2026-10-11T10:04:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+    ],
+    "maintenance.is_under_maintenance": true,
+    "dt.davis.is_duplicate": false
+  },
+  {
+    "event.id": "2186887829056483669_1791713700000V2",
+    "display_id": "P-91906549",
+    "event.name": "Process unavailable",
+    "event.category": "AVAILABILITY",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-11T10:15:00.000000000Z",
+    "event.end": "2026-10-11T10:19:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11"
+    ],
+    "maintenance.is_under_maintenance": true,
+    "dt.davis.is_duplicate": false
+  },
+  {
+    "event.id": "3588598024749306279_1791714600000V2",
+    "display_id": "P-76368531",
+    "event.name": "Process unavailable",
+    "event.category": "AVAILABILITY",
+    "event.status": "CLOSED",
+    "event.start": "2026-10-11T10:30:00.000000000Z",
+    "event.end": "2026-10-11T10:34:00.000000000Z",
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": true,
+    "dt.davis.is_duplicate": false
+  }
+]

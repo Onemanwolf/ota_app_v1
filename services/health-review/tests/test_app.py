@@ -30,12 +30,20 @@ class _Pool:
 
 async def _container(settings: Settings) -> Container:
     pool: Any = _Pool()
-    return Container(pool=pool, source=settings.insights.source)
+    unused: Any = None
+    return Container(
+        pool=pool,
+        source=settings.insights.source,
+        logs=unused,
+        metrics=unused,
+        problems=unused,
+        clusters=["c1", "c2"],
+    )
 
 
 def test_health_and_readiness() -> None:
     settings = Settings.model_validate({"db": {"dsn": "postgresql://unused"}})
     with TestClient(create_app(settings, _container)) as client:
         assert client.get("/healthz").json() == {"status": "ok"}
-        assert client.get("/readyz").json() == {"status": "ready", "source": "fake"}
+        assert client.get("/readyz").json() == {"status": "ready", "source": "fake", "clusters": 2}
     assert _Pool.closed

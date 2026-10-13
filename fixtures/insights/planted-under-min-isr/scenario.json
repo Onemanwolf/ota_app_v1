@@ -1,0 +1,45 @@
+{
+  "cluster": "planted-under-min-isr",
+  "kind": "planted",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "Topic payments has replicas on a broker that lags; partitions under min ISR reject acks=all writes.",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [
+    {
+      "kind": "current_issue",
+      "min_risk": "high",
+      "evidence": {
+        "metric": "kafka.server.ReplicaManager.UnderMinIsrPartitionCount",
+        "entity": "kafka-1"
+      }
+    },
+    {
+      "kind": "current_issue",
+      "min_risk": "high",
+      "evidence": {
+        "log": "NotEnoughReplicasException"
+      }
+    }
+  ],
+  "forbid": {},
+  "counts": {
+    "logs": 49,
+    "problems": 1,
+    "series": 41
+  }
+}
