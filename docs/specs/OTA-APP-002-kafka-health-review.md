@@ -265,7 +265,7 @@ The prompt has three parts:
 | `POST /analyses {"display_id": …}` or `{"entities", "from", "to"}` | Root-cause analysis. Returns `202` and an id. |
 | `GET /reports/{id}` | JSON. `Accept: text/markdown` returns Markdown. `410` after expiry. |
 | `GET /reports?cluster=…` | Unexpired reports for a cluster, newest first. |
-| `GET /health` | Liveness and dependency status: Grail (or fake), Qwen, guard, database. |
+| `GET /healthz`, `GET /readyz` | Liveness, and readiness (database plus the source in use), as in the other services. Dependency status for Qwen and the guard joins `/readyz` in 5.5. |
 
 Auth works like the other services: bearer tokens from `AUTH__INBOUND_TOKENS`. No secrets or full payloads are logged.
 
@@ -384,7 +384,7 @@ Clusters, review metrics, thresholds and redaction masks live in `config/insight
 | `reports` | Digest, validated findings and recommendations, Markdown | `review_id`, `completed_at`, `expires_at` (indexed) |
 | `purge_log` | Counts per purge run, no content (30 days) | `ran_at`, `evidence_deleted`, `reports_deleted` |
 
-Migrations go in `services/health-review/migrations/NNN_*.sql`, applied by `opstriage_shared.db.migrate`.
+Migrations go in `services/health-review/src/opstriage_insights/migrations/NNN_*.sql` (shipped inside the package, like the other services), applied by `opstriage_shared.db.migrate`.
 
 ## 11. Testing and evaluation
 
@@ -429,7 +429,7 @@ Migrations go in `services/health-review/migrations/NNN_*.sql`, applied by `opst
 
 | Step | Deliverable | Done when |
 |---|---|---|
-| 5.1 | Move `GrailClient` to a shared package; new `health-review` service skeleton, settings, migrations, `/health` | Lint, mypy, import contracts and the `/health` compose test pass |
+| 5.1 | Move `GrailClient` to the new `packages/dynatrace` (`opstriage_dynatrace`); new `health-review` service skeleton, settings, migrations, `/healthz` and `/readyz` | Lint, mypy, import contracts and the health compose test pass |
 | 5.2 | Fixture generator: multi-day metric series, log streams with planted issues, healthy clusters | Parity test, and fixtures load through the fake adapters |
 | 5.3 | Domain: templates, trends, baselines, redaction, retention | Unit tests from section 11 pass |
 | 5.4 | Collect → redact → digest → guard pipeline, with fakes | Digest snapshot tests, under the token budget |

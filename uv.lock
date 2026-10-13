@@ -6,6 +6,8 @@ requires-python = "==3.13.*"
 members = [
     "ops-triage-agents",
     "opstriage-contracts",
+    "opstriage-dynatrace",
+    "opstriage-health-review",
     "opstriage-intake",
     "opstriage-notification",
     "opstriage-poller",
@@ -947,6 +949,42 @@ dependencies = [
 requires-dist = [{ name = "pydantic", specifier = ">=2.12,<3" }]
 
 [[package]]
+name = "opstriage-dynatrace"
+version = "0.1.0"
+source = { editable = "packages/dynatrace" }
+dependencies = [
+    { name = "httpx2" },
+    { name = "pydantic" },
+    { name = "tenacity" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "httpx2", specifier = "==2.13.1" },
+    { name = "pydantic", specifier = ">=2.12,<3" },
+    { name = "tenacity", specifier = "==9.2.1" },
+]
+
+[[package]]
+name = "opstriage-health-review"
+version = "0.1.0"
+source = { editable = "services/health-review" }
+dependencies = [
+    { name = "opstriage-contracts" },
+    { name = "opstriage-dynatrace" },
+    { name = "opstriage-shared" },
+    { name = "uvicorn" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "opstriage-contracts", editable = "packages/contracts" },
+    { name = "opstriage-dynatrace", editable = "packages/dynatrace" },
+    { name = "opstriage-shared", editable = "packages/shared" },
+    { name = "uvicorn", specifier = "==0.54.0" },
+]
+
+[[package]]
 name = "opstriage-intake"
 version = "0.1.0"
 source = { editable = "services/intake-api" }
@@ -993,6 +1031,7 @@ source = { editable = "services/poller" }
 dependencies = [
     { name = "httpx2" },
     { name = "opstriage-contracts" },
+    { name = "opstriage-dynatrace" },
     { name = "opstriage-shared" },
     { name = "tenacity" },
 ]
@@ -1001,6 +1040,7 @@ dependencies = [
 requires-dist = [
     { name = "httpx2", specifier = "==2.13.1" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
+    { name = "opstriage-dynatrace", editable = "packages/dynatrace" },
     { name = "opstriage-shared", editable = "packages/shared" },
     { name = "tenacity", specifier = "==9.2.1" },
 ]

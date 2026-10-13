@@ -5,18 +5,10 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
 
+from opstriage_dynatrace.grail import GrailSettings
 from opstriage_shared.settings import BaseServiceSettings
 
-
-class GrailSettings(BaseModel):
-    environment_url: str = "https://example.apps.dynatrace.com"
-    oauth_client_id: str = ""
-    oauth_client_secret: SecretStr = SecretStr("")
-    oauth_scopes: str = (
-        "storage:buckets:read storage:events:read storage:entities:read storage:smartscape:read"
-    )
-    sso_url: str = "https://sso.dynatrace.com/sso/oauth2/token"
-    query_timeout_ms: int = Field(default=10_000, ge=1_000)
+__all__ = ["GrailSettings", "Settings"]
 
 
 class ClassicSettings(BaseModel):
@@ -44,9 +36,7 @@ class Settings(BaseServiceSettings):
     @model_validator(mode="after")
     def _check(self) -> Settings:
         p = self.poller
-        if p.source == "grail" and not (
-            p.grail.oauth_client_id and p.grail.oauth_client_secret.get_secret_value()
-        ):
+        if p.source == "grail" and not p.grail.configured:
             raise ValueError(
                 "POLLER__GRAIL__OAUTH_CLIENT_ID and _SECRET are required for POLLER__SOURCE=grail"
             )

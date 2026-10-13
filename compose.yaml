@@ -57,6 +57,14 @@ services:
       postgres: { condition: service_healthy }
       intake-api: { condition: service_healthy }
 
+  health-review:                          # OTA-APP-002; INSIGHTS__SOURCE=fake serves fixtures/insights
+    <<: *python-service
+    build: { context: ., dockerfile: services/health-review/Dockerfile }
+    environment:
+      SERVER__PORT: "8120"
+    ports: ["8120:8120"]
+    healthcheck: *http-health
+
   mcp-notification:
     <<: *python-service
     build: { context: ., dockerfile: services/mcp-notification/Dockerfile }

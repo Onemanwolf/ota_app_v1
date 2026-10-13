@@ -4,7 +4,7 @@ Read docs/specs/OTA-APP-001-application-spec.md before changing code. Build modu
 The local build plan (Kev on the DGX Spark, everything else mocked, Postman-driven) is docs/BUILD-PLAN.md.
 
 ## Commands (bash or PowerShell)
-- Install: uv sync
+- Install: uv sync --all-packages   (plain `uv sync` installs only the workspace root)
 - Lint and format: uv run ruff check . ; uv run ruff format --check .
 - Types: uv run mypy packages services
 - Architecture rules: uv run lint-imports
