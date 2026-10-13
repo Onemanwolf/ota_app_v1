@@ -12,3 +12,6 @@ build/
 *.egg-info/
 evals/reports/*.xml
 .DS_Store
+# Kev fine-tune data (regenerate: uv run python evals/kev_finetune/build_records.py) and pulled runs
+evals/kev_finetune/data/
+evals/kev_finetune/runs/
