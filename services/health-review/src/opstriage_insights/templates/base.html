@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+{% block meta %}{% endblock %}
+<title>{% block title %}Kafka health{% endblock %} · Ops Triage</title>
+<link rel="stylesheet" href="/ui/static/report.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="/ui/reports">Kafka health reviews</a>
+  {% if user is defined and user %}
+  <nav class="bar-actions">
+    <a href="/ui/rca">Root-cause analysis</a>
+    <form method="post" action="/ui/logout">
+      <input type="hidden" name="csrf" value="{{ user.csrf }}">
+      <button class="link" type="submit">Sign out</button>
+    </form>
+  </nav>
+  {% endif %}
+</header>
+<main class="page">
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>

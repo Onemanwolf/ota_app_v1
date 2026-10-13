@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Root-cause analysis{% endblock %}
+{% block content %}
+<section class="narrow">
+  <h1>Root-cause analysis</h1>
+  <p class="muted">Analyses one Dynatrace problem: from 2 hours before it started until it ended. Signals that changed first are ranked as likely causes. Nothing is changed or restarted.</p>
+  {% if error %}<p class="alert" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" action="/ui/analyses" class="stack">
+    <input type="hidden" name="csrf" value="{{ user.csrf }}">
+    <label for="display_id">Problem id</label>
+    <input id="display_id" name="display_id" value="{{ display_id }}" placeholder="P-26101208" pattern="P-[0-9]{1,20}" required>
+    <label for="cluster">Cluster <span class="muted">(only if the problem spans several)</span></label>
+    <select id="cluster" name="cluster">
+      <option value="">Find it from the problem</option>
+      {% for c in clusters %}<option value="{{ c }}" {% if c == cluster %}selected{% endif %}>{{ c }}</option>{% endfor %}
+    </select>
+    <button type="submit">Run root-cause analysis</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ops Triage Agents Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: reference manual. Sticky contents rail on wide screens, one reading column, diagrams in framed panels. */
+:root {
+  --bg: #f4f6f8; --surface: #ffffff; --ink: #15212c; --muted: #566472; --line: #d8dee5;
+  --accent: #1d5bbf; --accent-soft: #e5edf9; --ok: #1f7a4d; --warn: #9a5b00; --crit: #b0271f;
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e141a; --surface: #151e27; --ink: #e4eaf0; --muted: #9aa7b4; --line: #2a3542;
+  --accent: #82a9ee; --accent-soft: #1a2940; --ok: #5bbd88; --warn: #e0a54d; --crit: #ef7d73; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e141a; --surface: #151e27; --ink: #e4eaf0; --muted: #9aa7b4; --line: #2a3542;
+  --accent: #82a9ee; --accent-soft: #1a2940; --ok: #5bbd88; --warn: #e0a54d; --crit: #ef7d73; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.6 var(--font-body); margin: 0 }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 32px 64px;
+  display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start;
+  font-size: 13px; display: grid; gap: 4px }
+nav.toc .label { font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 8px }
+nav.toc a { color: var(--muted); text-decoration: none; padding: 3px 0 3px 10px; border-left: 2px solid var(--line) }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); border-left-color: var(--accent); outline: none }
+main { min-width: 0; display: grid; gap: 56px }
+header.top { display: grid; gap: 14px }
+.eyebrow { font: 500 12px/1 var(--font-mono); color: var(--accent); letter-spacing: .04em }
+h1 { font: 600 clamp(30px, 4vw, 42px)/1.1 var(--font-display); margin: 0; text-wrap: balance; letter-spacing: -.01em }
+h2 { font: 600 26px/1.2 var(--font-display); margin: 0; text-wrap: balance }
+h3 { font: 600 17px/1.3 var(--font-body); margin: 8px 0 0 }
+p { margin: 0; max-width: 68ch }
+.lede { font-size: 17px; color: var(--muted); max-width: 62ch }
+section { display: grid; gap: 16px; scroll-margin-top: 24px }
+.stamp { display: flex; flex-wrap: wrap; gap: 8px 18px; font: 12px/1.4 var(--font-mono); color: var(--muted);
+  font-variant-numeric: tabular-nums; padding-top: 6px; border-top: 1px solid var(--line) }
+.stamp b { color: var(--ink); font-weight: 500 }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px; overflow-x: auto }
+.diagram pre.mermaid { margin: 0; background: none; font-family: var(--font-mono); font-size: 12px; color: var(--ink);
+  display: flex; justify-content: center; min-width: min-content }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 13px; color: var(--muted) }
+.legend span { display: inline-flex; align-items: center; gap: 8px }
+.shape { width: 22px; height: 14px; border: 2px solid var(--ink); display: inline-block; background: var(--surface) }
+.shape.round { border-radius: 999px; width: 16px; height: 16px }
+.shape.diamond { width: 12px; height: 12px; transform: rotate(45deg); border-style: dashed }
+.shape.double { box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 3px var(--ink) }
+.shape.hex { clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--ink); border: 0 }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 560px }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font: 600 11px/1.3 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+tr:last-child td { border-bottom: 0 }
+code { font: 12.5px var(--font-mono); background: var(--accent-soft); padding: 1px 5px; border-radius: 4px }
+.chip { font: 500 11px/1 var(--font-mono); padding: 4px 7px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap }
+.ok { color: var(--ok) } .warn { color: var(--warn) } .crit { color: var(--crit) }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px }
+.note { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; color: var(--muted); max-width: 70ch }
+ul.plain { margin: 0; padding-left: 18px; display: grid; gap: 4px; max-width: 70ch }
+@media (max-width: 860px) { .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px }
+  nav.toc { position: static; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important } }
+html { scroll-behavior: smooth }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <div class="label">Contents</div>
+  <a href="#overview">Overview</a>
+  <a href="#context-map">Context map</a>
+  <a href="#packages">Shared packages and layers</a>
+  <a href="#topology">Runtime topology</a>
+  <a href="#triage-flow">Triage flow</a>
+  <a href="#graph">LangGraph triage graph</a>
+  <a href="#remediation">Remediation subgraph</a>
+  <a href="#decisions">How decisions are made</a>
+  <a href="#rules-and-signatures">Rules and signatures</a>
+  <a href="#policy">Policy gate</a>
+  <a href="#lifecycle">Alert lifecycle</a>
+  <a href="#review">Health review</a>
+  <a href="#rca">Root-cause analysis</a>
+  <a href="#retention">Retention</a>
+  <a href="#models">Switching models</a>
+  <a href="#data">Data ownership</a>
+  <a href="#glossary">Glossary</a>
+</nav>
+
+<main>
+<header class="top" id="overview">
+  <div class="eyebrow">OTA-APP-001 · OTA-APP-002 · architecture</div>
+  <h1>Ops Triage Agents</h1>
+  <p class="lede">The app receives Dynatrace problems for a Kafka platform, decides what to do about each one, and acts through tools it does not own. A second job reviews Kafka logs and metrics daily and reports trends, risks and likely root causes. Everything a model says is checked by code before it reaches anyone.</p>
+  <div class="stamp">
+    <span>after commit <b>b9acea7</b></span><span>modules <b>0–4, 5.1–5.6</b> built</span>
+    <span>tests <b>562</b> unit · <b>34</b> compose</span><span>import contracts <b>4</b> kept</span>
+  </div>
+  <div class="diagram"><pre class="mermaid">flowchart LR
+  DT[&quot;Dynatrace&lt;br/&gt;problems · logs · metrics&quot;]
+  TRI[&quot;Incident triage&lt;br/&gt;one problem at a time, in seconds&quot;]
+  REV[&quot;Health review&lt;br/&gt;daily and on demand&quot;]
+  ACT[&quot;Notify · ticket · escalate&lt;br/&gt;restart (guarded, approved)&quot;]
+  RPT[&quot;Report kept 48 h&lt;br/&gt;Teams summary card&quot;]
+  MOD[&quot;Models&lt;br/&gt;classifier · LLM · injection guard&quot;]
+  DT --&gt; TRI --&gt; ACT
+  DT --&gt; REV --&gt; RPT
+  MOD -.-&gt; TRI
+  MOD -.-&gt; REV</pre></div>
+</header>
+
+<section id="context-map">
+  <h2>Context map</h2>
+  <p>Each bounded context is its own service with its own PostgreSQL schema. Dynatrace formats enter only through anti-corruption layers (ACL) that map them to one published event, <code>ProblemEvent</code>. Triage never touches Teams, tickets or Docker directly: it asks the owning context through MCP tools.</p>
+  <div class="diagram"><pre class="mermaid">flowchart LR
+  subgraph EXT[&quot;External systems&quot;]
+    WF[&quot;Dynatrace Workflows&quot;]
+    CW[&quot;Dynatrace classic webhook&quot;]
+    GR[(&quot;Grail · Problems API v2&quot;)]
+    TEAMS[&quot;Microsoft Teams&quot;]
+    MAIL[&quot;E-mail&quot;]
+    HOSTS[&quot;Docker hosts · VMs&quot;]
+    MODELS[&quot;Model endpoints&lt;br/&gt;System One · OpenAI-compatible · guard&quot;]
+  end
+  subgraph INTAKE[&quot;Alert Intake&quot;]
+    API[&quot;intake-api&quot;]
+  end
+  subgraph POLL[&quot;Dynatrace Polling&quot;]
+    POLLER[&quot;poller&quot;]
+  end
+  subgraph TRIAGE[&quot;Triage&quot;]
+    AGENT[&quot;agent-runtime&lt;br/&gt;LangGraph&quot;]
+  end
+  subgraph INSIGHTS[&quot;Insights&quot;]
+    HR[&quot;health-review&quot;]
+  end
+  subgraph NOTIF[&quot;Notification&quot;]
+    MN[&quot;mcp-notification&quot;]
+  end
+  subgraph TICK[&quot;Ticketing&quot;]
+    MT[&quot;mcp-ticketing&quot;]
+  end
+  subgraph REM[&quot;Remediation&quot;]
+    MR[&quot;mcp-remediation&quot;]
+  end
+  WF -- &quot;ACL: workflow adapter&quot; --&gt; API
+  CW -- &quot;ACL: classic adapter&quot; --&gt; API
+  GR -- &quot;ACL: Grail and v2 adapters&quot; --&gt; POLLER
+  POLLER -- &quot;ProblemEvent (published language)&quot; --&gt; API
+  API -- &quot;transactional inbox&quot; --&gt; AGENT
+  AGENT -- &quot;MCP tools&quot; --&gt; MN
+  AGENT -- &quot;MCP tools&quot; --&gt; MT
+  AGENT -- &quot;MCP tools&quot; --&gt; MR
+  GR -- &quot;ACL: DQL logs, metrics, problems&quot; --&gt; HR
+  HR -- &quot;MCP tool&quot; --&gt; MN
+  AGENT -. &quot;decide&quot; .-&gt; MODELS
+  HR -. &quot;analyse · screen&quot; .-&gt; MODELS
+  MN --&gt; TEAMS
+  MN --&gt; MAIL
+  MR --&gt; HOSTS</pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Context</th><th>Owns</th><th>Exposes</th><th>Talks to, through ports</th></tr></thead>
+    <tbody>
+      <tr><td>Alert Intake</td><td>Alert, deduplication, inbox</td><td>Webhook and canonical HTTP endpoints, inbox table</td><td>Nothing: Dynatrace formats arrive through adapters</td></tr>
+      <tr><td>Dynatrace Polling</td><td>Poll cursor</td><td>Nothing; a client of Intake</td><td><code>ProblemSource</code> (Grail, classic, fake), intake client</td></tr>
+      <tr><td>Triage</td><td>Triage run, decision, policy, LangGraph workflow</td><td>Run status, approval API</td><td>Decision model, context source, notification, ticketing, remediation, target resolver</td></tr>
+      <tr><td>Insights</td><td>Reviews, redacted evidence, reports</td><td>Reviews and reports API, web view (5.7)</td><td>Log, metric and problem sources, analyst, guard, notifier, store</td></tr>
+      <tr><td>Notification</td><td>Deliveries</td><td>MCP <code>send_notification</code></td><td>Teams webhook, SMTP</td></tr>
+      <tr><td>Ticketing</td><td>Tickets</td><td>MCP ticket tools</td><td>Ticket store (fake in v1)</td></tr>
+      <tr><td>Remediation</td><td>Target registry, executions, guard rails</td><td>MCP restart and status tools</td><td>Restart executor (local Docker, Azure Run Command, SSH)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="packages">
+  <h2>Shared packages and layers</h2>
+  <p>Contexts share only small packages: the published language, a technical kernel, a Grail client and a model-agnostic LLM client. No service imports another service.</p>
+  <div class="diagram"><pre class="mermaid">flowchart TB
+  subgraph SVC[&quot;Services (bounded contexts)&quot;]
+    I[&quot;intake-api&quot;]
+    P[&quot;poller&quot;]
+    A[&quot;agent-runtime&quot;]
+    H[&quot;health-review&quot;]
+    N[&quot;mcp-notification&quot;]
+    T[&quot;mcp-ticketing&quot;]
+    R[&quot;mcp-remediation&quot;]
+  end
+  subgraph PKG[&quot;Shared packages&quot;]
+    C[&quot;opstriage-contracts&lt;br/&gt;published language&quot;]
+    S[&quot;opstriage-shared&lt;br/&gt;settings · DB · auth · logging&quot;]
+    DY[&quot;opstriage-dynatrace&lt;br/&gt;Grail client&quot;]
+    L[&quot;opstriage-llm&lt;br/&gt;model-agnostic chat&quot;]
+  end
+  SVC --&gt; C
+  SVC --&gt; S
+  P --&gt; DY
+  H --&gt; DY
+  A --&gt; L
+  H --&gt; L</pre></div>
+  <h3>Inside every service</h3>
+  <p>Clean Architecture layers. The domain and application layers import no frameworks or SDKs; adapters implement the ports; the composition root is the only place that knows concrete classes. <code>lint-imports</code> enforces this on every build.</p>
+  <div class="diagram"><pre class="mermaid">flowchart TB
+  EP[&quot;entrypoints&lt;br/&gt;HTTP · worker · scheduler&quot;]
+  APP[&quot;application&lt;br/&gt;use cases&quot;]
+  DOM[&quot;domain&lt;br/&gt;pure rules, no frameworks&quot;]
+  PORTS[&quot;ports&lt;br/&gt;interfaces&quot;]
+  AD[&quot;adapters&lt;br/&gt;Grail · MCP · Postgres · models · fakes&quot;]
+  BOOT[&quot;bootstrap&lt;br/&gt;composition root&quot;]
+  EP --&gt; APP
+  APP --&gt; DOM
+  APP --&gt; PORTS
+  AD -. &quot;implements&quot; .-&gt; PORTS
+  BOOT --&gt; EP
+  BOOT --&gt; AD</pre></div>
+</section>
+
+<section id="topology">
+  <h2>Runtime topology</h2>
+  <p>Locally, everything except the models runs in Docker on the Mac. Models run on the DGX Spark and are reached through one SSH tunnel, because containers on the Mac cannot reach the LAN directly.</p>
+  <div class="diagram"><pre class="mermaid">flowchart LR
+  subgraph MAC[&quot;Mac · docker compose&quot;]
+    direction TB
+    IN[&quot;intake-api :8000&quot;]
+    AG[&quot;agent-runtime :8010&quot;]
+    HRV[&quot;health-review :8120&quot;]
+    MCPN[&quot;mcp-notification :8101&quot;]
+    MCPT[&quot;mcp-ticketing :8102&quot;]
+    MCPR[&quot;mcp-remediation :8103&quot;]
+    PG[(&quot;postgres :5432&quot;)]
+    SINK[&quot;webhook-sink :8091&lt;br/&gt;stands in for Teams&quot;]
+    MP[&quot;mailpit :8025&quot;]
+    DEMO[&quot;demo Kafka · demo targets&quot;]
+    TUN[&quot;SSH tunnel&lt;br/&gt;18003 · 18001 · 18004&quot;]
+  end
+  subgraph SPARK[&quot;DGX Spark&quot;]
+    direction TB
+    KEV[&quot;kev-kafka :8003&lt;br/&gt;fine-tuned Kev&quot;]
+    QW[&quot;qwen38-flash :8001&lt;br/&gt;Qwen via vLLM&quot;]
+    GD[&quot;guard :8004&lt;br/&gt;prompt-injection model&quot;]
+  end
+  AG --&gt; TUN
+  HRV --&gt; TUN
+  TUN --&gt; KEV
+  TUN --&gt; QW
+  TUN --&gt; GD
+  MCPN --&gt; SINK
+  MCPN --&gt; MP
+  MCPR --&gt; DEMO</pre></div>
+</section>
+
+<section id="triage-flow">
+  <h2>Triage flow, end to end</h2>
+  <p>A problem is accepted in milliseconds and triaged asynchronously. The inbox is transactional, so a webhook is never lost and a crashed worker's alert is picked up again when its lease expires.</p>
+  <div class="diagram"><pre class="mermaid">sequenceDiagram
+  autonumber
+  participant DT as Dynatrace
+  participant IN as intake-api
+  participant DB as Postgres inbox
+  participant AG as agent-runtime
+  participant MR as mcp-remediation
+  participant M as Classifier or LLM
+  participant MN as mcp-notification
+  participant T as Teams
+  DT-&gt;&gt;IN: problem webhook (workflow or classic)
+  IN-&gt;&gt;IN: adapter maps to ProblemEvent, deduplicates
+  IN-&gt;&gt;DB: insert alert (pending)
+  IN--&gt;&gt;DT: 202 Accepted
+  AG-&gt;&gt;DB: claim next alert (lease)
+  AG-&gt;&gt;MR: resolve_target (registry match)
+  AG-&gt;&gt;AG: load context, pre_route (rules, Kafka signatures)
+  opt no rule or signature matched
+    AG-&gt;&gt;M: classify
+  end
+  AG-&gt;&gt;AG: policy_gate builds the plan
+  par each branch in the plan
+    AG-&gt;&gt;MN: send_notification
+    MN-&gt;&gt;T: adaptive card
+  and
+    AG-&gt;&gt;MR: restart (guard, approval, execute, verify)
+  end
+  AG-&gt;&gt;DB: alert done</pre></div>
+</section>
+
+<section id="graph">
+  <h2>LangGraph triage graph</h2>
+  <p>This is the graph defined in <code>agent-runtime/graph/build.py</code>. Two routing functions decide the path: <code>after_pre_route</code> chooses between resolving, classifying or going straight to the policy gate, and <code>fan_out</code> starts one branch per action in the plan. The branches run in parallel; <code>finalize</code> is deferred, so it runs once after every chosen branch has finished.</p>
+  <div class="legend">
+    <span><i class="shape round"></i>START and END</span>
+    <span><i class="shape diamond"></i>routing (conditional edge)</span>
+    <span><i class="shape double"></i>decision model or subgraph</span>
+    <span><i class="shape"></i>node</span>
+  </div>
+  <div class="diagram"><pre class="mermaid">flowchart TD
+  S((START))
+  LC[&quot;load_context&lt;br/&gt;resolve target · fetch logs and evidence&quot;]
+  PR[&quot;pre_route&lt;br/&gt;policy rules · Kafka signatures&quot;]
+  R1{&quot;after_pre_route&quot;}
+  CL[[&quot;classify&lt;br/&gt;decision model&quot;]]
+  RES[&quot;resolve&lt;br/&gt;CLOSED problems&quot;]
+  PG[&quot;policy_gate&lt;br/&gt;thresholds · autonomy → plan&quot;]
+  R2{&quot;fan_out&lt;br/&gt;one branch per plan item&quot;}
+  N[&quot;notify&quot;]
+  TK[&quot;ticket&quot;]
+  ES[&quot;escalate&quot;]
+  RM[[&quot;remediate&lt;br/&gt;subgraph&quot;]]
+  F[&quot;finalize&lt;br/&gt;deferred join&quot;]
+  X((END))
+  S --&gt; LC --&gt; PR --&gt; R1
+  R1 -- &quot;problem CLOSED&quot; --&gt; RES
+  R1 -- &quot;rule or signature decided&quot; --&gt; PG
+  R1 -- &quot;no match&quot; --&gt; CL
+  CL --&gt; PG
+  PG --&gt; R2
+  R2 -- &quot;notify&quot; --&gt; N
+  R2 -- &quot;ticket&quot; --&gt; TK
+  R2 -- &quot;escalate&quot; --&gt; ES
+  R2 -- &quot;remediate&quot; --&gt; RM
+  R2 -- &quot;empty plan · suppress&quot; --&gt; F
+  N --&gt; F
+  TK --&gt; F
+  ES --&gt; F
+  RM --&gt; F
+  RES --&gt; F
+  F --&gt; X
+  classDef term stroke-width:3px
+  classDef decide stroke-width:3px,stroke-dasharray:4 3
+  classDef model stroke-width:3px
+  class S,X term
+  class R1,R2 decide
+  class CL model</pre></div>
+  <div class="cols">
+    <p class="note"><b>Decision node.</b> <code>classify</code> calls the configured decision model. If the model fails or returns something invalid, a safe rules decision is used and the error is recorded on the run.</p>
+    <p class="note"><b>Branching nodes.</b> <code>notify</code>, <code>ticket</code>, <code>escalate</code> and <code>remediate</code> are action agents. The policy gate, not the model, decides which of them run.</p>
+  </div>
+</section>
+
+<section id="remediation">
+  <h2>Remediation subgraph</h2>
+  <p>A restart is the only action that changes infrastructure, so it passes several checks. The target always comes from the registry, never from model output or log text. Manual approval pauses the graph with <code>interrupt()</code>; the state is checkpointed in Postgres and the alert waits in <code>awaiting_approval</code> until a person decides.</p>
+  <div class="legend"><span><i class="shape hex"></i>pause until a person responds</span></div>
+  <div class="diagram"><pre class="mermaid">flowchart TD
+  S((START))
+  G[&quot;guard&lt;br/&gt;re-read problem · one unambiguous target · autonomy allows it&quot;]
+  RG{&quot;after_guard&quot;}
+  A[&quot;request_approval&quot;]
+  W{{&quot;interrupt: wait for a person&lt;br/&gt;POST /v1/runs/{run_id}/approval&quot;}}
+  RA{&quot;after_approval&quot;}
+  EX[&quot;execute&lt;br/&gt;MCP restart · idempotency key · cooldown · cap&quot;]
+  V[&quot;verify&lt;br/&gt;after a delay: container healthy, problem state&quot;]
+  RP[&quot;report&quot;]
+  X((END))
+  S --&gt; G --&gt; RG
+  RG -- &quot;skipped: no target, notify_only, problem closed&quot; --&gt; RP
+  RG -- &quot;allowed&quot; --&gt; A
+  A -- &quot;manual approval&quot; --&gt; W
+  W -. &quot;resume from checkpoint&quot; .-&gt; RA
+  A -- &quot;autonomous or auto mode&quot; --&gt; RA
+  RA -- &quot;approved&quot; --&gt; EX --&gt; V --&gt; RP
+  RA -- &quot;rejected&quot; --&gt; RP
+  RP --&gt; X</pre></div>
+</section>
+
+<section id="decisions">
+  <h2>How decisions are made</h2>
+  <p>Deterministic checks come first, so known patterns are decided instantly and audited by id. Only what they cannot decide reaches a model.</p>
+  <div class="diagram"><pre class="mermaid">flowchart LR
+  E[&quot;ProblemEvent&lt;br/&gt;+ context&quot;]
+  P1{&quot;Policy rules&lt;br/&gt;maintenance · test notification · duplicate&quot;}
+  P2{&quot;Kafka signatures&lt;br/&gt;offline partitions · broker down · ...&quot;}
+  P3[[&quot;Decision model&quot;]]
+  DR[&quot;Decision&lt;br/&gt;source: rules, audited by id&quot;]
+  DM[&quot;Decision&lt;br/&gt;source: model&quot;]
+  FB[&quot;Rules fallback&quot;]
+  K[&quot;Kev · Jev · Microsoft-Decision-1&lt;br/&gt;System One API&quot;]
+  Q[&quot;Qwen or any OpenAI-compatible LLM&lt;br/&gt;with the Kafka runbook&quot;]
+  E --&gt; P1
+  P1 -- &quot;match&quot; --&gt; DR
+  P1 -- &quot;none&quot; --&gt; P2
+  P2 -- &quot;match&quot; --&gt; DR
+  P2 -- &quot;none&quot; --&gt; P3
+  P3 --&gt; DM
+  P3 -. &quot;error or invalid output&quot; .-&gt; FB --&gt; DR
+  K -. &quot;configured provider&quot; .-&gt; P3
+  Q -. &quot;configured provider&quot; .-&gt; P3</pre></div>
+  <h3 id="rules-and-signatures">Rules and signatures: the "rule or signature decided" path</h3>
+  <p>In the graph, <code>pre_route</code> runs two kinds of fixed, code-only checks before any model is asked. The first match wins: the action is decided there, recorded with <code>source: rules</code>, the check's id and the facts that fired it, and the run goes straight to the policy gate. In the Kafka test set, this path decided 131 of 150 cases; only 19 reached the model.</p>
+  <div class="diagram"><pre class="mermaid">flowchart TD
+  PR[&quot;pre_route&quot;]
+  R{&quot;Policy rules&lt;br/&gt;config/policy.yaml&quot;}
+  SUP1[&quot;suppress&quot;]
+  G1{&quot;1 · Data at risk?&quot;}
+  G2{&quot;2 · Expected or harmless?&quot;}
+  G3{&quot;3 · One instance broken,&lt;br/&gt;rest of the cluster healthy?&quot;}
+  G4{&quot;4 · Slow burn?&quot;}
+  G5{&quot;5 · Minor, no impact?&quot;}
+  ESC[&quot;escalate&quot;]
+  SUP2[&quot;suppress&quot;]
+  RST[&quot;restart&lt;br/&gt;still guarded and approved&quot;]
+  TKT[&quot;ticket&quot;]
+  NTF[&quot;notify&quot;]
+  CL[[&quot;classify&lt;br/&gt;decision model&quot;]]
+  PR --&gt; R
+  R -- &quot;maintenance · test · duplicate&quot; --&gt; SUP1
+  R -- &quot;no rule matched&quot; --&gt; G1
+  G1 -- &quot;yes&quot; --&gt; ESC
+  G1 -- &quot;no&quot; --&gt; G2
+  G2 -- &quot;yes&quot; --&gt; SUP2
+  G2 -- &quot;no&quot; --&gt; G3
+  G3 -- &quot;yes&quot; --&gt; RST
+  G3 -- &quot;no&quot; --&gt; G4
+  G4 -- &quot;yes&quot; --&gt; TKT
+  G4 -- &quot;no&quot; --&gt; G5
+  G5 -- &quot;yes&quot; --&gt; NTF
+  G5 -- &quot;no&quot; --&gt; CL</pre></div>
+  <div class="cols">
+    <p class="note"><b>Policy rules</b> are about the problem's circumstances: maintenance, a test notification, a merged duplicate. They live in config, so operations can change them without a release.</p>
+    <p class="note"><b>Kafka signatures</b> are about Kafka behaviour: metric values against documented Kafka thresholds and specific Kafka log messages. They live in code, with tests, because they encode Kafka knowledge.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Policy rule</th><th>Fires when</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><code>maintenance-suppress</code></td><td>The problem has the tag <code>maintenance: true</code></td><td><span class="chip">suppress</span></td></tr>
+      <tr><td><code>dynatrace-test-notification</code></td><td>The title is Dynatrace's "notification test run"</td><td><span class="chip">suppress</span></td></tr>
+      <tr><td><code>duplicate-problem</code></td><td>Dynatrace merged it into another problem (<code>dt.davis.is_duplicate</code>)</td><td><span class="chip">suppress</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Group</th><th>Signature</th><th>Fires when</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="6">1 · Data at risk</td><td><code>kafka.offline-partitions</code></td><td>OfflinePartitionsCount &gt; 0</td><td rowspan="6"><span class="chip crit">escalate</span></td></tr>
+      <tr><td><code>kafka.no-active-controller</code></td><td>ActiveControllerCount &lt; 1</td></tr>
+      <tr><td><code>kafka.kraft-quorum-lost</code></td><td>KRaft current leader is -1</td></tr>
+      <tr><td><code>kafka.unclean-election</code></td><td>Unclean leader elections &gt; 0, or a partition "was marked as RECOVERING"</td></tr>
+      <tr><td><code>kafka.log-dir-failed</code></td><td>A log directory failed, "No space left on device", or disk at 95% or more. Never restart first: free space.</td></tr>
+      <tr><td><code>kafka.ssl-many-clients</code></td><td>SSL handshake failures from 3 or more client IPs</td></tr>
+      <tr><td rowspan="2">2 · Expected or harmless</td><td><code>kafka.rebalance-during-deploy</code></td><td>Consumers rejoin their group during a deployment and lag stays under 3×</td><td rowspan="2"><span class="chip">suppress</span></td></tr>
+      <tr><td><code>kafka.transient-not-leader</code></td><td>Producer NOT_LEADER_OR_FOLLOWER with no failed produce requests</td></tr>
+      <tr><td rowspan="2">3 · One instance broken</td><td><code>kafka.single-broker-down</code></td><td>One broker down or out of memory, offline partitions 0, exactly one active controller</td><td rowspan="2"><span class="chip ok">restart</span></td></tr>
+      <tr><td><code>kafka.consumer-hung</code></td><td>One consumer with a poll timeout plus CommitFailedException or LeaveGroup, and lag up 10×</td></tr>
+      <tr><td rowspan="4">4 · Slow burn</td><td><code>kafka.urp-persistent</code></td><td>Under-replicated partitions &gt; 0 with no broker down</td><td rowspan="4"><span class="chip warn">ticket</span></td></tr>
+      <tr><td><code>kafka.disk-trending</code></td><td>Disk at 75% or more (but below 95%)</td></tr>
+      <tr><td><code>kafka.ssl-one-client</code></td><td>SSL handshake failures from exactly one client IP</td></tr>
+      <tr><td><code>kafka.lag-growing</code></td><td>Consumer lag up 3× with no ERROR logs</td></tr>
+      <tr><td rowspan="2">5 · Minor, no impact</td><td><code>kafka.gc-no-impact</code></td><td>High GC activity with no under-replication</td><td rowspan="2"><span class="chip">notify</span></td></tr>
+      <tr><td><code>kafka.lone-disconnect</code></td><td>A single client connection failure and nothing else</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>Example.</b> A problem arrives for one broker and its evidence shows OfflinePartitionsCount = 3. Group 1 matches <code>kafka.offline-partitions</code>, so the decision is escalate, recorded as <code>source: rules</code>, id <code>kafka.offline-partitions</code>, reason "OfflinePartitionsCount=3". No model is called. A restart decided by a signature still passes the target checks and human approval in the remediation subgraph.</p>
+</section>
+
+<section id="policy">
+  <h2>Policy gate</h2>
+  <p>The gate turns a decision into a plan. A decision can only lower autonomy, never raise it. Every plan starts with <code>notify</code>, except suppress, which is audit only.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Decided action</th><th>Plan</th><th>Conditions</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip">suppress</span></td><td>audit only</td><td>Maintenance, test notifications, merged duplicates, benign patterns</td></tr>
+      <tr><td><span class="chip ok">restart_container</span></td><td>notify + remediate</td><td>One unambiguous target that allows restarts, and either a rule or signature decided it, or the model passed every threshold: confidence ≥ 0.90, auto-remediable ≥ 0.80, noise ≤ 0.20, severity ≤ 2.5</td></tr>
+      <tr><td></td><td>notify + escalate</td><td>Several targets match, a model failed a threshold, or the target is notify-only and severity ≥ 2.5</td></tr>
+      <tr><td><span class="chip warn">open_ticket</span></td><td>notify + ticket</td><td>Rule or signature, or model confidence ≥ 0.60</td></tr>
+      <tr><td><span class="chip crit">escalate_human</span></td><td>notify + escalate</td><td>Always</td></tr>
+      <tr><td><span class="chip crit">cannot_tell</span></td><td>notify + escalate</td><td>When escalation on uncertainty is on (default)</td></tr>
+      <tr><td><span class="chip">notify_only</span></td><td>notify</td><td>Adds escalate when severity ≥ 2.5</td></tr>
+      <tr><td>any</td><td>+ ticket</td><td>Severity score ≥ 1.5 adds a ticket if the plan has none</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="lifecycle">
+  <h2>Alert lifecycle</h2>
+  <p>The states an alert moves through in the <code>intake.alert_inbox</code> table.</p>
+  <div class="diagram"><pre class="mermaid">stateDiagram-v2
+  [*] --&gt; pending: accepted by intake
+  pending --&gt; processing: worker claims (lease)
+  processing --&gt; done: graph finished
+  processing --&gt; awaiting_approval: restart waits for a person
+  awaiting_approval --&gt; processing: approval decided, run resumes
+  processing --&gt; pending: lease expired, attempts left
+  processing --&gt; failed: last attempt failed, escalated
+  pending --&gt; superseded: problem closed first
+  done --&gt; [*]
+  failed --&gt; [*]
+  superseded --&gt; [*]</pre></div>
+</section>
+
+<section id="review">
+  <h2>Health review</h2>
+  <p>The review is advisory: it never restarts or changes anything. Code collects, redacts and summarises the data into a digest with citation ids. The model only reasons over that digest, and the validator rejects any finding that does not cite real evidence. Threshold breaches become findings whatever the model says.</p>
+  <div class="diagram"><pre class="mermaid">flowchart LR
+  TR[&quot;Schedule or&lt;br/&gt;POST /v1/reviews&quot;]
+  C[&quot;Collect&lt;br/&gt;logs 24 h · metrics 24 h at 5 min and 30 d hourly · problems 7 d&quot;]
+  R[&quot;Redact&lt;br/&gt;secrets · personal data · IPs to /24&quot;]
+  EV[(&quot;Evidence&lt;br/&gt;deleted by 28 h&quot;)]
+  M[&quot;Log templates&quot;]
+  TRN[&quot;Trends · forecasts&quot;]
+  B[&quot;Kafka normal-value checks&quot;]
+  G{&quot;Injection guard&quot;}
+  WH[&quot;Withheld&lt;br/&gt;counts only&quot;]
+  DG[&quot;Digest&lt;br/&gt;B# M# L# P# ids · 12k-token budget&quot;]
+  AN[[&quot;Analyst&lt;br/&gt;any OpenAI-compatible model&quot;]]
+  V{&quot;Validator&quot;}
+  DROP[&quot;Dropped&quot;]
+  DOWN[&quot;Risk lowered to high&quot;]
+  RP[(&quot;Report&lt;br/&gt;kept 48 h&quot;)]
+  OUT[&quot;Web view · API · Teams card&quot;]
+  TR --&gt; C --&gt; R
+  R --&gt; EV
+  R --&gt; M --&gt; G
+  R --&gt; TRN --&gt; DG
+  R --&gt; B --&gt; DG
+  G -- &quot;flagged&quot; --&gt; WH --&gt; DG
+  G -- &quot;safe&quot; --&gt; DG
+  DG --&gt; AN --&gt; V
+  V -- &quot;uncited or unknown id&quot; --&gt; DROP
+  V -- &quot;automated action proposed&quot; --&gt; DROP
+  V -- &quot;critical without a breach&quot; --&gt; DOWN --&gt; RP
+  V -- &quot;kept&quot; --&gt; RP
+  B -- &quot;rule findings, always&quot; --&gt; RP
+  RP --&gt; OUT</pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Planted-issue evaluation (16 clusters)</th><th>Qwen + validator</th><th>Rules only</th><th>Target</th></tr></thead>
+    <tbody>
+      <tr><td>Planted issues found at the right risk</td><td><b>0.94</b></td><td>0.25</td><td>≥ 0.80</td></tr>
+      <tr><td>False alarms in healthy reports</td><td><b>0</b></td><td>0</td><td>≤ 1 per report</td></tr>
+      <tr><td>Safety violations</td><td><b>0</b></td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="rca">
+  <h2>Root-cause analysis</h2>
+  <p>For one Dynatrace problem, the same pipeline runs on a window from 2 hours before the problem started until it ended. Code builds a timeline of what changed first: each metric's first sustained departure from the 3 hours before the window, and log templates that first appear inside it. The analyst ranks causes from that timeline; a signal that changed earlier is more likely a cause, one that changed later more likely an effect.</p>
+  <div class="diagram"><pre class="mermaid">flowchart LR
+  P[&quot;POST /v1/analyses&lt;br/&gt;display_id P-…&quot;]
+  F[&quot;Find the problem&lt;br/&gt;Dynatrace or fixtures&quot;]
+  CL[&quot;Resolve its cluster&lt;br/&gt;request · hint · entities&quot;]
+  W[&quot;Window&lt;br/&gt;2 h before start to end&quot;]
+  C[&quot;Collect and redact&lt;br/&gt;logs from 24 h before the window&quot;]
+  T[&quot;Timeline&lt;br/&gt;first departures · new log templates · problem start&quot;]
+  A[[&quot;Analyst&lt;br/&gt;ranked root-cause hypotheses&quot;]]
+  V{&quot;Validator&quot;}
+  R[(&quot;RCA report&quot;)]
+  P --&gt; F --&gt; CL --&gt; W --&gt; C --&gt; T --&gt; A --&gt; V --&gt; R</pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Example timeline: problem P-26101208, failure rate increase</th><th>Evidence</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td>02:15 metric departed</td><td>under-replicated partitions on kafka-1</td><td><span class="chip ok">cause</span></td></tr>
+      <tr><td>02:48 new log template</td><td>NotEnoughReplicasException on payments-2</td><td><span class="chip">effect</span></td></tr>
+      <tr><td>02:50 metric departed</td><td>under-min-ISR partitions on kafka-1</td><td><span class="chip">effect</span></td></tr>
+      <tr><td>03:00 problem started</td><td>Failure rate increase on payments-producer</td><td><span class="chip">symptom</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">On 10 planted root-cause scenarios, Qwen put the planted cause at rank 1 in 10 of 10, in two separate runs (target: top 2 in at least 8). Triage cards can link to this analysis ("Analyse root cause") once the web view is enabled.</p>
+</section>
+
+<section id="retention">
+  <h2>Retention</h2>
+  <p>Raw data is kept briefly; trend history is re-read from Dynatrace at review time and never copied. A purge job deletes expired rows every 15 minutes, and an expired report answers 410 Gone.</p>
+  <div class="diagram"><pre class="mermaid">gantt
+  title One daily review: collected 06:00, completed 06:04
+  dateFormat YYYY-MM-DD HH:mm
+  axisFormat %a %H:%M
+  section Collected evidence
+  Kept until completion + 4 h :active, ev, 2026-10-12 06:00, 2026-10-12 10:04
+  Never beyond collection + 28 h :crit, cap, 2026-10-12 06:00, 2026-10-13 10:00
+  section Report
+  Viewable for 48 h :rep, 2026-10-12 06:04, 2026-10-14 06:04</pre></div>
+</section>
+
+<section id="models">
+  <h2>Switching models</h2>
+  <p>No model is built into the code. Classifiers speak the System One API, and LLMs speak OpenAI-compatible chat completions. Switching is configuration only; see <code>docs/model-providers.md</code> and ADR 0010.</p>
+  <div class="diagram"><pre class="mermaid">flowchart LR
+  subgraph TRI[&quot;Triage&quot;]
+    DMP[&quot;DecisionModel port&quot;]
+  end
+  subgraph HRV[&quot;Health review&quot;]
+    ANP[&quot;Analyst port&quot;]
+  end
+  SO[&quot;System One adapter&quot;]
+  LD[&quot;LLM decision adapter&quot;]
+  RU[&quot;Rules only&quot;]
+  LA[&quot;LLM analyst adapter&quot;]
+  PK[&quot;opstriage-llm&lt;br/&gt;ChatJsonClient&quot;]
+  KEV[&quot;Kev on the Spark&quot;]
+  JEV[&quot;Jev · TypeSafe&quot;]
+  D1[&quot;Microsoft-Decision-1 · Foundry&quot;]
+  QW[&quot;Qwen on vLLM&quot;]
+  OL[&quot;Ollama · LM Studio&quot;]
+  OA[&quot;OpenAI · Azure OpenAI · gateways&quot;]
+  DMP --&gt; SO
+  DMP --&gt; LD
+  DMP --&gt; RU
+  ANP --&gt; LA
+  LD --&gt; PK
+  LA --&gt; PK
+  SO --&gt; KEV
+  SO --&gt; JEV
+  SO --&gt; D1
+  PK --&gt; QW
+  PK --&gt; OL
+  PK --&gt; OA</pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Classifier</th><th>Path</th><th>Model value</th><th>Auth</th><th>Overlay</th></tr></thead>
+    <tbody>
+      <tr><td>Kev (Spark)</td><td><code>/v1/systemone</code></td><td><code>kev-latest</code></td><td>none</td><td><code>compose.kev.yaml</code></td></tr>
+      <tr><td>Jev (TypeSafe)</td><td><code>/v1/systemone</code></td><td><code>jev-latest</code></td><td>bearer key</td><td><code>compose.jev.yaml</code></td></tr>
+      <tr><td>Microsoft-Decision-1</td><td><code>/providers/microsoft/v1/systemone</code></td><td>deployment name</td><td><code>api-key</code> header or Entra ID</td><td><code>compose.decision1.yaml</code></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="data">
+  <h2>Data ownership</h2>
+  <p>One PostgreSQL schema per context; no query crosses schemas.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Schema</th><th>Tables</th></tr></thead>
+    <tbody>
+      <tr><td><code>intake</code></td><td>alert_inbox</td></tr>
+      <tr><td><code>poller</code></td><td>cursors</td></tr>
+      <tr><td><code>triage</code></td><td>triage_runs, approval_requests, audit_log</td></tr>
+      <tr><td><code>langgraph</code></td><td>graph checkpoints (pause and resume)</td></tr>
+      <tr><td><code>notification</code></td><td>deliveries</td></tr>
+      <tr><td><code>ticketing</code></td><td>tickets</td></tr>
+      <tr><td><code>remediation</code></td><td>executions, rejections</td></tr>
+      <tr><td><code>insights</code></td><td>reviews, evidence, reports, purge_log</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Insights schema</h3>
+  <div class="diagram"><pre class="mermaid">erDiagram
+  REVIEWS ||--o{ EVIDENCE : &quot;collected for&quot;
+  REVIEWS ||--o| REPORTS : &quot;produces&quot;
+  REVIEWS {
+    uuid id PK
+    text kind &quot;review or rca&quot;
+    text cluster
+    text status &quot;running, completed, failed&quot;
+    timestamptz expires_at
+  }
+  EVIDENCE {
+    bigint id PK
+    uuid review_id FK
+    text source &quot;logs, metrics, problems&quot;
+    timestamptz expires_at &quot;min of collected + 28 h and completed + 4 h&quot;
+    jsonb bundle &quot;redacted&quot;
+  }
+  REPORTS {
+    uuid review_id PK
+    timestamptz expires_at &quot;completed + 48 h&quot;
+    jsonb report
+    text markdown
+  }</pre></div>
+</section>
+
+<section id="glossary">
+  <h2>Glossary</h2>
+  <div class="table-wrap"><table>
+    <tbody>
+      <tr><td><b>ProblemEvent</b></td><td>The one event shape every Dynatrace delivery path is mapped to (the published language).</td></tr>
+      <tr><td><b>Anti-corruption layer</b></td><td>An adapter that translates an outside format into the app's own model at the boundary.</td></tr>
+      <tr><td><b>Kafka signature</b></td><td>A deterministic rule over metrics and log identifiers, such as offline partitions above 0, that decides an action without a model.</td></tr>
+      <tr><td><b>Policy gate</b></td><td>Turns a decision into a plan of actions using thresholds, target autonomy and severity.</td></tr>
+      <tr><td><b>Digest</b></td><td>The redacted, code-computed summary the review model reads, with an id for every piece of evidence.</td></tr>
+      <tr><td><b>Breach</b></td><td>A metric outside a documented Kafka normal value for longer than its minimum duration.</td></tr>
+      <tr><td><b>System One</b></td><td>The decision API shared by Kev, Jev and Microsoft-Decision-1: a state plus typed questions.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+  const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  mermaid.initialize({ startOnLoad: true, theme: dark ? "dark" : "neutral", securityLevel: "strict",
+    flowchart: { htmlLabels: true, curve: "basis" } });
+</script>
+</body>
+</html>

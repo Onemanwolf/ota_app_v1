@@ -1,0 +1,16 @@
+[
+  {
+    "event.id": "2499053645500868010_1791774000000V2",
+    "display_id": "P-26101206",
+    "event.name": "Connectivity problem",
+    "event.category": "ERROR",
+    "event.status": "ACTIVE",
+    "event.start": "2026-10-12T03:00:00.000000000Z",
+    "event.end": null,
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  }
+]

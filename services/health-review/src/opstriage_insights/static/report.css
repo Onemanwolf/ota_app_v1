@@ -1,0 +1,88 @@
+/* Kafka health reviews: an operations report. One reading column, risk encoded as colour plus text. */
+:root {
+  --bg: #f5f7f9; --surface: #ffffff; --ink: #16212b; --muted: #5b6875; --line: #d9dfe5; --accent: #1d5bbf;
+  --crit: #b0271f; --crit-bg: #fbe9e7; --high: #a24a00; --high-bg: #fdf0e3; --med: #7a6300; --med-bg: #fbf5dc;
+  --low: #2f6b4e; --low-bg: #e7f4ec; --code-bg: #eef2f6;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f151b; --surface: #161f28; --ink: #e3e9ef; --muted: #9aa6b3; --line: #2a3542; --accent: #85abee;
+    --crit: #f08077; --crit-bg: #3a1a18; --high: #f2a25c; --high-bg: #3a2614; --med: #e3c75a; --med-bg: #332c12;
+    --low: #6cc79a; --low-bg: #15301f; --code-bg: #1d2834; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--sans) }
+a { color: var(--accent) }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 12px 20px; background: var(--surface); border-bottom: 1px solid var(--line) }
+.brand { font-weight: 650; color: var(--ink); text-decoration: none }
+.bar-actions { display: flex; gap: 16px; align-items: center }
+.bar-actions form { margin: 0 }
+.page { max-width: 980px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; display: grid; gap: 32px }
+.narrow { max-width: 620px }
+h1 { font-size: 28px; line-height: 1.15; margin: 0; text-wrap: balance }
+h2 { font-size: 19px; margin: 0 0 10px }
+h3 { font-size: 15.5px; margin: 0 }
+p { margin: 0 0 8px; max-width: 72ch }
+.muted { color: var(--muted) }
+.mono, code, pre { font-family: var(--mono); font-variant-numeric: tabular-nums }
+code { font-size: 12.5px; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere }
+.eyebrow { font: 600 12px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%) }
+button { font: 600 14px var(--sans); background: var(--accent); color: var(--surface); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer }
+button.secondary { background: transparent; color: var(--accent); border: 1px solid var(--line) }
+button.link { background: none; color: var(--accent); padding: 0; font-weight: 500 }
+input, select { font: 14px var(--sans); padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); max-width: 100% }
+.stack { display: grid; gap: 8px; max-width: 420px }
+.inline, .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.head-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: end }
+.alert { border-left: 3px solid var(--crit); background: var(--crit-bg); padding: 8px 12px; border-radius: 4px }
+.empty { color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; padding: 18px }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px }
+table.list { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px }
+.list th, .list td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line) }
+.list th { font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted) }
+.list tr:last-child td { border-bottom: 0 }
+.risks { display: flex; flex-wrap: wrap; gap: 6px; align-items: center }
+.risk, .status, .badge, .rank { font: 600 11.5px/1 var(--sans); padding: 4px 8px; border-radius: 999px; white-space: nowrap }
+.r-critical { color: var(--crit); background: var(--crit-bg) }
+.r-high { color: var(--high); background: var(--high-bg) }
+.r-medium { color: var(--med); background: var(--med-bg) }
+.r-low { color: var(--low); background: var(--low-bg) }
+.status { background: var(--code-bg); color: var(--muted) }
+.s-failed, .s-error { color: var(--crit); background: var(--crit-bg) }
+.s-running, .s-warn { color: var(--high); background: var(--high-bg) }
+.badge { background: var(--code-bg); color: var(--ink); font-family: var(--mono) }
+.rank { background: var(--ink); color: var(--surface) }
+.report-head { display: grid; gap: 10px }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 6px 0 0 }
+.meta dt { font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted) }
+.meta dd { margin: 2px 0 0 }
+.safeguards { font-size: 13px; color: var(--muted) }
+.summary .label { font-size: 12px; color: var(--muted); font-style: italic }
+.cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px }
+.finding { background: var(--surface); border: 1px solid var(--line); border-left-width: 4px; border-radius: 8px; padding: 14px 16px }
+.f-critical { border-left-color: var(--crit) } .f-high { border-left-color: var(--high) }
+.f-medium { border-left-color: var(--med) } .f-low { border-left-color: var(--low) }
+.finding-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px }
+.forecast { font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums }
+.cites { font-size: 13px }
+.recs { margin: 0; padding-left: 18px; display: grid; gap: 10px }
+.effort { font-size: 12px; color: var(--muted) }
+.evidence { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px }
+.ev { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; scroll-margin-top: 16px }
+.ev:target { outline: 2px solid var(--accent) }
+.cid { font: 600 13px var(--mono); color: var(--muted) }
+.metric { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center }
+.spark, .bars { color: var(--accent); flex: none; max-width: 100% }
+.log { display: inline-block; margin-top: 4px; white-space: pre-wrap }
+pre.example { margin: 6px 0 0; padding: 8px 10px; background: var(--code-bg); border-radius: 6px; font-size: 12px;
+  white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100% }
+@media (max-width: 560px) { h1 { font-size: 24px } .ev { grid-template-columns: minmax(0, 1fr) } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }

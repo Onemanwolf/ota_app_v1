@@ -15,6 +15,7 @@ from datetime import UTC, datetime, timedelta
 from opstriage_dynatrace.grail import GrailClient
 from opstriage_insights.adapters.grail_records import log_record, metric_series, problem_record
 from opstriage_insights.domain.model import ClusterScope, LogRecord, MetricSeries, ProblemRecord
+from opstriage_insights.ports.sources import FoundProblem
 
 ENTITY_DIMENSIONS = ("dt.entity.process_group_instance", "dt.entity.host")
 
@@ -82,6 +83,18 @@ def problems_dql(scope: ClusterScope, start: datetime, end: datetime) -> str:
     )
 
 
+def problem_by_id_dql(display_id: str) -> str:
+    if not display_id.startswith("P-") or not display_id[2:].isdigit():
+        raise ValueError("display ids look like P-12345678")
+    return (
+        "fetch dt.davis.problems, from: now() - 30d\n"
+        f"| filter display_id == {json.dumps(display_id)} and not(dt.davis.is_duplicate)\n"
+        "| sort timestamp desc | limit 1\n"
+        "| fields event.id, display_id, event.name, event.category, event.status, event.start, event.end, "
+        "affected_entity_ids, dt.davis.is_duplicate"
+    )
+
+
 class GrailLogSource:
     def __init__(self, client: GrailClient) -> None:
         self._client = client
@@ -110,3 +123,7 @@ class GrailProblemSource:
         if not scope.entity_ids:
             return []
         return [problem_record(r) for r in await self._client.query(problems_dql(scope, start, end))]
+
+    async def find(self, display_id: str) -> FoundProblem | None:
+        rows = await self._client.query(problem_by_id_dql(display_id), max_records=1)
+        return FoundProblem(problem_record(rows[0])) if rows else None

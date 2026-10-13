@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<div class="head-row">
+  <div>
+    <h1>Reports</h1>
+    <p class="muted">Reports are deleted 48 hours after they finish. Collected logs and metrics are deleted 4 hours after that.</p>
+  </div>
+  <form method="post" action="/ui/reviews" class="inline">
+    <input type="hidden" name="csrf" value="{{ user.csrf }}">
+    <label for="run-cluster" class="sr">Cluster</label>
+    <select id="run-cluster" name="cluster">
+      {% for c in clusters %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+    </select>
+    <button type="submit">Run a review</button>
+  </form>
+</div>
+<form method="get" action="/ui/reports" class="filters">
+  <label for="f-cluster">Cluster</label>
+  <select id="f-cluster" name="cluster">
+    <option value="">All clusters</option>
+    {% for c in clusters %}<option value="{{ c }}" {% if c == cluster %}selected{% endif %}>{{ c }}</option>{% endfor %}
+  </select>
+  <label for="f-kind">Kind</label>
+  <select id="f-kind" name="kind">
+    <option value="">All</option>
+    <option value="review" {% if kind == "review" %}selected{% endif %}>Daily review</option>
+    <option value="rca" {% if kind == "rca" %}selected{% endif %}>Root-cause analysis</option>
+  </select>
+  <button type="submit" class="secondary">Filter</button>
+</form>
+{% if not items %}
+<div class="empty">
+  <p><b>No reports yet.</b> Run a review for a cluster above, or start a root-cause analysis from a problem's Teams card.</p>
+</div>
+{% else %}
+<div class="table-wrap">
+<table class="list">
+  <thead><tr><th>Started (UTC)</th><th>Cluster</th><th>Kind</th><th>Status</th><th>Findings by risk</th><th>Retention</th></tr></thead>
+  <tbody>
+  {% for it in items %}{% set r = it.row %}
+  <tr>
+    <td class="mono"><a href="/ui/reports/{{ r.review_id }}">{{ r.started_at.strftime("%Y-%m-%d %H:%M") }}</a></td>
+    <td>{{ r.cluster }}</td>
+    <td>{{ "Root cause" if r.kind == "rca" else "Review" }}</td>
+    <td><span class="status s-{{ r.status }}">{{ r.status }}</span></td>
+    <td class="risks">
+      {% if r.by_risk %}
+        {% for level in ["critical", "high", "medium", "low"] %}{% if r.by_risk.get(level) %}<span class="risk r-{{ level }}">{{ r.by_risk.get(level) }} {{ level }}</span>{% endif %}{% endfor %}
+        {% if not r.by_risk.values() | select | list %}<span class="muted">none</span>{% endif %}
+      {% else %}<span class="muted">–</span>{% endif %}
+    </td>
+    <td class="muted">{{ it.expires }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}

@@ -189,7 +189,10 @@ def markdown(data: dict[str, Any], s: dict[str, Any]) -> str:
     lines = [
         f"# Health review planted-issue evaluation: {data['model']} ({datetime.now(UTC):%Y-%m-%d})",
         "",
-        "16 fixture clusters (12 planted, 4 healthy) from fixtures/insights; answer key in each scenario.json.",
+        f"{len(data['results'])} fixture clusters from fixtures/insights "
+        f"({sum(1 for r in data['results'] if r['kind'] == 'planted')} planted, "
+        f"{sum(1 for r in data['results'] if r['kind'] == 'healthy')} healthy; RCA clusters are scored by "
+        "evals/rca_eval.py); answer key in each scenario.json.",
         "",
         "| Measure | Value | Target |",
         "|---|---|---|",

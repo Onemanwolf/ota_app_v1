@@ -63,6 +63,7 @@ class TriageOptions(BaseModel):
     worker_concurrency: int = Field(default=4, ge=1, le=64)
     run_timeout_seconds: float = Field(default=600.0, gt=0)
     public_base_url: str = "http://localhost:8010"  # used in notification links to run status
+    insights_base_url: str = ""  # health-review web view; set to add an "Analyse root cause" link to cards
     inbox: InboxSettings = InboxSettings()
     decision: DecisionSettings = DecisionSettings()
     context: ContextSettings = ContextSettings()

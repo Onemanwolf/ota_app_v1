@@ -76,6 +76,7 @@ class MetricEntry:
     sparkline: tuple[float | None, ...]  # downsampled 30-day series for the web view
     score: float
     reasons: tuple[str, ...]
+    window_departure: datetime | None = None  # RCA: first sustained departure inside the analysis window
 
 
 @dataclass(frozen=True, slots=True)
@@ -115,6 +116,14 @@ class BreachEntry:
     cites: tuple[str, ...]  # metric entry ids
 
 
+@dataclass(frozen=True, slots=True)
+class TimelineItem:
+    at: datetime
+    cid: str
+    what: str  # "metric departed", "new log template", "problem started"
+    label: str
+
+
 @dataclass(frozen=True)
 class Digest:
     cluster: str
@@ -127,6 +136,8 @@ class Digest:
     guard_available: bool
     redactions: Mapping[str, int] = field(default_factory=dict)
     dropped: Mapping[str, int] = field(default_factory=dict)
+    window: tuple[datetime, datetime] | None = None  # RCA analysis window
+    timeline: tuple[TimelineItem, ...] = ()  # RCA: what moved first
 
     @property
     def guard_withheld(self) -> int:
@@ -266,6 +277,7 @@ def build(
     redactions: Mapping[str, int] | None = None,
     max_tokens: int = 12_000,
     sparkline_points: int = 96,
+    rca_window: tuple[datetime, datetime] | None = None,
 ) -> Digest:
     breached = {(b.rule.metric, b.entity) for b in breaches} | {
         (b.rule.metric, s.label)
@@ -281,6 +293,12 @@ def build(
         quiet_n = 0
         for s in day_series.get(metric, ()):
             e = _metric_entry(s, month_by_label.get(s.label), profile, now, sparkline_points)
+            if rca_window is not None:
+                moved = trends.first_departure_after(s, rca_window[0])
+                if moved is not None and moved <= rca_window[1]:
+                    e = replace(
+                        e, window_departure=moved, score=e.score + 60, reasons=(*e.reasons, "moved-in-window")
+                    )
             if (metric, s.label) in breached:
                 e = replace(e, score=e.score + 100, reasons=("breach", *e.reasons))
             elif profile.cluster_level:
@@ -324,6 +342,7 @@ def build(
         )
         for i, p in enumerate(sorted(problems, key=lambda p: p.start, reverse=True), 1)
     ]
+    timeline = _timeline(metrics, logs, probs, rca_window) if rca_window else ()
     digest = Digest(
         cluster,
         now,
@@ -334,14 +353,40 @@ def build(
         tuple(probs),
         guard_available,
         dict(redactions or {}),
+        window=rca_window,
+        timeline=timeline,
     )
     return fit(digest, max_tokens)
+
+
+def _timeline(
+    metrics: Sequence[MetricEntry],
+    logs: Sequence[LogEntry],
+    problems: Sequence[ProblemEntry],
+    window: tuple[datetime, datetime],
+) -> tuple[TimelineItem, ...]:
+    """Everything that changed inside the window, in time order: the raw material for root-cause ranking."""
+    start, end = window
+    items = [
+        TimelineItem(m.window_departure, m.cid, "metric departed", f"{m.metric} on {m.entity}")
+        for m in metrics
+        if m.window_departure is not None
+    ]
+    items += [
+        TimelineItem(e.first_seen, e.cid, "new log template", e.logger or "-")
+        for e in logs
+        if e.first_seen is not None and start <= e.first_seen <= end
+    ]
+    items += [
+        TimelineItem(p.start, p.cid, "problem started", p.title) for p in problems if start <= p.start <= end
+    ]
+    return tuple(sorted(items, key=lambda i: (i.at, i.cid)))
 
 
 def fit(digest: Digest, max_tokens: int) -> Digest:
     """Drop the lowest-signal content until the rendered digest fits. Breach-cited metrics are kept."""
     dropped: Counter[str] = Counter(digest.dropped)
-    protected = {cid for b in digest.breaches for cid in b.cites}
+    protected = {cid for b in digest.breaches for cid in b.cites} | {i.cid for i in digest.timeline}
     d = digest
     while d.tokens > max_tokens:
         with_examples = [e for e in d.logs if e.examples]
@@ -350,8 +395,9 @@ def fit(digest: Digest, max_tokens: int) -> Digest:
             d = replace(d, logs=tuple(replace(e, examples=()) if e is low else e for e in d.logs))
             dropped["log_examples"] += 1
             continue
-        if d.logs:
-            low = min(d.logs, key=lambda e: e.score)
+        droppable_logs = [e for e in d.logs if e.cid not in protected]
+        if droppable_logs:
+            low = min(droppable_logs, key=lambda e: e.score)
             d = replace(d, logs=tuple(e for e in d.logs if e is not low))
             dropped["log_templates"] += 1
             continue
@@ -469,6 +515,13 @@ def _lines(d: Digest) -> Iterable[str]:
     )
     if not d.guard_available:
         yield "NOTE log text withheld: the injection guard was unavailable, only counts are shown"
+    if d.window:
+        yield ""
+        yield (
+            f"ROOT-CAUSE WINDOW {_t(d.window[0])} .. {_t(d.window[1])}: what changed, in time order "
+            "(metrics: first sustained departure from the 3 h before the window; logs: templates first seen)"
+        )
+        yield from [f"{_t(i.at)} | {i.cid} | {i.what} | {i.label}" for i in d.timeline] or ["nothing changed"]
     yield ""
     yield "DETERMINISTIC BREACHES (checked by code against Kafka normal values)"
     yield from [_breach_line(be) for be in d.breaches] or ["none"]

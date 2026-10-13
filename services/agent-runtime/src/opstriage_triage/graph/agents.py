@@ -65,7 +65,7 @@ async def notify_agent(state: TriageState, runtime: Runtime[TriageDeps]) -> dict
         title=_title(event),
         summary=summary,
         facts=deps.policy.notification_facts(event, state.get("decision"), state.get("target")),
-        links=deps.policy.notification_links(event, deps.run_url(state["run_id"])),
+        links=deps.policy.notification_links(event, deps.run_url(state["run_id"]), deps.rca_url_base),
     )
     result = await deps.notifications.send(request)
     return {
@@ -126,7 +126,7 @@ async def escalation_agent(state: TriageState, runtime: Runtime[TriageDeps]) -> 
             title=_title(event, "ESCALATION "),
             summary=_escalation_reason(state),
             facts=deps.policy.notification_facts(event, state.get("decision"), state.get("target")),
-            links=deps.policy.notification_links(event, deps.run_url(state["run_id"])),
+            links=deps.policy.notification_links(event, deps.run_url(state["run_id"]), deps.rca_url_base),
         )
     )
     return {"outcomes": [{"step": "escalate", "ok": all(o.delivered for o in result.outcomes)}]}
@@ -145,7 +145,7 @@ async def resolution_agent(state: TriageState, runtime: Runtime[TriageDeps]) -> 
             title=_title(event, "RESOLVED "),
             summary=f"Dynatrace closed problem {event.display_id or event.problem_id}.",
             facts=deps.policy.notification_facts(event, None, None),
-            links=deps.policy.notification_links(event, deps.run_url(state["run_id"])),
+            links=deps.policy.notification_links(event, deps.run_url(state["run_id"]), deps.rca_url_base),
         )
     )
     ticket = await deps.tickets.resolve(event.problem_id, "Dynatrace closed the problem")
@@ -245,7 +245,7 @@ async def request_approval(state: RemediationState, runtime: Runtime[TriageDeps]
                 f"POST {deps.run_url(state['run_id'])}/approval."
             ),
             facts=deps.policy.notification_facts(event, state.get("decision"), state.get("target")),
-            links=deps.policy.notification_links(event, deps.run_url(state["run_id"])),
+            links=deps.policy.notification_links(event, deps.run_url(state["run_id"]), deps.rca_url_base),
         )
     )
     decision = interrupt(
@@ -359,7 +359,7 @@ async def report(state: RemediationState, runtime: Runtime[TriageDeps]) -> dict[
             title=_title(event, "REMEDIATION "),
             summary=summary,
             facts=deps.policy.notification_facts(event, state.get("decision"), state.get("target")),
-            links=deps.policy.notification_links(event, deps.run_url(state["run_id"])),
+            links=deps.policy.notification_links(event, deps.run_url(state["run_id"]), deps.rca_url_base),
         )
     )
     rem = state.get("remediation") or {}

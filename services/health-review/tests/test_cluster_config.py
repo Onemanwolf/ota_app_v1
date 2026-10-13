@@ -31,5 +31,5 @@ def test_invalid_config_is_rejected(tmp_path: Path, body: str) -> None:
 
 def test_fixture_clusters_carry_their_scope() -> None:
     scopes = fixture_clusters(STORE)
-    assert len(scopes) == 16 and scopes["healthy-steady"].namespace == "streaming"
+    assert len(scopes) == 26 and scopes["healthy-steady"].namespace == "streaming"
     assert len(scopes["healthy-steady"].entity_ids) == 5

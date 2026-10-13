@@ -30,6 +30,7 @@
     }
   ],
   "forbid": {},
+  "rca": {},
   "counts": {
     "logs": 15,
     "problems": 0,

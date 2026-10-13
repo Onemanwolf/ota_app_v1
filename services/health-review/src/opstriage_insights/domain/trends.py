@@ -201,6 +201,40 @@ def first_departure(
     return None
 
 
+def first_departure_after(
+    series: MetricSeries,
+    start: datetime,
+    *,
+    baseline: timedelta = timedelta(hours=3),
+    sigmas: float = 4.0,
+    min_run: int = 3,
+) -> datetime | None:
+    """Start of the first sustained departure at or after `start`, against the `baseline` just before it.
+
+    Root-cause ordering (OTA-APP-002 3.4): a local baseline ignores the slow daily cycle, so a night-time
+    surge is still visible. A flat baseline uses 5% of its mean (or 1e-9 at 0) as the spread.
+    """
+    points = list(series.points())
+    base = [v for t, v in points if start - baseline <= t < start]
+    if len(base) < 3:
+        return None
+    mean = statistics.fmean(base)
+    spread = statistics.pstdev(base) or max(abs(mean) * 0.05, 1e-9)
+    run_start: datetime | None = None
+    run = 0
+    for t, v in points:
+        if t < start:
+            continue
+        if abs(v - mean) > sigmas * spread:
+            run_start = t if run == 0 else run_start
+            run += 1
+            if run >= min_run:
+                return run_start
+        else:
+            run = 0
+    return None
+
+
 def downsample(series: MetricSeries, max_points: int) -> list[float | None]:
     """At most `max_points` values for a sparkline: bucket means, None where a bucket has no data."""
     values = series.values

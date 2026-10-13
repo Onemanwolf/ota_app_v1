@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% set r = v.r %}
+{% block title %}{{ r.cluster }}{% endblock %}
+{% block content %}
+<header class="report-head">
+  <p class="eyebrow">{{ "Root-cause analysis" if r.kind == "rca" else "Daily review" }}{% if r.subject %} · {{ r.subject.display_id }} {{ r.subject.title }}{% endif %}</p>
+  <h1>{{ r.cluster }}</h1>
+  <dl class="meta">
+    <div><dt>Generated</dt><dd class="mono">{{ r.generated_at[:16].replace("T", " ") }} UTC</dd></div>
+    <div><dt>Retention</dt><dd>{{ v.expires }}</dd></div>
+    <div><dt>Model</dt><dd>{{ r.model or "none (code checks only)" }}</dd></div>
+    <div><dt>Findings</dt><dd class="risks">{% for level, n in v.risk_counts %}{% if n %}<span class="risk r-{{ level }}">{{ n }} {{ level }}</span>{% endif %}{% endfor %}{% if not r.findings %}none{% endif %}</dd></div>
+  </dl>
+  <p class="safeguards">Safeguards: {{ r.counts.dropped_uncited }} uncited finding(s) dropped · {{ r.counts.dropped_actions }} automated-action recommendation(s) dropped · {{ r.counts.downgraded }} risk downgrade(s) · {{ r.counts.guard_withheld }} log template(s) withheld by the injection guard{% if not r.counts.guard_available %} (guard unavailable: all log text withheld){% endif %}</p>
+  {% if allow_download %}<p><a href="/ui/reports/{{ r.review_id }}.md">Download Markdown</a> <span class="muted">(a downloaded copy is not deleted after 48 hours)</span></p>{% endif %}
+</header>
+
+<section class="summary">
+  <h2>Summary</h2>
+  {% if r.analyst_available %}<p class="label">AI-generated. Check the cited evidence.</p>{% endif %}
+  <p>{{ r.summary or "–" }}</p>
+  {% for note in r.notes %}<p class="muted">{{ note }}</p>{% endfor %}
+</section>
+
+{% for g in v.groups %}
+<section class="findings">
+  <h2>{{ g.title }}</h2>
+  <ol class="cards">
+  {% for f in g.findings %}
+    <li class="finding f-{{ f.risk }}">
+      <div class="finding-head">
+        <span class="risk r-{{ f.risk }}">{{ f.risk }}</span>
+        {% if f.rank %}<span class="rank">#{{ f.rank }}</span>{% endif %}
+        {% if f.source == "rule" %}<span class="badge">rule</span>{% endif %}
+        <h3>{{ f.title }}</h3>
+      </div>
+      <p>{{ f.detail }}</p>
+      {% for fc in f.forecasts %}<p class="forecast">Forecast (computed): {{ fc }}</p>{% endfor %}
+      {% if f.eta %}<p class="muted">Model estimate: {{ f.eta }}</p>{% endif %}
+      {% if f.confirm_by %}<p><b>Confirm by:</b> {{ f.confirm_by }}</p>{% endif %}
+      {% for note in f.notes %}<p class="muted">Note: {{ note }}</p>{% endfor %}
+      <p class="cites">Evidence: {% for cid, a in f.cites %}{% if a %}<a href="#{{ a }}">{{ cid }}</a>{% else %}{{ cid }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %} <span class="muted">· confidence {{ f.confidence }}</span></p>
+    </li>
+  {% endfor %}
+  </ol>
+</section>
+{% endfor %}
+{% if not v.groups %}<section class="findings"><h2>Findings</h2><p class="empty">No findings: nothing in the evidence needs attention.</p></section>{% endif %}
+
+{% if v.recommendations %}
+<section>
+  <h2>Recommendations <span class="muted">for people to evaluate</span></h2>
+  <ul class="recs">
+  {% for rec in v.recommendations %}
+    <li><b>{{ rec.title }}</b> <span class="effort">effort {{ rec.effort }}</span><br>{{ rec.rationale }}
+      <span class="cites">{% for cid, a in rec.cites %}{% if a %}<a href="#{{ a }}">{{ cid }}</a>{% else %}{{ cid }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}</span></li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section>
+  <h2>Evidence</h2>
+  <p class="muted">Computed by code from Dynatrace data. Log text is redacted and untrusted.</p>
+  <ul class="evidence">
+  {% for e in v.evidence %}
+    <li id="{{ e.anchor }}" class="ev ev-{{ e.type }}">
+      <span class="cid">{{ e.id }}</span>
+      {% if e.type == "breach" %}
+        <div><b>{{ e.description }}</b> on {{ e.entity }} <span class="muted">[{{ e.source }}]</span><br>
+        worst {{ e.worst | num }} · {{ "still active" if e.active else "ended" }} · rule <code>{{ e.rule }}</code></div>
+      {% elif e.type == "metric" %}
+        <div class="metric">
+          <div><code>{{ e.metric }}</code> on <b>{{ e.entity }}</b><br>
+          {% if e.stats_24h %}<span class="muted mono">24 h: min {{ e.stats_24h.min | num }} · p50 {{ e.stats_24h.p50 | num }} · max {{ e.stats_24h.max | num }} · last {{ e.stats_24h.last | num }}</span>{% endif %}
+          {% if e.forecast %}<br><span class="forecast">{{ e.forecast.direction }} {{ e.forecast.threshold | num }} in {{ "%.1f" | format(e.forecast.eta_hours / 24) }} days</span>{% endif %}</div>
+          {% if e.spark %}
+          <svg class="spark" viewBox="0 0 160 32" width="160" height="32" role="img" aria-label="30-day trend, {{ e.spark.label }}">
+            <path d="{{ e.spark.path }}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle cx="{{ e.spark.last_x }}" cy="{{ e.spark.last_y }}" r="2.5" fill="currentColor"/>
+          </svg>
+          {% endif %}
+        </div>
+      {% elif e.type == "log" %}
+        <div>
+          <span class="status s-{{ e.status | lower }}">{{ e.status }}</span> ×{{ e.count }} <span class="muted">{{ e.logger or "" }}</span><br>
+          {% if e.withheld %}<i>Withheld: flagged by the injection guard.</i>{% else %}<code class="log">{{ e.template }}</code>{% endif %}
+          {% if e.bars %}
+          <svg class="bars" viewBox="0 0 120 20" width="120" height="20" role="img" aria-label="occurrences per hour">
+            {% for b in e.bars %}<rect x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}" fill="currentColor"><title>{{ b.title }}</title></rect>{% endfor %}
+          </svg>
+          {% endif %}
+          {% for ex in e.examples %}<pre class="example">{{ ex }}</pre>{% endfor %}
+        </div>
+      {% else %}
+        <div><b>{{ e.display_id }}</b> {{ e.title }} <span class="muted">{{ e.category or "" }} · {{ e.status }}{% if e.duration_hours %} · {{ e.duration_hours }} h{% endif %}{% if e.repeats > 1 %} · same title ×{{ e.repeats }}{% endif %}</span></div>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+</section>
+{% if r.kind == "review" %}
+<section class="narrow">
+  <p class="muted">Want the cause of a specific problem? <a href="/ui/rca">Run a root-cause analysis.</a></p>
+</section>
+{% endif %}
+{% endblock %}

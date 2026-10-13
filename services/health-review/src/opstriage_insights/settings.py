@@ -65,6 +65,7 @@ class GuardSettings(BaseModel):
     provider: Literal["http", "keyword"] = "http"  # keyword: offline fake that flags known phrasing only
     base_url: str = "http://host.docker.internal:18004"
     timeout_seconds: float = Field(default=20, gt=0)
+    min_score: float = Field(default=0.95, ge=0.5, le=1.0)  # injection flags below this score are ignored
 
 
 class RetentionSettings(BaseModel):
@@ -84,6 +85,9 @@ class WebSettings(BaseModel):
     session_ttl: timedelta = timedelta(hours=8)
     allow_download: bool = False  # a downloaded copy outlives the 48h retention (open question 10)
     trusted_proxy_header: str = ""  # e.g. X-Auth-Request-Email behind an auth proxy; empty locally
+    trusted_proxy_addresses: list[str] = Field(
+        default_factory=list
+    )  # the header is trusted only from these IPs
     sparkline_points: int = Field(default=96, ge=8, le=500)
 
 

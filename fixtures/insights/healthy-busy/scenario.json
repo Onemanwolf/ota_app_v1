@@ -23,6 +23,7 @@
   "forbid": {
     "max_risk": "low"
   },
+  "rca": {},
   "counts": {
     "logs": 20,
     "problems": 0,

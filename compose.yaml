@@ -42,6 +42,7 @@ services:
     ports: ["8010:8010"]
     environment:
       SERVER__PORT: "8010"
+      TRIAGE__INSIGHTS_BASE_URL: http://localhost:8120   # "Analyse root cause" link on Teams cards
     healthcheck: *http-health
     depends_on:
       postgres: { condition: service_healthy }

@@ -14,6 +14,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
+from opstriage_insights.application.run_rca import PlanRca, RcaError
 from opstriage_insights.application.run_review import RunReview
 from opstriage_insights.domain.model import ClusterScope
 from opstriage_insights.ports.store import ReviewRow, ReviewStore
@@ -24,6 +25,12 @@ log = structlog.get_logger()
 class ReviewRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     cluster: str = Field(min_length=1, max_length=80)
+
+
+class AnalysisRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    display_id: str = Field(pattern=r"^P-[0-9]{1,20}$")
+    cluster: str | None = Field(default=None, min_length=1, max_length=80)
 
 
 def _row(r: ReviewRow) -> dict[str, Any]:
@@ -47,16 +54,29 @@ class Runner:
     def __init__(self, run: RunReview) -> None:
         self._run, self._tasks = run, set[asyncio.Task[Any]]()
 
-    def start(self, scope: ClusterScope, subject: dict[str, Any] | None = None) -> UUID:
+    def start(
+        self,
+        scope: ClusterScope,
+        subject: dict[str, Any] | None = None,
+        window: tuple[datetime, datetime] | None = None,
+    ) -> UUID:
         review_id = uuid.uuid4()
-        task = asyncio.create_task(self._guarded(scope, subject, review_id), name=f"review-{review_id}")
+        task = asyncio.create_task(
+            self._guarded(scope, subject, review_id, window), name=f"review-{review_id}"
+        )
         self._tasks.add(task)
         task.add_done_callback(self._tasks.discard)
         return review_id
 
-    async def _guarded(self, scope: ClusterScope, subject: dict[str, Any] | None, review_id: UUID) -> None:
+    async def _guarded(
+        self,
+        scope: ClusterScope,
+        subject: dict[str, Any] | None,
+        review_id: UUID,
+        window: tuple[datetime, datetime] | None,
+    ) -> None:
         try:
-            outcome = await self._run(scope, subject, review_id)
+            outcome = await self._run(scope, subject, review_id, window)
             log.info(
                 "review_completed",
                 review_id=outcome.review_id,
@@ -81,6 +101,7 @@ def api_router(
     store: ReviewStore,
     guard: Callable[..., None],
     clock: Callable[[], datetime] = lambda: datetime.now(UTC),
+    plan_rca: PlanRca | None = None,
 ) -> APIRouter:
     router = APIRouter(prefix="/v1", dependencies=[Depends(guard)])
 
@@ -93,6 +114,24 @@ def api_router(
         return {
             "review_id": str(review_id),
             "status": "running",
+            "links": {"status": f"/v1/reviews/{review_id}", "report": f"/v1/reports/{review_id}"},
+        }
+
+    @router.post("/analyses", status_code=status.HTTP_202_ACCEPTED)
+    async def start_analysis(body: AnalysisRequest) -> dict[str, Any]:
+        """Root-cause analysis for one Dynatrace problem (window: 2 h before it started until it ended)."""
+        if plan_rca is None:
+            raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "root-cause analysis is not configured")
+        try:
+            plan = await plan_rca(body.display_id, body.cluster)
+        except RcaError as exc:
+            raise HTTPException(exc.status, exc.detail) from exc
+        review_id = runner.start(plan.scope, plan.subject, plan.window)
+        return {
+            "review_id": str(review_id),
+            "status": "running",
+            "cluster": plan.scope.name,
+            "window": plan.subject["window"],
             "links": {"status": f"/v1/reviews/{review_id}", "report": f"/v1/reports/{review_id}"},
         }
 

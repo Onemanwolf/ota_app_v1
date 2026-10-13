@@ -1,0 +1,16 @@
+[
+  {
+    "event.id": "1464438920733811877_1791774000000V2",
+    "display_id": "P-26101204",
+    "event.name": "Kafka consumer lag",
+    "event.category": "CUSTOM_ALERT",
+    "event.status": "ACTIVE",
+    "event.start": "2026-10-12T03:00:00.000000000Z",
+    "event.end": null,
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  }
+]

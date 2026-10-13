@@ -127,6 +127,9 @@ class Cluster:
     series: dict[tuple[str, str], tuple[dict[str, str], Spec]] = field(default_factory=dict)
     logs: list[dict[str, Any]] = field(default_factory=list)
     problems: list[dict[str, Any]] = field(default_factory=list)
+    rca: dict[str, Any] = field(
+        default_factory=dict
+    )  # RCA clusters: problem id, root-cause evidence, effects
 
 
 def baseline(name: str, kind: str, description: str) -> Cluster:
@@ -236,13 +239,14 @@ def problem(
     entities: list[str],
     *,
     maintenance: bool = False,
+    display_id: str | None = None,
 ) -> None:
     start = ANCHOR - timedelta(hours=hours_ago)
     end = start + timedelta(minutes=minutes) if minutes is not None else None
     c.problems.append(
         {
             "event.id": f"{rng.randrange(10**18, 10**19)}_{int(start.timestamp() * 1000)}V2",
-            "display_id": f"P-{rng.randrange(10**7, 10**8)}",
+            "display_id": display_id or f"P-{rng.randrange(10**7, 10**8)}",
             "event.name": title,
             "event.category": category,
             "event.status": "CLOSED" if end else "ACTIVE",
@@ -616,6 +620,387 @@ def healthy_weekly(rng: random.Random) -> Cluster:
     return c
 
 
+# ---- RCA clusters (5.6) -------------------------------------------------------------------------------------
+# Each has one Davis problem at PROBLEM_AT. The planted cause departs from normal first; its effects later.
+# rca.root_cause lists evidence alternatives (any one cited in a top-2 hypothesis counts); rca.effects are decoys.
+PROBLEM_AT = 3.0  # hours before ANCHOR
+
+
+def after(hours: float, before: Signal, then: Signal) -> Signal:
+    """`before` until `hours` before ANCHOR, then `then`."""
+    return lambda t: then(t) if hours_before(t) <= hours else before(t)
+
+
+def ramp(start_h: float, end_h: float, v0: float, v1: float, base: Signal) -> Signal:
+    """base before start_h; linear v0 -> v1 between start_h and end_h; v1 after."""
+
+    def f(t: datetime) -> float:
+        h = hours_before(t)
+        if h > start_h:
+            return base(t)
+        if h <= end_h:
+            return v1
+        return v0 + (v1 - v0) * (start_h - h) / (start_h - end_h)
+
+    return f
+
+
+def rca_cluster(
+    name: str, description: str, display_id: str, root: list[dict[str, str]], effects: list[dict[str, str]]
+) -> Cluster:
+    c = baseline(name, "rca", description)
+    c.rca = {
+        "display_id": display_id,
+        "problem_at_hours_ago": PROBLEM_AT,
+        "root_cause": root,
+        "effects": effects,
+    }
+    return c
+
+
+def burst(
+    c: Cluster,
+    rng: random.Random,
+    start_h: float,
+    end_h: float,
+    n: int,
+    level: str,
+    msg: str,
+    logger: str,
+    **kw: Any,
+) -> None:
+    for _ in range(n):
+        add_log(c, ANCHOR - timedelta(hours=rng.uniform(end_h, start_h)), level, msg, logger, **kw)
+
+
+def rca_disk_full(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-disk-full",
+        "Broker kafka-2 stops after its log disk fills; replicas on other brokers fall behind.",
+        "P-26101201",
+        [{"metric": DISK_USED, "entity": "aks-kafka-pool-0002"}, {"log": "No space left on device"}],
+        [{"metric": URP, "entity": "kafka-0"}],
+    )
+    override(c, DISK_USED, "aks-kafka-pool-0002", ramp(3.7, 3.35, 71, 100, const(71)), noise=0.0)
+    burst(
+        c,
+        rng,
+        3.3,
+        3.05,
+        6,
+        "ERROR",
+        "Error while writing to checkpoint file /var/lib/kafka/data/replication-offset-checkpoint: "
+        "java.io.IOException: No space left on device",
+        "kafka.server.LogDirFailureChannel",
+        pod="kafka-2",
+    )
+    for n in (0, 1):
+        override(c, URP, f"kafka-{n}", after(3.0, const(0), const(34)), noise=0.0)
+    problem(
+        c,
+        rng,
+        "Process unavailable",
+        "AVAILABILITY",
+        PROBLEM_AT,
+        None,
+        [broker_id(2)],
+        display_id="P-26101201",
+    )
+    return c
+
+
+def rca_gc_pause(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-gc-pause",
+        "Long GC pauses on kafka-1 back up its request queue; producers see slow responses.",
+        "P-26101202",
+        [{"metric": GC_SUSPENSION, "entity": "kafka-1"}],
+        [{"metric": REQUEST_QUEUE, "entity": "kafka-1"}, {"metric": HANDLER_IDLE, "entity": "kafka-1"}],
+    )
+    override(c, GC_SUSPENSION, "kafka-1", after(3.5, const(0.8), const(24)), noise=0.05)
+    override(c, REQUEST_QUEUE, "kafka-1", after(3.2, lambda t: diurnal(t, 1, 6), const(85)), noise=0.1)
+    override(
+        c, HANDLER_IDLE, "kafka-1", after(3.2, lambda t: diurnal(t, 0.82, 0.62), const(0.12)), noise=0.05
+    )
+    problem(
+        c,
+        rng,
+        "Response time degradation",
+        "SLOWDOWN",
+        PROBLEM_AT,
+        None,
+        [PRODUCER_SVC],
+        display_id="P-26101202",
+    )
+    return c
+
+
+def rca_network_flap(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-network-flap",
+        "Network drops between brokers: followers disconnect, then elections and under-replication.",
+        "P-26101203",
+        [{"log": "was disconnected before the response was read"}],
+        [{"metric": URP, "entity": "kafka-0"}, {"metric": LEADER_ELECTIONS, "entity": "kafka-0"}],
+    )
+    for pod in ("kafka-0", "kafka-1"):
+        burst(
+            c,
+            rng,
+            3.45,
+            3.0,
+            9,
+            "WARN",
+            "[ReplicaFetcher replicaId=0, leaderId=2, fetcherId=0] Error in response for fetch "
+            "request (type=FetchRequest, replicaId=0, maxWait=500, minBytes=1, maxBytes=10485760) java.io.IOException: "
+            "Connection to 2 was disconnected before the response was read",
+            "kafka.server.ReplicaFetcherThread",
+            pod=pod,
+        )
+    for n in range(3):
+        override(c, LEADER_ELECTIONS, f"kafka-{n}", after(3.25, const(0), const(5)), noise=0.1)
+    override(c, URP, "kafka-0", after(3.1, const(0), const(41)), noise=0.0)
+    problem(
+        c,
+        rng,
+        "Multiple infrastructure problems",
+        "ERROR",
+        PROBLEM_AT,
+        40,
+        [broker_id(0), broker_id(2)],
+        display_id="P-26101203",
+    )
+    return c
+
+
+def rca_consumer_deploy(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-consumer-deploy",
+        "A deploy of orders-consumer causes a rebalance storm; lag climbs until the alert fires.",
+        "P-26101204",
+        [{"log": "consumer poll timeout has expired"}],
+        [{"metric": LAG_MAX, "entity": "orders-consumer"}],
+    )
+    burst(
+        c,
+        rng,
+        3.65,
+        3.45,
+        10,
+        "WARN",
+        "[Consumer clientId=orders-consumer-2, groupId=orders] consumer poll timeout has "
+        "expired. This means the time between subsequent calls to poll() was longer than the configured "
+        "max.poll.interval.ms, which typically implies that the poll loop is spending too much time processing "
+        "messages.",
+        "org.apache.kafka.clients.consumer.internals.ConsumerCoordinator",
+        pod="orders-consumer-7d9f",
+        entity=CONSUMER_ID,
+        container="orders-consumer",
+    )
+    override(
+        c, LAG_MAX, "orders-consumer", after(3.35, lambda t: diurnal(t, 150, 1800), const(92000)), noise=0.05
+    )
+    problem(
+        c, rng, "Kafka consumer lag", "CUSTOM_ALERT", PROBLEM_AT, None, [CONSUMER_ID], display_id="P-26101204"
+    )
+    return c
+
+
+def rca_cert_expiry(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-cert-expiry",
+        "A broker certificate expires: clients fail SSL handshakes, then produce requests fail.",
+        "P-26101205",
+        [{"log": "SSL handshake failed"}],
+        [{"metric": FAILED_PRODUCE, "entity": "kafka-0"}],
+    )
+    for k in range(14):
+        add_log(
+            c,
+            ANCHOR - timedelta(hours=rng.uniform(3.0, 3.25)),
+            "ERROR",
+            f"[Producer clientId=producer-{k % 7 + 1}] Connection to node 0 (kafka-0.kafka.streaming.svc/10.244.0.12:9093) "
+            "failed authentication due to: SSL handshake failed",
+            "org.apache.kafka.clients.NetworkClient",
+            pod=f"app-{k % 7 + 1}-7c9d",
+            entity=PRODUCER_SVC,
+            container="payments-producer",
+        )
+    for n in range(3):
+        override(c, FAILED_PRODUCE, f"kafka-{n}", after(3.15, const(0), const(18)), noise=0.1)
+    problem(
+        c, rng, "Failure rate increase", "ERROR", PROBLEM_AT, None, [PRODUCER_SVC], display_id="P-26101205"
+    )
+    return c
+
+
+def rca_fd_exhaustion(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-fd-exhaustion",
+        "kafka-2 runs out of file descriptors; it stops accepting connections.",
+        "P-26101206",
+        [{"log": "Too many open files"}],
+        [{"metric": NETWORK_IDLE, "entity": "kafka-2"}, {"metric": FAILED_PRODUCE, "entity": "kafka-2"}],
+    )
+    for i in range(8):
+        burst(
+            c,
+            rng,
+            3.9 - i * 0.1,
+            3.8 - i * 0.1,
+            1 + i,
+            "ERROR",
+            "Error while accepting connection java.io.IOException: Too many open files",
+            "kafka.network.DataPlaneAcceptor",
+            pod="kafka-2",
+        )
+    override(
+        c, NETWORK_IDLE, "kafka-2", after(3.3, lambda t: diurnal(t, 0.88, 0.74), const(0.08)), noise=0.05
+    )
+    override(c, FAILED_PRODUCE, "kafka-2", after(3.2, const(0), const(25)), noise=0.1)
+    problem(
+        c, rng, "Connectivity problem", "ERROR", PROBLEM_AT, None, [broker_id(2)], display_id="P-26101206"
+    )
+    return c
+
+
+def rca_controller_quorum(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-controller-quorum",
+        "Brokers lose their controller heartbeats; elections churn and partitions go offline.",
+        "P-26101207",
+        [{"log": "Unable to send a heartbeat"}, {"metric": LEADER_ELECTIONS, "entity": "*"}],
+        [{"metric": OFFLINE, "entity": "kafka-0"}],
+    )
+    burst(
+        c,
+        rng,
+        3.55,
+        3.05,
+        8,
+        "WARN",
+        "[BrokerLifecycleManager id=1] Unable to send a heartbeat because the RPC got "
+        "timed out before it could be sent.",
+        "kafka.server.BrokerLifecycleManager",
+        pod="kafka-1",
+    )
+    for n in range(3):
+        override(c, LEADER_ELECTIONS, f"kafka-{n}", after(3.45, const(0), const(7)), noise=0.1)
+    override(c, OFFLINE, "kafka-0", after(3.1, const(0), const(4)), noise=0.0)
+    problem(
+        c,
+        rng,
+        "Multiple infrastructure problems",
+        "AVAILABILITY",
+        PROBLEM_AT,
+        None,
+        [broker_id(0), broker_id(1)],
+        display_id="P-26101207",
+    )
+    return c
+
+
+def rca_follower_lag(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-follower-lag",
+        "Follower kafka-1 falls behind; payments partitions drop under min ISR and writes fail.",
+        "P-26101208",
+        [{"metric": URP, "entity": "kafka-1"}],
+        [{"metric": UNDER_MIN_ISR, "entity": "kafka-1"}, {"log": "NotEnoughReplicasException"}],
+    )
+    override(c, URP, "kafka-1", after(3.75, const(0), const(12)), noise=0.0)
+    override(c, UNDER_MIN_ISR, "kafka-1", after(3.2, const(0), const(3)), noise=0.0)
+    burst(
+        c,
+        rng,
+        3.2,
+        3.0,
+        10,
+        "ERROR",
+        "[ReplicaManager broker=1] Error processing append operation on partition payments-2 "
+        "org.apache.kafka.common.errors.NotEnoughReplicasException: The size of the current ISR Set(1) is insufficient "
+        "to satisfy the min.isr requirement of 2 for partition payments-2",
+        "kafka.server.ReplicaManager",
+        pod="kafka-1",
+    )
+    problem(
+        c, rng, "Failure rate increase", "ERROR", PROBLEM_AT, None, [PRODUCER_SVC], display_id="P-26101208"
+    )
+    return c
+
+
+def rca_oom(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-oom",
+        "kafka-0 heap fills: GC time climbs, then an OutOfMemoryError stops the broker.",
+        "P-26101209",
+        [{"metric": GC_SUSPENSION, "entity": "kafka-0"}, {"log": "OutOfMemoryError"}],
+        [{"metric": URP, "entity": "kafka-1"}],
+    )
+    override(c, GC_SUSPENSION, "kafka-0", ramp(3.9, 3.2, 2.0, 32.0, const(0.8)), noise=0.05)
+    burst(
+        c,
+        rng,
+        3.15,
+        3.02,
+        3,
+        "ERROR",
+        "[KafkaApi-0] Unexpected error handling request. java.lang.OutOfMemoryError: Java heap space",
+        "kafka.server.KafkaApis",
+        pod="kafka-0",
+    )
+    for n in (1, 2):
+        override(c, URP, f"kafka-{n}", after(3.0, const(0), const(26)), noise=0.0)
+    problem(
+        c,
+        rng,
+        "Process unavailable",
+        "AVAILABILITY",
+        PROBLEM_AT,
+        None,
+        [broker_id(0)],
+        display_id="P-26101209",
+    )
+    return c
+
+
+def rca_traffic_surge(rng: random.Random) -> Cluster:
+    c = rca_cluster(
+        "rca-traffic-surge",
+        "Producers triple their traffic; brokers saturate and responses slow down.",
+        "P-26101210",
+        [{"metric": BYTES_IN, "entity": "*"}],
+        [{"metric": HANDLER_IDLE, "entity": "kafka-0"}, {"metric": REQUEST_QUEUE, "entity": "kafka-0"}],
+    )
+    for n in range(3):
+        override(
+            c,
+            BYTES_IN,
+            f"kafka-{n}",
+            after(3.6, lambda t: diurnal(t, 1.5e6, 7.5e6), lambda t: 4 * diurnal(t, 1.5e6, 7.5e6) + 2e7),
+            noise=0.05,
+        )
+        override(
+            c,
+            HANDLER_IDLE,
+            f"kafka-{n}",
+            after(3.3, lambda t: diurnal(t, 0.82, 0.62), const(0.11)),
+            noise=0.05,
+        )
+        override(c, REQUEST_QUEUE, f"kafka-{n}", after(3.3, lambda t: diurnal(t, 1, 6), const(64)), noise=0.1)
+    problem(
+        c,
+        rng,
+        "Response time degradation",
+        "SLOWDOWN",
+        PROBLEM_AT,
+        None,
+        [PRODUCER_SVC],
+        display_id="P-26101210",
+    )
+    return c
+
+
 BUILDERS = [
     lag_growth_5d,
     disk_trend_full,
@@ -633,6 +1018,16 @@ BUILDERS = [
     healthy_busy,
     healthy_rolling_restart,
     healthy_weekly,
+    rca_disk_full,
+    rca_gc_pause,
+    rca_network_flap,
+    rca_consumer_deploy,
+    rca_cert_expiry,
+    rca_fd_exhaustion,
+    rca_controller_quorum,
+    rca_follower_lag,
+    rca_oom,
+    rca_traffic_surge,
 ]
 
 
@@ -696,6 +1091,7 @@ def main(out: Path = OUT) -> None:
             },
             "expect": c.expect,
             "forbid": c.forbid,
+            "rca": c.rca,
             "counts": {
                 "logs": len(c.logs),
                 "problems": len(c.problems),

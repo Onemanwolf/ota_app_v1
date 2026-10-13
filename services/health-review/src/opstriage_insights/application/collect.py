@@ -34,6 +34,7 @@ class CollectedEvidence:
     month_series: Mapping[str, Sequence[MetricSeries]]
     problems: tuple[ProblemRecord, ...]
     redactions: Mapping[str, int]
+    window: tuple[datetime, datetime] | None = None  # RCA: analysis window (now = its end)
 
 
 class CollectEvidence:
@@ -53,8 +54,15 @@ class CollectEvidence:
         self._log_window, self._trend_window, self._max_logs = log_window, trend_window, max_log_records
         self._keys = tuple(metric_keys)
 
-    async def __call__(self, scope: ClusterScope, now: datetime) -> CollectedEvidence:
+    async def __call__(
+        self, scope: ClusterScope, now: datetime, window: tuple[datetime, datetime] | None = None
+    ) -> CollectedEvidence:
+        """A daily review looks back from `now`. An RCA looks at `window`: its end becomes `now`, and logs
+        start 24 h before the window so templates that are new inside it can be told apart."""
+        if window is not None:
+            now = window[1]
         day_start, month_start = now - timedelta(hours=24), now - self._trend_window
+        log_start = (window[0] - self._log_window) if window else now - self._log_window
 
         async def series(start: datetime, step: timedelta) -> dict[str, list[MetricSeries]]:
             results = await asyncio.gather(
@@ -63,7 +71,7 @@ class CollectEvidence:
             return dict(zip(self._keys, results, strict=True))
 
         raw_logs, day, month, problems = await asyncio.gather(
-            self._logs.fetch(scope, now - self._log_window, now, self._max_logs),
+            self._logs.fetch(scope, log_start, now, self._max_logs),
             series(day_start, DAY_STEP),
             series(month_start, MONTH_STEP),
             self._problems.fetch(scope, now - PROBLEM_WINDOW, now),
@@ -74,7 +82,7 @@ class CollectEvidence:
             red = self._redactor.redact(r.content)
             counts.update(red.counts)
             logs.append(replace(r, content=red.text))
-        return CollectedEvidence(scope, now, tuple(logs), day, month, tuple(problems), dict(counts))
+        return CollectedEvidence(scope, now, tuple(logs), day, month, tuple(problems), dict(counts), window)
 
 
 def _identity(text: str) -> str:
@@ -108,18 +116,20 @@ class BuildDigest:
             redactions=ev.redactions,
             max_tokens=self._max_tokens,
             sparkline_points=self._points,
+            rca_window=ev.window,
         )
 
     async def _screen(self, templates: Sequence[LogTemplate]) -> tuple[set[str], bool]:
         """Screen each template with its examples. Guard down: withhold everything (fail closed)."""
         if not templates:
             return set(), True
-        texts = [" \n".join([t.text, *t.examples]) for t in templates]
+        # Screen the template and each example separately: concatenated text skews the classifier.
+        pieces = [(t.key, text) for t in templates for text in (t.text, *t.examples)]
         try:
-            flags = await self._guard.flags(texts)
+            flags = await self._guard.flags([text for _, text in pieces])
         except GuardUnavailable:
             return {t.key for t in templates}, False
-        return {t.key for t, flagged in zip(templates, flags, strict=True) if flagged}, True
+        return {key for (key, _), flagged in zip(pieces, flags, strict=True) if flagged}, True
 
 
 @dataclass(frozen=True)
@@ -127,6 +137,9 @@ class PreparedReview:
     review_id: UUID
     evidence: CollectedEvidence
     digest: digest_mod.Digest
+    started_at: (
+        datetime  # when collection ran; retention counts from here (an RCA window may lie in the past)
+    )
 
 
 class PrepareReview:
@@ -146,7 +159,11 @@ class PrepareReview:
         self._retention, self._clock, self._new_id, self._serialize = retention, clock, new_id, serialize
 
     async def __call__(
-        self, scope: ClusterScope, subject: dict[str, Any] | None = None, review_id: UUID | None = None
+        self,
+        scope: ClusterScope,
+        subject: dict[str, Any] | None = None,
+        review_id: UUID | None = None,
+        window: tuple[datetime, datetime] | None = None,
     ) -> PreparedReview:
         review_id, started = review_id or self._new_id(), self._clock()
         kind: ReviewKind = "rca" if subject else "review"
@@ -154,7 +171,7 @@ class PrepareReview:
             review_id, kind, scope.name, subject, started, self._retention.review_expires_at(started, None)
         )
         try:
-            evidence = await self._collect(scope, started)
+            evidence = await self._collect(scope, started, window)
             expires = self._retention.evidence_expires_at(started, None)
             for source, bundle in self._serialize(evidence).items():
                 await self._store.save_evidence(review_id, source, started, expires, bundle)  # type: ignore[arg-type]
@@ -162,4 +179,4 @@ class PrepareReview:
         except Exception as exc:
             await self._store.fail_review(review_id, type(exc).__name__)
             raise
-        return PreparedReview(review_id, evidence, digest)
+        return PreparedReview(review_id, evidence, digest, started)

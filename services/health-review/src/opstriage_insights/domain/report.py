@@ -111,6 +111,7 @@ def _problem(e: ProblemEntry) -> dict[str, Any]:
 def _finding(f: Finding) -> dict[str, Any]:
     return {
         "kind": f.kind,
+        "rank": f.rank,
         "title": f.title,
         "detail": f.detail,
         "risk": f.risk,

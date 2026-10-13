@@ -33,9 +33,9 @@ def _generator() -> ModuleType:
     return module
 
 
-def test_sixteen_clusters_twelve_planted_four_healthy() -> None:
+def test_cluster_mix_planted_healthy_and_rca() -> None:
     kinds = [STORE.scenario(c)["kind"] for c in CLUSTERS]
-    assert len(CLUSTERS) == 16 and kinds.count("planted") == 12 and kinds.count("healthy") == 4
+    assert (kinds.count("planted"), kinds.count("healthy"), kinds.count("rca")) == (12, 4, 10)
 
 
 def test_committed_fixtures_match_the_generator(tmp_path: Path) -> None:
@@ -77,9 +77,7 @@ async def test_expectations_point_at_evidence_that_exists(cluster: str) -> None:
     scope = ClusterScope(name=cluster)
     logs = await FixtureLogSource(STORE).fetch(scope, ANCHOR - timedelta(hours=24), ANCHOR, 50_000)
     raw_metrics = STORE.raw(cluster, "metrics")
-    assert scenario["expect"] or scenario["forbid"], (
-        "a cluster must state what a review should or must not say"
-    )
+    assert scenario["expect"] or scenario["forbid"] or scenario["rca"], "a cluster must state its answer key"
     for e in scenario["expect"]:
         ev = e["evidence"]
         if "metric" in ev:
@@ -128,3 +126,20 @@ async def test_unsupported_interval_is_an_error() -> None:
             ANCHOR,
             timedelta(minutes=1),
         )
+
+
+@pytest.mark.parametrize("cluster", [c for c in CLUSTERS if STORE.scenario(c)["kind"] == "rca"])
+async def test_rca_answer_keys_point_at_data_that_exists(cluster: str) -> None:
+    rca = STORE.scenario(cluster)["rca"]
+    problems = STORE.raw(cluster, "problems")
+    assert [p["display_id"] for p in problems] == [rca["display_id"]]
+    raw_metrics = STORE.raw(cluster, "metrics")
+    logs = await FixtureLogSource(STORE).fetch(
+        ClusterScope(cluster), ANCHOR - timedelta(hours=24), ANCHOR, 50_000
+    )
+    for ev in [*rca["root_cause"], *rca["effects"]]:
+        if "metric" in ev:
+            labels = {r["entity.name"] for r in raw_metrics[ev["metric"]]["5m"]}
+            assert ev["entity"] == "*" or ev["entity"] in labels, (ev, labels)
+        else:
+            assert any(ev["log"] in r.content for r in logs), ev

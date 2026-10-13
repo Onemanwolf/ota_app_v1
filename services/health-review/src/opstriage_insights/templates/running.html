@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block meta %}<meta http-equiv="refresh" content="10">{% endblock %}
+{% block title %}Analysis running{% endblock %}
+{% block content %}
+<section class="narrow">
+  <h1>Analysis running</h1>
+  <p>{% if row %}{{ "Root-cause analysis" if row.kind == "rca" else "Review" }} of <b>{{ row.cluster }}</b>, started {{ row.started_at.strftime("%H:%M") }} UTC.{% else %}Starting…{% endif %}
+  This page refreshes every 10 seconds; a review usually takes under two minutes.</p>
+  <p class="muted mono">{{ review_id }}</p>
+</section>
+{% endblock %}

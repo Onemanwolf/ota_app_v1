@@ -139,6 +139,7 @@ async def build_container(settings: Settings) -> Container:
         sleep=asyncio.sleep,
         run_url_base=t.public_base_url,
         max_state_chars=t.context.max_state_chars,
+        rca_url_base=t.insights_base_url,
     )
     graph = build_triage_graph(checkpointer)
     worker = TriageWorker(

@@ -27,6 +27,7 @@
       "entity": "billing-consumer"
     }
   },
+  "rca": {},
   "counts": {
     "logs": 14,
     "problems": 0,

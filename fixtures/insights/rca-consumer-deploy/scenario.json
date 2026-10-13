@@ -1,0 +1,44 @@
+{
+  "cluster": "rca-consumer-deploy",
+  "kind": "rca",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "A deploy of orders-consumer causes a rebalance storm; lag climbs until the alert fires.",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [],
+  "forbid": {},
+  "rca": {
+    "display_id": "P-26101204",
+    "problem_at_hours_ago": 3.0,
+    "root_cause": [
+      {
+        "log": "consumer poll timeout has expired"
+      }
+    ],
+    "effects": [
+      {
+        "metric": "kafka.consumer.consumer-metrics.records-lag-max",
+        "entity": "orders-consumer"
+      }
+    ]
+  },
+  "counts": {
+    "logs": 29,
+    "problems": 1,
+    "series": 41
+  }
+}

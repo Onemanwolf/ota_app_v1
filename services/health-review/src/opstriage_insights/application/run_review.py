@@ -84,9 +84,13 @@ class RunReview:
         self._notify = notify or NotifyPolicy()
 
     async def __call__(
-        self, scope: ClusterScope, subject: dict[str, Any] | None = None, review_id: UUID | None = None
+        self,
+        scope: ClusterScope,
+        subject: dict[str, Any] | None = None,
+        review_id: UUID | None = None,
+        window: tuple[datetime, datetime] | None = None,
     ) -> ReviewOutcome:
-        prepared = await self._prepare(scope, subject, review_id)
+        prepared = await self._prepare(scope, subject, review_id, window)
         digest = prepared.digest
         kind: ReviewKind = "rca" if subject else "review"
         model: str | None = None
@@ -105,7 +109,7 @@ class RunReview:
             await self._store.fail_review(prepared.review_id, type(exc).__name__)
             raise
         completed = self._clock()
-        started = prepared.evidence.now
+        started = prepared.started_at
         meta = rep.ReportMeta(
             review_id=str(prepared.review_id),
             kind=kind,

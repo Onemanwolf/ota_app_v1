@@ -52,6 +52,7 @@ class Finding:
     source: Literal["model", "rule"] = "model"
     forecasts: tuple[str, ...] = ()  # code-computed, from cited metric entries
     notes: tuple[str, ...] = ()  # e.g. "risk lowered from critical: no breach or active problem cited"
+    rank: int | None = None  # root-cause hypotheses: the model's order (1 = most likely)
 
 
 @dataclass(frozen=True, slots=True)
@@ -95,6 +96,12 @@ def _forecast_text(m: MetricEntry) -> str | None:
         else f"in about {days * 24:.0f} hours"
     )
     return f"{m.metric} on {m.entity} goes {direction} {threshold:g} {when} at the current rate ({m.cid})"
+
+
+def _order(f: Finding) -> tuple[int, int, int, int, str]:
+    """Root-cause hypotheses first, in the model's ranking; everything else by risk, then kind."""
+    hypothesis = f.kind == "root_cause_hypothesis"
+    return (0 if hypothesis else 1, f.rank or 0, -RISK_ORDER[f.risk], KIND_ORDER[f.kind], f.title)
 
 
 def rule_findings(digest: Digest) -> list[Finding]:
@@ -141,14 +148,23 @@ def validate(output: AnalystOutput, digest: Digest) -> Validated:
             notes.append("risk lowered from critical: no breach or active problem cited")
         forecasts = tuple(t for t in (_forecast_text(metrics[c]) for c in cites if c in metrics) if t)
         kept_index[i] = len(kept)
+        rank = None
+        if f.kind == "root_cause_hypothesis":  # keep the model's ranking (1 = most likely)
+            rank = sum(1 for k in kept if k.kind == "root_cause_hypothesis") + 1
         kept.append(
-            replace(f, citations=cites, risk=risk, source="model", forecasts=forecasts, notes=tuple(notes))
+            replace(
+                f,
+                citations=cites,
+                risk=risk,
+                source="model",
+                forecasts=forecasts,
+                notes=tuple(notes),
+                rank=rank,
+            )
         )
     cited_breaches = {c for f in kept for c in f.citations if c in breach_ids}
     rules = [r for r in rule_findings(digest) if r.citations[0] not in cited_breaches]
-    findings = tuple(
-        sorted([*kept, *rules], key=lambda f: (-RISK_ORDER[f.risk], KIND_ORDER[f.kind], f.title))
-    )
+    findings = tuple(sorted([*kept, *rules], key=_order))
     recs: list[Recommendation] = []
     dropped_actions = 0
     for r in output.recommendations:

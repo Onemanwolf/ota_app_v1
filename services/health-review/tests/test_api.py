@@ -76,3 +76,45 @@ def test_a_running_review_answers_202() -> None:
     with TestClient(app) as client:
         r = client.get(f"/v1/reports/{UUID(int=5)}", headers=AUTH)
     assert r.status_code == 202 and r.json()["status"] == "running"
+
+
+def test_root_cause_analysis_endpoint() -> None:
+    from insights_testkit import STORE
+
+    from opstriage_insights.adapters.fixtures import FixtureProblemSource
+    from opstriage_insights.application.run_rca import PlanRca
+
+    store = MemoryReviewStore()
+    prepare = PrepareReview(
+        store,
+        collector(),
+        BuildDigest(KeywordGuard()),
+        RetentionPolicy(),
+        lambda: ANCHOR,
+        lambda: UUID(int=3),
+        serialize,
+    )
+    runner = Runner(RunReview(prepare, ScriptedAnalyst(), store, None, RetentionPolicy(), lambda: ANCHOR))
+    app = FastAPI()
+    app.include_router(
+        api_router(
+            dict(SCOPES),
+            runner,
+            store,
+            bearer_guard([SecretStr("t")]),
+            lambda: ANCHOR,
+            PlanRca(FixtureProblemSource(STORE), dict(SCOPES), lambda: ANCHOR),
+        )
+    )
+    with TestClient(app) as client:
+        assert client.post("/v1/analyses", json={"display_id": "nope"}, headers=AUTH).status_code == 422
+        assert client.post("/v1/analyses", json={"display_id": "P-1"}, headers=AUTH).status_code == 404
+        started = client.post("/v1/analyses", json={"display_id": "P-26101208"}, headers=AUTH)
+        assert started.status_code == 202
+        body = started.json()
+        assert body["cluster"] == "rca-follower-lag" and body["window"]["end"] == ANCHOR.isoformat()
+        client.portal.call(runner.drain)  # type: ignore[union-attr]
+        report = client.get(f"/v1/reports/{body['review_id']}", headers=AUTH).json()
+    assert report["kind"] == "rca" and report["subject"]["display_id"] == "P-26101208"
+    assert report["cluster"] == "rca-follower-lag"
+    assert any(e["id"] == "B1" for e in report["evidence"])  # under-min-ISR breach inside the window

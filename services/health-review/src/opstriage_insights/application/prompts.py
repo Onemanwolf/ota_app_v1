@@ -22,9 +22,11 @@ REVIEW_TASK = """Task: a daily health review. Report trends over time, potential
 if nothing changes, with the forecast when the digest has one), current issues, and recommendations that reduce \
 those risks."""
 
-RCA_TASK = """Task: root-cause analysis for the problem in scope. Rank root-cause hypotheses (kind \
-root_cause_hypothesis) using which signals departed first and which log templates appeared first; for each, say \
-what would confirm or refute it (confirm_by)."""
+RCA_TASK = """Task: root-cause analysis for the problem in scope. Your findings MUST include one to three findings \
+of kind root_cause_hypothesis, ordered most likely first; list them before any other findings. Use the \
+ROOT-CAUSE WINDOW timeline: a signal that changed earlier is more likely a cause, one that changed later is more \
+likely an effect. Cite the evidence for each hypothesis and say what would confirm or refute it (confirm_by). \
+Other findings (current issues, trends) are optional."""
 
 
 def system_prompt(runbook: str, kind: ReviewKind) -> str:

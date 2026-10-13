@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any, Literal
+from urllib.parse import quote
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -207,8 +208,12 @@ class Policy(_Model):
         return facts
 
     @staticmethod
-    def notification_links(event: ProblemEvent, run_url: str) -> dict[str, str]:
+    def notification_links(event: ProblemEvent, run_url: str, rca_url_base: str = "") -> dict[str, str]:
         links = {"Triage run": run_url}
         if event.problem_url:
             links["Dynatrace problem"] = event.problem_url
+        if rca_url_base and event.display_id and event.status is not ProblemStatus.CLOSED:
+            links["Analyse root cause"] = (
+                f"{rca_url_base.rstrip('/')}/ui/rca?display_id={quote(event.display_id)}"
+            )
         return links

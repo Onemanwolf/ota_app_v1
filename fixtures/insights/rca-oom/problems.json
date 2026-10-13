@@ -1,0 +1,16 @@
+[
+  {
+    "event.id": "7925863469182189564_1791774000000V2",
+    "display_id": "P-26101209",
+    "event.name": "Process unavailable",
+    "event.category": "AVAILABILITY",
+    "event.status": "ACTIVE",
+    "event.start": "2026-10-12T03:00:00.000000000Z",
+    "event.end": null,
+    "affected_entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10"
+    ],
+    "maintenance.is_under_maintenance": false,
+    "dt.davis.is_duplicate": false
+  }
+]

@@ -22,6 +22,7 @@ from typing import Any
 
 from opstriage_insights.adapters.grail_records import log_record, metric_series, problem_record
 from opstriage_insights.domain.model import ClusterScope, LogRecord, MetricSeries, ProblemRecord
+from opstriage_insights.ports.sources import FoundProblem
 
 RESOLUTIONS = {timedelta(minutes=5): "5m", timedelta(hours=1): "1h"}
 
@@ -109,6 +110,16 @@ class FixtureMetricSource:
 class FixtureProblemSource:
     def __init__(self, store: FixtureStore) -> None:
         self._store = store
+
+    async def find(self, display_id: str) -> FoundProblem | None:
+        for cluster in self._store.clusters():
+            for raw in self._store.raw(cluster, "problems"):
+                if raw.get("display_id") == display_id:
+                    p = problem_record(raw)
+                    shift = self._store.shift(cluster)
+                    p = replace(p, start=p.start + shift, end=p.end + shift if p.end else None)
+                    return FoundProblem(p, cluster)
+        return None
 
     async def fetch(self, scope: ClusterScope, start: datetime, end: datetime) -> list[ProblemRecord]:
         shift = self._store.shift(scope.name)

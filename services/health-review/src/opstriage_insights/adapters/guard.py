@@ -1,6 +1,8 @@
 """Guard adapters: the DeBERTa prompt-injection service on the Spark (port 8004) and a keyword fake.
 
 Service API (observed 2026-10-13): POST /check_batch {"texts": [...]} -> [{"label", "score", "injection"}].
+A flag counts only at `min_score` or above: masked templates (<n>, <ip>) can push the classifier to borderline
+INJECTION scores (0.87 observed on a plain producer warning), while real injection text scores ~1.0.
 """
 
 from __future__ import annotations
@@ -16,8 +18,10 @@ BATCH = 32
 
 
 class HttpGuard:
-    def __init__(self, http: httpx2.AsyncClient, base_url: str, timeout_seconds: float = 20) -> None:
-        self._http, self._url = http, f"{base_url.rstrip('/')}/check_batch"
+    def __init__(
+        self, http: httpx2.AsyncClient, base_url: str, timeout_seconds: float = 20, min_score: float = 0.95
+    ) -> None:
+        self._http, self._url, self._min_score = http, f"{base_url.rstrip('/')}/check_batch", min_score
         self._timeout = httpx2.Timeout(timeout_seconds, connect=min(3.0, timeout_seconds))
 
     async def flags(self, texts: Sequence[str]) -> list[bool]:
@@ -30,7 +34,10 @@ class HttpGuard:
                 results = resp.json()
                 if not isinstance(results, list) or len(results) != len(chunk):
                     raise GuardUnavailable("guard returned a malformed response")
-                out.extend(bool(r.get("injection")) for r in results)
+                out.extend(
+                    bool(r.get("injection")) and float(r.get("score", 1.0)) >= self._min_score
+                    for r in results
+                )
             except (httpx2.HTTPError, ValueError, AttributeError) as exc:
                 raise GuardUnavailable(f"guard call failed: {type(exc).__name__}") from exc
         return out

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Protocol
 
@@ -22,7 +23,17 @@ class MetricSource(Protocol):
         ...
 
 
+@dataclass(frozen=True, slots=True)
+class FoundProblem:
+    problem: ProblemRecord
+    cluster_hint: str | None = None  # fixture source: the cluster the problem belongs to
+
+
 class ProblemSource(Protocol):
     async def fetch(self, scope: ClusterScope, start: datetime, end: datetime) -> list[ProblemRecord]:
         """Non-duplicate Davis problems touching the scope's entities that overlap [start, end)."""
+        ...
+
+    async def find(self, display_id: str) -> FoundProblem | None:
+        """One problem by its display id (P-...), for root-cause analysis."""
         ...

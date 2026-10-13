@@ -9,6 +9,8 @@ from fastapi import APIRouter, Depends, FastAPI, HTTPException, Response, status
 
 from opstriage_insights.bootstrap import Container, build_container
 from opstriage_insights.entrypoints.api import api_router
+from opstriage_insights.entrypoints.web import WebConfig, add_security_headers, web_router
+from opstriage_insights.entrypoints.web_session import SessionManager
 from opstriage_insights.settings import Settings
 from opstriage_shared.auth import bearer_guard
 
@@ -55,7 +57,28 @@ def create_app(settings: Settings, container_factory: ContainerFactory = build_c
         container = await container_factory(settings)
         app.state.container = container
         guard = bearer_guard(settings.insights.service_tokens)
-        app.include_router(api_router(container.clusters, container.runner, container.store, guard))
+        app.include_router(
+            api_router(
+                container.clusters, container.runner, container.store, guard, plan_rca=container.plan_rca
+            )
+        )
+        w = settings.insights.web
+        sessions = SessionManager(
+            w.session_secret.get_secret_value(),
+            w.session_ttl,
+            proxy_header=w.trusted_proxy_header,
+            proxy_addresses=w.trusted_proxy_addresses,
+        )
+        app.include_router(
+            web_router(
+                container.clusters,
+                container.runner,
+                container.store,
+                sessions,
+                WebConfig(tuple(settings.insights.service_tokens), w.allow_download),
+                container.plan_rca,
+            )
+        )
         if settings.app_env == "local":
             app.include_router(dev_router(container, guard))
         log.info("health_review_started", source=container.source, clusters=len(container.clusters))
@@ -65,6 +88,8 @@ def create_app(settings: Settings, container_factory: ContainerFactory = build_c
             await container.close()
 
     app = FastAPI(title="opstriage health-review", lifespan=lifespan)
+
+    add_security_headers(app)
 
     @app.get("/healthz")
     async def healthz() -> dict[str, str]:

@@ -8,6 +8,8 @@ dependencies = [
   "opstriage-dynatrace",
   "opstriage-llm",
   "mcp==2.3.0",
+  "jinja2==3.1.6",
+  "python-multipart==0.0.32",
   "uvicorn==0.54.0",
   "pyyaml==6.0.3",
   "httpx2==2.13.1",

@@ -74,6 +74,7 @@ class TriageDeps:
     sleep: Sleep
     run_url_base: str
     max_state_chars: int
+    rca_url_base: str = ""  # health-review web view (OTA-APP-002 3.4); empty = no root-cause link
 
     def run_url(self, run_id: str) -> str:
         return f"{self.run_url_base.rstrip('/')}/v1/runs/{run_id}"

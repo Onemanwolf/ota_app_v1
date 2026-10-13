@@ -2,12 +2,14 @@ from typing import Any
 from uuid import UUID
 
 from fastapi.testclient import TestClient
-from insights_testkit import ANCHOR, SCOPES, collector
+from insights_testkit import ANCHOR, SCOPES, STORE, collector
 
 from opstriage_insights.adapters.evidence_json import serialize
+from opstriage_insights.adapters.fixtures import FixtureProblemSource
 from opstriage_insights.adapters.guard import KeywordGuard
 from opstriage_insights.adapters.stores import MemoryReviewStore
 from opstriage_insights.application.collect import BuildDigest, PrepareReview
+from opstriage_insights.application.run_rca import PlanRca
 from opstriage_insights.application.run_review import RunReview
 from opstriage_insights.bootstrap import Container
 from opstriage_insights.domain.retention import RetentionPolicy
@@ -53,7 +55,13 @@ async def _container(settings: Settings) -> Container:
     store = prepare._store
     run = RunReview(prepare, None, store, None, RetentionPolicy(), lambda: ANCHOR)
     return Container(
-        pool=pool, source="fake", clusters=dict(SCOPES), prepare=prepare, store=store, runner=Runner(run)
+        pool=pool,
+        source="fake",
+        clusters=dict(SCOPES),
+        prepare=prepare,
+        store=store,
+        runner=Runner(run),
+        plan_rca=PlanRca(FixtureProblemSource(STORE), dict(SCOPES), lambda: ANCHOR),
     )
 
 
@@ -70,7 +78,7 @@ def _settings(app_env: str = "local") -> Settings:
 def test_health_and_readiness() -> None:
     with TestClient(create_app(_settings(), _container)) as client:
         assert client.get("/healthz").json() == {"status": "ok"}
-        assert client.get("/readyz").json() == {"status": "ready", "source": "fake", "clusters": 16}
+        assert client.get("/readyz").json() == {"status": "ready", "source": "fake", "clusters": 26}
     assert _Pool.closed
 
 

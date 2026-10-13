@@ -1,0 +1,49 @@
+{
+  "cluster": "rca-gc-pause",
+  "kind": "rca",
+  "anchor": "2026-10-12T06:00:00+00:00",
+  "description": "Long GC pauses on kafka-1 back up its request queue; producers see slow responses.",
+  "scope": {
+    "namespace": "streaming",
+    "containers": [
+      "kafka",
+      "orders-consumer",
+      "payments-producer",
+      "orders-api"
+    ],
+    "entity_ids": [
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E10",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E11",
+      "PROCESS_GROUP_INSTANCE-6A1E3F9C2B7D4E12",
+      "PROCESS_GROUP_INSTANCE-C0A1B2C3D4E5F601",
+      "SERVICE-2B3C4D5E6F708899"
+    ]
+  },
+  "expect": [],
+  "forbid": {},
+  "rca": {
+    "display_id": "P-26101202",
+    "problem_at_hours_ago": 3.0,
+    "root_cause": [
+      {
+        "metric": "builtin:tech.jvm.memory.gc.suspensionTime",
+        "entity": "kafka-1"
+      }
+    ],
+    "effects": [
+      {
+        "metric": "kafka.network.RequestChannel.RequestQueueSize.Value",
+        "entity": "kafka-1"
+      },
+      {
+        "metric": "kafka.server.handler.average-idle-percent.rate",
+        "entity": "kafka-1"
+      }
+    ]
+  },
+  "counts": {
+    "logs": 16,
+    "problems": 1,
+    "series": 41
+  }
+}

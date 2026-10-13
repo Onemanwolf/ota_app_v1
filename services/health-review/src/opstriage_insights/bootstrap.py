@@ -24,6 +24,7 @@ from opstriage_insights.adapters.llm_analyst import LlmAnalyst
 from opstriage_insights.adapters.notifier import McpNotifier
 from opstriage_insights.adapters.stores import PostgresReviewStore
 from opstriage_insights.application.collect import BuildDigest, CollectEvidence, PrepareReview
+from opstriage_insights.application.run_rca import PlanRca
 from opstriage_insights.application.run_review import NotifyPolicy, RunReview
 from opstriage_insights.domain.model import ClusterScope
 from opstriage_insights.domain.redaction import Redactor
@@ -49,6 +50,7 @@ class Container:
     prepare: PrepareReview
     store: ReviewStore
     runner: Runner
+    plan_rca: PlanRca
     http: httpx2.AsyncClient | None = None
 
     async def close(self) -> None:
@@ -81,7 +83,11 @@ def build_sources(
 
 def build_guard(settings: Settings, http: httpx2.AsyncClient) -> Guard:
     g = settings.insights.guard
-    return KeywordGuard() if g.provider == "keyword" else HttpGuard(http, g.base_url, g.timeout_seconds)
+    return (
+        KeywordGuard()
+        if g.provider == "keyword"
+        else HttpGuard(http, g.base_url, g.timeout_seconds, g.min_score)
+    )
 
 
 def build_analyst(settings: Settings, http: httpx2.AsyncClient) -> Analyst | None:
@@ -139,5 +145,6 @@ async def build_container(settings: Settings, migrations_dir: Path = MIGRATIONS)
         prepare=prepare,
         store=store,
         runner=Runner(run),
+        plan_rca=PlanRca(problems, clusters, _now),
         http=http,
     )

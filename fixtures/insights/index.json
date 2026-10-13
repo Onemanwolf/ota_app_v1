@@ -158,5 +158,105 @@
       "problems": 0,
       "series": 41
     }
+  },
+  {
+    "cluster": "rca-disk-full",
+    "kind": "rca",
+    "description": "Broker kafka-2 stops after its log disk fills; replicas on other brokers fall behind.",
+    "counts": {
+      "logs": 20,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-gc-pause",
+    "kind": "rca",
+    "description": "Long GC pauses on kafka-1 back up its request queue; producers see slow responses.",
+    "counts": {
+      "logs": 16,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-network-flap",
+    "kind": "rca",
+    "description": "Network drops between brokers: followers disconnect, then elections and under-replication.",
+    "counts": {
+      "logs": 32,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-consumer-deploy",
+    "kind": "rca",
+    "description": "A deploy of orders-consumer causes a rebalance storm; lag climbs until the alert fires.",
+    "counts": {
+      "logs": 29,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-cert-expiry",
+    "kind": "rca",
+    "description": "A broker certificate expires: clients fail SSL handshakes, then produce requests fail.",
+    "counts": {
+      "logs": 33,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-fd-exhaustion",
+    "kind": "rca",
+    "description": "kafka-2 runs out of file descriptors; it stops accepting connections.",
+    "counts": {
+      "logs": 52,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-controller-quorum",
+    "kind": "rca",
+    "description": "Brokers lose their controller heartbeats; elections churn and partitions go offline.",
+    "counts": {
+      "logs": 21,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-follower-lag",
+    "kind": "rca",
+    "description": "Follower kafka-1 falls behind; payments partitions drop under min ISR and writes fail.",
+    "counts": {
+      "logs": 28,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-oom",
+    "kind": "rca",
+    "description": "kafka-0 heap fills: GC time climbs, then an OutOfMemoryError stops the broker.",
+    "counts": {
+      "logs": 21,
+      "problems": 1,
+      "series": 41
+    }
+  },
+  {
+    "cluster": "rca-traffic-surge",
+    "kind": "rca",
+    "description": "Producers triple their traffic; brokers saturate and responses slow down.",
+    "counts": {
+      "logs": 12,
+      "problems": 1,
+      "series": 41
+    }
   }
 ]
