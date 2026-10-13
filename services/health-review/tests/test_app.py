@@ -8,8 +8,10 @@ from opstriage_insights.adapters.evidence_json import serialize
 from opstriage_insights.adapters.guard import KeywordGuard
 from opstriage_insights.adapters.stores import MemoryReviewStore
 from opstriage_insights.application.collect import BuildDigest, PrepareReview
+from opstriage_insights.application.run_review import RunReview
 from opstriage_insights.bootstrap import Container
 from opstriage_insights.domain.retention import RetentionPolicy
+from opstriage_insights.entrypoints.api import Runner
 from opstriage_insights.entrypoints.app import create_app
 from opstriage_insights.settings import Settings
 
@@ -48,7 +50,11 @@ async def _container(settings: Settings) -> Container:
         lambda: UUID(int=7),
         serialize,
     )
-    return Container(pool=pool, source="fake", clusters=dict(SCOPES), prepare=prepare)
+    store = prepare._store
+    run = RunReview(prepare, None, store, None, RetentionPolicy(), lambda: ANCHOR)
+    return Container(
+        pool=pool, source="fake", clusters=dict(SCOPES), prepare=prepare, store=store, runner=Runner(run)
+    )
 
 
 def _settings(app_env: str = "local") -> Settings:

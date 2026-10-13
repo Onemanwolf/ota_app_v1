@@ -160,3 +160,84 @@ def test_shuffle_keeps_the_same_options_and_never_mutates_the_constant() -> None
     orders = {tuple(model.questions()["action"]["criteria"]) for _ in range(30)}
     assert len(orders) > 1 and all(set(o) == set(ACTION_OPTIONS) for o in orders)
     assert tuple(QUESTIONS["action"]["criteria"]) == tuple(ACTION_OPTIONS)  # type: ignore[arg-type]
+
+
+@pytest.mark.parametrize(
+    ("overrides", "url", "header", "value"),
+    [
+        (
+            {
+                "base_url": "http://kev:8000",
+                "path": "/v1/systemone",
+                "model": "kev-latest",
+                "auth_mode": "none",
+            },
+            "http://kev:8000/v1/systemone",
+            None,
+            None,
+        ),
+        (
+            {
+                "base_url": "https://api.typesafe.ai",
+                "path": "/v1/systemone",
+                "model": "jev-latest",
+                "auth_mode": "bearer",
+                "api_key": "jk",
+            },
+            "https://api.typesafe.ai/v1/systemone",
+            "authorization",
+            "Bearer jk",
+        ),
+        (
+            {
+                "base_url": "https://res.services.ai.azure.com",
+                "path": "/providers/microsoft/v1/systemone",
+                "model": "my-decision-deployment",
+                "auth_mode": "api_key",
+                "api_key": "ak",
+            },
+            "https://res.services.ai.azure.com/providers/microsoft/v1/systemone",
+            "api-key",
+            "ak",
+        ),
+    ],
+    ids=["kev", "jev", "microsoft-decision-1"],
+)
+async def test_switching_classifiers_is_configuration_only(
+    overrides: dict[str, Any], url: str, header: str | None, value: str | None
+) -> None:
+    """Kev, Jev and Microsoft-Decision-1 share the System One contract; only endpoint, model and auth differ."""
+    from opstriage_triage.bootstrap import build_decision_model
+    from opstriage_triage.settings import Settings
+
+    seen: list[httpx2.Request] = []
+
+    def handler(request: httpx2.Request) -> httpx2.Response:
+        seen.append(request)
+        return httpx2.Response(
+            200,
+            json={
+                "model": "m",
+                "answers": {
+                    "action": {
+                        "type": "choice",
+                        "choice": "notify_only",
+                        "probabilities": {"notify_only": 0.9},
+                    }
+                },
+            },
+        )
+
+    settings = Settings.model_validate(
+        {"db": {"dsn": "postgresql://unused"}, "triage": {"decision": {"provider": "systemone", **overrides}}}
+    )
+    async with httpx2.AsyncClient(transport=httpx2.MockTransport(handler)) as http:
+        decision = await build_decision_model(settings, http).decide(_input())
+    assert str(seen[0].url) == url
+    body = json.loads(seen[0].content)
+    assert set(body) == {"model", "state", "questions"} and body["model"] == overrides["model"]
+    if header:
+        assert seen[0].headers[header] == value
+    else:
+        assert "authorization" not in seen[0].headers and "api-key" not in seen[0].headers
+    assert decision.action is Action.NOTIFY_ONLY and decision.action_confidence == 0.9

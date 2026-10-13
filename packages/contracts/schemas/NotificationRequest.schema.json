@@ -6,7 +6,8 @@
         "action_proposed",
         "action_result",
         "problem_resolved",
-        "escalation"
+        "escalation",
+        "health_review"
       ],
       "title": "NotificationKind",
       "type": "string"

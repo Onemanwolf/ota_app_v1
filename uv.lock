@@ -9,6 +9,7 @@ members = [
     "opstriage-dynatrace",
     "opstriage-health-review",
     "opstriage-intake",
+    "opstriage-llm",
     "opstriage-notification",
     "opstriage-poller",
     "opstriage-remediation",
@@ -971,8 +972,10 @@ version = "0.1.0"
 source = { editable = "services/health-review" }
 dependencies = [
     { name = "httpx2" },
+    { name = "mcp" },
     { name = "opstriage-contracts" },
     { name = "opstriage-dynatrace" },
+    { name = "opstriage-llm" },
     { name = "opstriage-shared" },
     { name = "pyyaml" },
     { name = "uvicorn" },
@@ -981,8 +984,10 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "httpx2", specifier = "==2.13.1" },
+    { name = "mcp", specifier = "==2.3.0" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
     { name = "opstriage-dynatrace", editable = "packages/dynatrace" },
+    { name = "opstriage-llm", editable = "packages/llm" },
     { name = "opstriage-shared", editable = "packages/shared" },
     { name = "pyyaml", specifier = "==6.0.3" },
     { name = "uvicorn", specifier = "==0.54.0" },
@@ -1004,6 +1009,30 @@ requires-dist = [
     { name = "opstriage-shared", editable = "packages/shared" },
     { name = "uvicorn", specifier = "==0.54.0" },
 ]
+
+[[package]]
+name = "opstriage-llm"
+version = "0.1.0"
+source = { editable = "packages/llm" }
+dependencies = [
+    { name = "httpx2" },
+    { name = "pydantic" },
+    { name = "tenacity" },
+]
+
+[package.optional-dependencies]
+entra = [
+    { name = "azure-identity" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "azure-identity", marker = "extra == 'entra'", specifier = "==1.26.0" },
+    { name = "httpx2", specifier = "==2.13.1" },
+    { name = "pydantic", specifier = ">=2.12,<3" },
+    { name = "tenacity", specifier = "==9.2.1" },
+]
+provides-extras = ["entra"]
 
 [[package]]
 name = "opstriage-notification"
@@ -1135,6 +1164,7 @@ dependencies = [
     { name = "langgraph-checkpoint-postgres" },
     { name = "mcp" },
     { name = "opstriage-contracts" },
+    { name = "opstriage-llm" },
     { name = "opstriage-shared" },
     { name = "pyyaml" },
     { name = "tenacity" },
@@ -1148,6 +1178,7 @@ requires-dist = [
     { name = "langgraph-checkpoint-postgres", specifier = "==3.1.2" },
     { name = "mcp", specifier = "==2.3.0" },
     { name = "opstriage-contracts", editable = "packages/contracts" },
+    { name = "opstriage-llm", editable = "packages/llm" },
     { name = "opstriage-shared", editable = "packages/shared" },
     { name = "pyyaml", specifier = "==6.0.3" },
     { name = "tenacity", specifier = "==9.2.1" },

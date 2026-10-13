@@ -1,0 +1,19 @@
+# Microsoft-Decision-1 (Microsoft Foundry) as the triage classifier. Same System One contract as Kev.
+# Docs: learn.microsoft.com/azure/foundry/foundry-models/how-to/use-foundry-models-microsoft-decision
+# Usage: docker compose -f compose.yaml -f compose.decision1.yaml up -d agent-runtime
+# In .env (git-ignored): DECISION1_ENDPOINT (the Foundry resource endpoint), DECISION1_DEPLOYMENT (the DEPLOYMENT
+# name, not the model name) and DECISION1_API_KEY (sent as the `api-key` header). In Azure, prefer Entra ID:
+# TRIAGE__DECISION__AUTH_MODE=entra with a managed identity holding "Cognitive Services User" (image needs the
+# opstriage-llm[entra] extra).
+services:
+  agent-runtime:
+    environment:
+      TRIAGE__DECISION__PROVIDER: systemone
+      TRIAGE__DECISION__BASE_URL: ${DECISION1_ENDPOINT:?set DECISION1_ENDPOINT in .env}
+      TRIAGE__DECISION__PATH: /providers/microsoft/v1/systemone
+      TRIAGE__DECISION__MODEL: ${DECISION1_DEPLOYMENT:?set DECISION1_DEPLOYMENT in .env}
+      TRIAGE__DECISION__AUTH_MODE: api_key
+      TRIAGE__DECISION__API_KEY_HEADER: api-key
+      TRIAGE__DECISION__API_KEY: ${DECISION1_API_KEY:?set DECISION1_API_KEY in .env}
+      TRIAGE__DECISION__TIMEOUT_SECONDS: "10"
+      TRIAGE__POLICY_FILE: /app/config/policy.example.yaml

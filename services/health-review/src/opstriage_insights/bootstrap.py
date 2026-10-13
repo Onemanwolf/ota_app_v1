@@ -20,14 +20,22 @@ from opstriage_insights.adapters.fixtures import (
 )
 from opstriage_insights.adapters.grail_sources import GrailLogSource, GrailMetricSource, GrailProblemSource
 from opstriage_insights.adapters.guard import HttpGuard, KeywordGuard
+from opstriage_insights.adapters.llm_analyst import LlmAnalyst
+from opstriage_insights.adapters.notifier import McpNotifier
 from opstriage_insights.adapters.stores import PostgresReviewStore
 from opstriage_insights.application.collect import BuildDigest, CollectEvidence, PrepareReview
+from opstriage_insights.application.run_review import NotifyPolicy, RunReview
 from opstriage_insights.domain.model import ClusterScope
 from opstriage_insights.domain.redaction import Redactor
 from opstriage_insights.domain.retention import RetentionPolicy
+from opstriage_insights.entrypoints.api import Runner
+from opstriage_insights.ports.analyst import Analyst
 from opstriage_insights.ports.guard import Guard
+from opstriage_insights.ports.notifier import Notifier
 from opstriage_insights.ports.sources import LogSource, MetricSource, ProblemSource
+from opstriage_insights.ports.store import ReviewStore
 from opstriage_insights.settings import Settings
+from opstriage_llm import ChatJsonClient
 from opstriage_shared.db import Pool, migrate, open_pool
 
 MIGRATIONS = Path(__file__).resolve().parent / "migrations"  # shipped inside the package
@@ -39,9 +47,12 @@ class Container:
     source: str  # "fake" | "grail"
     clusters: dict[str, ClusterScope]
     prepare: PrepareReview
+    store: ReviewStore
+    runner: Runner
     http: httpx2.AsyncClient | None = None
 
     async def close(self) -> None:
+        await self.runner.drain()
         if self.http is not None:
             await self.http.aclose()
         await self.pool.close()
@@ -73,6 +84,21 @@ def build_guard(settings: Settings, http: httpx2.AsyncClient) -> Guard:
     return KeywordGuard() if g.provider == "keyword" else HttpGuard(http, g.base_url, g.timeout_seconds)
 
 
+def build_analyst(settings: Settings, http: httpx2.AsyncClient) -> Analyst | None:
+    a = settings.insights.analyst
+    if a.provider == "none":
+        return None
+    runbook = a.runbook_file.read_text(encoding="utf-8") if a.runbook_file.is_file() else ""
+    return LlmAnalyst(ChatJsonClient(http, a), runbook)
+
+
+def build_notifier(settings: Settings) -> Notifier | None:
+    n = settings.insights.notify
+    if not (n.enabled and n.mcp_token.get_secret_value()):
+        return None
+    return McpNotifier(n.mcp_url, n.mcp_token, n.timeout_seconds)
+
+
 async def build_container(settings: Settings, migrations_dir: Path = MIGRATIONS) -> Container:
     i = settings.insights
     pool = await open_pool(settings.db)
@@ -93,7 +119,25 @@ async def build_container(settings: Settings, migrations_dir: Path = MIGRATIONS)
     )
     r = i.retention
     retention = RetentionPolicy(r.report_ttl, r.evidence_max_age, r.evidence_after_report)
-    prepare = PrepareReview(
-        PostgresReviewStore(pool), collect, digest, retention, _now, uuid.uuid4, serialize
+    store = PostgresReviewStore(pool)
+    prepare = PrepareReview(store, collect, digest, retention, _now, uuid.uuid4, serialize)
+    notify = NotifyPolicy(i.notify.enabled, i.notify.min_risk, i.notify.top_findings, i.web.base_url)
+    run = RunReview(
+        prepare,
+        build_analyst(settings, http),
+        store,
+        build_notifier(settings),
+        retention,
+        _now,
+        concurrency=i.analyst.concurrency,
+        notify=notify,
     )
-    return Container(pool=pool, source=i.source, clusters=clusters, prepare=prepare, http=http)
+    return Container(
+        pool=pool,
+        source=i.source,
+        clusters=clusters,
+        prepare=prepare,
+        store=store,
+        runner=Runner(run),
+        http=http,
+    )

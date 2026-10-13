@@ -33,7 +33,10 @@ def reply(content: str) -> httpx2.Response:
     return httpx2.Response(200, json={"choices": [{"message": {"content": content}}]})
 
 
-async def decide(handler: Any, seen: list[httpx2.Request] | None = None) -> Any:
+QWEN_EXTRA = {"chat_template_kwargs": {"enable_thinking": False}}
+
+
+async def decide(handler: Any, seen: list[httpx2.Request] | None = None, **options: Any) -> Any:
     def wrapped(r: httpx2.Request) -> httpx2.Response:
         if seen is not None:
             seen.append(r)
@@ -47,13 +50,18 @@ async def decide(handler: Any, seen: list[httpx2.Request] | None = None) -> Any:
             runbook="1. Data at risk -> escalate_human",
             auth_header=no_auth(),
             timeout_seconds=5,
+            **options,
         )
         return await model.decide(REQUEST)
 
 
 async def test_request_shape_and_parsed_decision() -> None:
     seen: list[httpx2.Request] = []
-    decision = await decide(lambda r: reply('{"action": "escalate_human", "reason": "log dir failed"}'), seen)
+    decision = await decide(
+        lambda r: reply('{"action": "escalate_human", "reason": "log dir failed"}'),
+        seen,
+        extra_body=QWEN_EXTRA,
+    )
     assert decision.source is DecisionSource.MODEL and decision.action is Action.ESCALATE_HUMAN
     assert decision.rationale == "log dir failed" and decision.model == "qwen3.8-flash-next"
     assert decision.action_confidence is None  # no calibrated confidence: restarts cannot pass thresholds
@@ -79,3 +87,25 @@ async def test_unreachable_model_is_a_decision_model_error() -> None:
 
     with pytest.raises(DecisionModelError):
         await decide(refuse)
+
+
+async def test_model_specific_fields_are_configuration_not_code() -> None:
+    seen: list[httpx2.Request] = []
+    await decide(lambda r: reply('{"action": "notify_only", "reason": "x"}'), seen)
+    assert "chat_template_kwargs" not in json.loads(
+        seen[0].content
+    )  # plain OpenAI-compatible body by default
+
+
+async def test_json_object_mode_for_models_without_strict_schemas() -> None:
+    seen: list[httpx2.Request] = []
+    decision = await decide(
+        lambda r: reply('```json\n{"action": "open_ticket", "reason": "slow burn"}\n```'),
+        seen,
+        response_format="json_object",
+    )
+    body = json.loads(seen[0].content)
+    assert (
+        body["response_format"] == {"type": "json_object"} and "JSON Schema" in body["messages"][0]["content"]
+    )
+    assert decision.action is Action.OPEN_TICKET

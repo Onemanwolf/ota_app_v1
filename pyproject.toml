@@ -37,7 +37,9 @@ known-first-party = ["opstriage_contracts", "opstriage_shared", "opstriage_*"]
 "fixtures/insights/generate.py" = ["E501"]  # verbatim Kafka log lines and scenario text
 "evals/compare_strategies.py" = ["E501"]  # prompts and runbook text
 "evals/kev_finetune/stress.py" = ["E501"]  # verbatim Kafka log lines
+"evals/health_review_eval.py" = ["E501"]  # report table rows
 "**/domain/questions.py" = ["E501"]         # decision-model prompts, verbatim from spec 12.4.2
+"**/application/prompts.py" = ["E501"]     # analyst system prompts (prose)
 "**/entrypoints/evals.py" = ["E501"]        # Markdown report rows
 
 [tool.mypy]
@@ -46,7 +48,7 @@ python_version = "3.13"
 plugins = ["pydantic.mypy"]
 explicit_package_bases = true
 exclude = ["/tests/"]   # test modules share names across services; pytest still runs them
-mypy_path = "packages/contracts/src:packages/shared/src:services/dev-webhook-sink/src:services/intake-api/src:services/agent-runtime/src:services/mcp-notification/src:services/mcp-ticketing/src:services/mcp-remediation/src:services/poller/src:packages/dynatrace/src:services/health-review/src"
+mypy_path = "packages/llm/src:packages/contracts/src:packages/shared/src:services/dev-webhook-sink/src:services/intake-api/src:services/agent-runtime/src:services/mcp-notification/src:services/mcp-ticketing/src:services/mcp-remediation/src:services/poller/src:packages/dynatrace/src:services/health-review/src"
 
 [[tool.mypy.overrides]]
 module = ["azure_postgresql_auth.*", "azure.*", "testcontainers.*", "docker.*"]
@@ -66,7 +68,7 @@ pythonpath = ["services/health-review/tests"]   # insights_testkit (shared test 
 [tool.importlinter]
 root_packages = [
   "opstriage_contracts", "opstriage_shared", "opstriage_intake", "opstriage_triage", "opstriage_notification",
-  "opstriage_ticketing", "opstriage_remediation", "opstriage_poller", "opstriage_dynatrace", "opstriage_insights",
+  "opstriage_ticketing", "opstriage_remediation", "opstriage_poller", "opstriage_dynatrace", "opstriage_insights", "opstriage_llm",
 ]
 include_external_packages = true
 
@@ -75,7 +77,7 @@ name = "Published language depends on pydantic only"
 type = "forbidden"
 source_modules = ["opstriage_contracts"]
 forbidden_modules = [
-  "opstriage_shared", "opstriage_dynatrace", "fastapi", "starlette", "langgraph", "mcp", "psycopg", "docker", "azure", "httpx2", "openai",
+  "opstriage_shared", "opstriage_dynatrace", "opstriage_llm", "fastapi", "starlette", "langgraph", "mcp", "psycopg", "docker", "azure", "httpx2", "openai",
 ]
 
 [[tool.importlinter.contracts]]
@@ -92,7 +94,7 @@ source_modules = [
 ]
 forbidden_modules = [
   "fastapi", "starlette", "langgraph", "mcp", "psycopg", "psycopg_pool", "docker", "azure", "httpx2", "openai",
-  "uvicorn", "opstriage_dynatrace", "jinja2", "tenacity",
+  "uvicorn", "opstriage_dynatrace", "opstriage_llm", "jinja2", "tenacity",
 ]
 
 [[tool.importlinter.contracts]]

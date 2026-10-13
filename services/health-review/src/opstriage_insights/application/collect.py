@@ -145,8 +145,10 @@ class PrepareReview:
         self._store, self._collect, self._digest = store, collect, build_digest
         self._retention, self._clock, self._new_id, self._serialize = retention, clock, new_id, serialize
 
-    async def __call__(self, scope: ClusterScope, subject: dict[str, Any] | None = None) -> PreparedReview:
-        review_id, started = self._new_id(), self._clock()
+    async def __call__(
+        self, scope: ClusterScope, subject: dict[str, Any] | None = None, review_id: UUID | None = None
+    ) -> PreparedReview:
+        review_id, started = review_id or self._new_id(), self._clock()
         kind: ReviewKind = "rca" if subject else "review"
         await self._store.start_review(
             review_id, kind, scope.name, subject, started, self._retention.review_expires_at(started, None)

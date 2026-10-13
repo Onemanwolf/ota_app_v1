@@ -1,0 +1,14 @@
+# Jev (TypeSafe's hosted decision model) as the triage classifier. Same System One contract as Kev.
+# Usage: docker compose -f compose.yaml -f compose.jev.yaml up -d agent-runtime
+# Put JEV_API_KEY in .env (git-ignored); it is passed as a bearer token and never logged.
+services:
+  agent-runtime:
+    environment:
+      TRIAGE__DECISION__PROVIDER: systemone
+      TRIAGE__DECISION__BASE_URL: ${JEV_BASE_URL:-https://api.typesafe.ai}
+      TRIAGE__DECISION__PATH: /v1/systemone
+      TRIAGE__DECISION__MODEL: ${JEV_MODEL:-jev-latest}
+      TRIAGE__DECISION__AUTH_MODE: bearer
+      TRIAGE__DECISION__API_KEY: ${JEV_API_KEY:?set JEV_API_KEY in .env}
+      TRIAGE__DECISION__TIMEOUT_SECONDS: "10"
+      TRIAGE__POLICY_FILE: /app/config/policy.example.yaml

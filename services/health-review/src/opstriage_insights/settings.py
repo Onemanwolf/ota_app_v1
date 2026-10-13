@@ -9,6 +9,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, SecretStr, model_validator
 
 from opstriage_dynatrace.grail import GrailSettings
+from opstriage_llm import LlmEndpoint
 from opstriage_shared.settings import BaseServiceSettings
 
 DEV_SESSION_SECRET = "change-me-dev-only"  # noqa: S105  (placeholder; refused outside app_env=local)
@@ -38,12 +39,26 @@ class DigestSettings(BaseModel):
     max_tokens: int = Field(default=12_000, ge=1_000)
 
 
-class AnalystSettings(BaseModel):
+class AnalystSettings(LlmEndpoint):
+    """Any OpenAI-compatible chat model (opstriage_llm.LlmEndpoint): switching models is configuration only.
+    provider=none writes rules-only reports without calling a model."""
+
+    provider: Literal["llm", "none"] = "llm"
     base_url: str = "http://host.docker.internal:18001"
-    path: str = "/v1/chat/completions"
     model: str = "qwen3.8-flash-next"
     timeout_seconds: float = Field(default=180, gt=0)
-    concurrency: int = Field(default=1, ge=1, le=4)  # Qwen is shared with triage (D5)
+    max_tokens: int = Field(default=2_000, ge=200, le=32_000)
+    concurrency: int = Field(default=1, ge=1, le=4)  # a shared model (Qwen serves triage too, D5)
+    runbook_file: Path = Path("/app/config/insights-runbook.md")
+
+
+class NotifySettings(BaseModel):
+    enabled: bool = True
+    mcp_url: str = "http://mcp-notification:8101/mcp"
+    mcp_token: SecretStr = SecretStr("")
+    timeout_seconds: float = Field(default=30, gt=0)
+    min_risk: Literal["low", "medium", "high", "critical"] = "low"  # send a card only at or above this risk
+    top_findings: int = Field(default=5, ge=1, le=10)
 
 
 class GuardSettings(BaseModel):
@@ -85,6 +100,7 @@ class InsightsOptions(BaseModel):
     guard: GuardSettings = GuardSettings()
     retention: RetentionSettings = RetentionSettings()
     tickets: TicketSettings = TicketSettings()
+    notify: NotifySettings = NotifySettings()
     web: WebSettings = WebSettings()
 
 

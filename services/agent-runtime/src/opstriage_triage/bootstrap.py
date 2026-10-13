@@ -14,7 +14,7 @@ from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from opstriage_shared.clock import SystemClock
 from opstriage_shared.db import Pool, migrate, open_pool
 from opstriage_triage.adapters.approvals_pg import PostgresApprovalStore
-from opstriage_triage.adapters.auth_headers import entra, no_auth, static_bearer
+from opstriage_triage.adapters.auth_headers import entra, no_auth, static_bearer, static_header
 from opstriage_triage.adapters.fake_context import FakeProblemContextSource
 from opstriage_triage.adapters.inbox_pg import PostgresInbox
 from opstriage_triage.adapters.llm_decision import LlmDecisionModel
@@ -50,6 +50,8 @@ def build_decision_model(settings: Settings, http: httpx2.AsyncClient) -> Decisi
         return RulesOnlyDecisionModel()
     if d.auth_mode == "bearer" and d.api_key is not None:
         auth = static_bearer(d.api_key.get_secret_value())
+    elif d.auth_mode == "api_key" and d.api_key is not None:
+        auth = static_header(d.api_key_header, d.api_key.get_secret_value())
     elif d.auth_mode == "entra":
         auth = entra()
     else:
@@ -63,6 +65,8 @@ def build_decision_model(settings: Settings, http: httpx2.AsyncClient) -> Decisi
             auth_header=auth,
             timeout_seconds=d.timeout_seconds,
             max_tokens=d.max_tokens,
+            response_format=d.response_format,
+            extra_body=d.extra_body,
         )
     return SystemOneDecisionModel(
         http,

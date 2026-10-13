@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, SecretStr, model_validator
 
@@ -20,8 +20,11 @@ class DecisionSettings(BaseModel):
     base_url: str = "http://kev:8009"
     path: str = "/v1/systemone"
     model: str = "kev-latest"
-    auth_mode: Literal["none", "bearer", "entra"] = "none"
+    auth_mode: Literal["none", "bearer", "api_key", "entra"] = "none"
     api_key: SecretStr | None = None
+    api_key_header: str = "api-key"  # auth_mode=api_key (Azure OpenAI)
+    response_format: Literal["json_schema", "json_object", "none"] = "json_schema"  # llm provider
+    extra_body: dict[str, Any] = Field(default_factory=dict)  # llm provider: model-specific request fields
     timeout_seconds: float = Field(default=10.0, gt=0)
     shuffle_options: bool = False
     runbook_file: Path = Path("/app/config/triage-runbook.md")  # llm provider: system-prompt runbook

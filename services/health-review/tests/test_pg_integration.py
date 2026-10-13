@@ -57,3 +57,41 @@ async def test_deleting_a_review_cascades_to_evidence_and_report(pool: Pool) -> 
         )
         row = await cur.fetchone()
     assert row is not None and (row["e"], row["r"]) == (0, 0)
+
+
+async def test_postgres_store_completion_expiry_and_listing(pool: Pool) -> None:
+    from datetime import UTC, datetime, timedelta
+    from uuid import UUID
+
+    from opstriage_insights.adapters.stores import PostgresReviewStore
+
+    await migrate(pool, "insights", MIGRATIONS)
+    store, t0 = PostgresReviewStore(pool), datetime(2026, 10, 12, 6, tzinfo=UTC)
+    rid = UUID(int=77)
+    await store.start_review(rid, "review", "c-pg", None, t0, t0 + timedelta(hours=28))
+    await store.save_evidence(rid, "logs", t0, t0 + timedelta(hours=28), {"records": []})
+    assert (await store.get_report(rid, t0)).report is None  # type: ignore[union-attr]
+    done = t0 + timedelta(minutes=4)
+    report = {"review_id": str(rid), "worst_risk": "high", "counts": {"by_risk": {"high": 1}}}
+    await store.complete_review(
+        rid,
+        completed_at=done,
+        review_expires_at=done + timedelta(hours=48),
+        evidence_expires_at=done + timedelta(hours=4),
+        report=report,
+        markdown="# r",
+        dropped_uncited=2,
+        guard_withheld=1,
+    )
+    stored = await store.get_report(rid, done)
+    assert stored is not None and stored.report == report and stored.markdown == "# r" and not stored.expired
+    [row] = await store.list_reports(done, "c-pg")
+    assert row.status == "completed" and row.worst_risk == "high" and row.by_risk == {"high": 1}
+    async with pool.connection() as conn:
+        cur = await conn.execute("SELECT expires_at FROM insights.evidence WHERE review_id = %s", (rid,))
+        assert (await cur.fetchone())["expires_at"] == done + timedelta(hours=4)  # type: ignore[index]
+    expired = await store.get_report(rid, done + timedelta(hours=49))
+    assert expired is not None and expired.expired and expired.report is None
+    assert await store.list_reports(done + timedelta(hours=49), "c-pg") == []
+    await store.fail_review(rid, "x")  # completed reviews are not overwritten
+    assert (await store.get_review(rid)).status == "completed"  # type: ignore[union-attr]

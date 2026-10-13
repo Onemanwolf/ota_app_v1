@@ -6,6 +6,8 @@ dependencies = [
   "opstriage-contracts",
   "opstriage-shared",
   "opstriage-dynatrace",
+  "opstriage-llm",
+  "mcp==2.3.0",
   "uvicorn==0.54.0",
   "pyyaml==6.0.3",
   "httpx2==2.13.1",
@@ -18,6 +20,7 @@ opstriage-health-review = "opstriage_insights.entrypoints.main:main"
 opstriage-contracts = { workspace = true }
 opstriage-shared = { workspace = true }
 opstriage-dynatrace = { workspace = true }
+opstriage-llm = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]

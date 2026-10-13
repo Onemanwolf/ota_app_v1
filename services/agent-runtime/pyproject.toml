@@ -5,6 +5,7 @@ requires-python = ">=3.13,<3.14"
 dependencies = [
   "opstriage-contracts",
   "opstriage-shared",
+  "opstriage-llm",
   "uvicorn==0.54.0",
   "langgraph==1.2.14",
   "langgraph-checkpoint-postgres==3.1.2",
@@ -21,6 +22,7 @@ opstriage-evals = "opstriage_triage.entrypoints.evals:main"
 [tool.uv.sources]
 opstriage-contracts = { workspace = true }
 opstriage-shared = { workspace = true }
+opstriage-llm = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]

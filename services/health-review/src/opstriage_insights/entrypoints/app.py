@@ -8,6 +8,7 @@ import structlog
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Response, status
 
 from opstriage_insights.bootstrap import Container, build_container
+from opstriage_insights.entrypoints.api import api_router
 from opstriage_insights.settings import Settings
 from opstriage_shared.auth import bearer_guard
 
@@ -17,7 +18,7 @@ ContainerFactory = Callable[[Settings], Awaitable[Container]]
 
 
 def dev_router(container: Container, guard: Callable[..., None]) -> APIRouter:
-    """Local-only preview of the 5.4 pipeline; replaced by POST /reviews in 5.5."""
+    """Local-only preview of the digest the analyst sees (no model call, no report)."""
     router = APIRouter(prefix="/v1/dev", dependencies=[Depends(guard)])
 
     @router.post("/digest/{cluster}")
@@ -53,8 +54,10 @@ def create_app(settings: Settings, container_factory: ContainerFactory = build_c
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         container = await container_factory(settings)
         app.state.container = container
+        guard = bearer_guard(settings.insights.service_tokens)
+        app.include_router(api_router(container.clusters, container.runner, container.store, guard))
         if settings.app_env == "local":
-            app.include_router(dev_router(container, bearer_guard(settings.insights.service_tokens)))
+            app.include_router(dev_router(container, guard))
         log.info("health_review_started", source=container.source, clusters=len(container.clusters))
         try:
             yield

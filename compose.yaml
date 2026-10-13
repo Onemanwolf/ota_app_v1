@@ -64,8 +64,15 @@ services:
       SERVER__PORT: "8120"
       INSIGHTS__SERVICE_TOKENS: '["dev-insights-token"]'
       INSIGHTS__GUARD__BASE_URL: http://host.docker.internal:18004   # Spark guard via scripts/kev-tunnel.sh
+      INSIGHTS__ANALYST__BASE_URL: http://host.docker.internal:18001  # any OpenAI-compatible model; docs/model-providers.md
+      INSIGHTS__ANALYST__MODEL: qwen3.8-flash-next
+      INSIGHTS__ANALYST__EXTRA_BODY: '{"chat_template_kwargs": {"enable_thinking": false}}'   # Qwen-specific
+      INSIGHTS__NOTIFY__MCP_TOKEN: dev-mcp-notification
     ports: ["8120:8120"]
     healthcheck: *http-health
+    depends_on:
+      postgres: { condition: service_healthy }
+      mcp-notification: { condition: service_healthy }
 
   mcp-notification:
     <<: *python-service

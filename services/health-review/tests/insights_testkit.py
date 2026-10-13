@@ -25,3 +25,10 @@ def collector() -> CollectEvidence:
     return CollectEvidence(
         FixtureLogSource(STORE), FixtureMetricSource(STORE), FixtureProblemSource(STORE), Redactor()
     )
+
+
+async def digest_for(cluster: str):  # type: ignore[no-untyped-def]
+    from opstriage_insights.adapters.guard import KeywordGuard
+    from opstriage_insights.application.collect import BuildDigest
+
+    return await BuildDigest(KeywordGuard())(await collector()(SCOPES[cluster], ANCHOR))

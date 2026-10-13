@@ -12,3 +12,5 @@ services:
       TRIAGE__DECISION__AUTH_MODE: none
       TRIAGE__DECISION__TIMEOUT_SECONDS: "30"
       TRIAGE__DECISION__RUNBOOK_FILE: /app/config/triage-runbook.md
+      TRIAGE__DECISION__RESPONSE_FORMAT: json_schema
+      TRIAGE__DECISION__EXTRA_BODY: '{"chat_template_kwargs": {"enable_thinking": false}}'   # Qwen-specific

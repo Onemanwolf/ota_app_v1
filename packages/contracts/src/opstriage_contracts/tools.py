@@ -28,6 +28,7 @@ class NotificationKind(StrEnum):
     ACTION_RESULT = "action_result"
     PROBLEM_RESOLVED = "problem_resolved"
     ESCALATION = "escalation"
+    HEALTH_REVIEW = "health_review"  # OTA-APP-002: advisory Kafka health report
 
 
 class NotificationRequest(_Contract):

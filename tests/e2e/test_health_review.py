@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 
 import httpx2
@@ -34,3 +35,36 @@ async def test_dev_digest_runs_the_pipeline_and_never_passes_injected_text() -> 
     )  # guard flagged it, or the guard was down (fail closed)
     assert "[withheld: flagged by the injection guard]" in text or "guard was unavailable" in text
     assert int(resp.headers["x-digest-tokens"]) <= 12_000
+
+
+async def test_review_runs_end_to_end_with_report_and_teams_card() -> None:
+    """POST /v1/reviews -> background review (live analyst, or the rules-only fallback if it is unreachable)."""
+    import asyncio
+
+    headers = {"Authorization": "Bearer dev-insights-token"}
+    sink = os.environ.get("E2E_SINK_URL", "http://localhost:8091")
+    async with httpx2.AsyncClient(timeout=30) as client:
+        started = await client.post(
+            f"{HEALTH_REVIEW}/v1/reviews", json={"cluster": "planted-under-min-isr"}, headers=headers
+        )
+        assert started.status_code == 202
+        rid = started.json()["review_id"]
+        async with asyncio.timeout(300):
+            while True:
+                status = (await client.get(f"{HEALTH_REVIEW}/v1/reviews/{rid}", headers=headers)).json()
+                if status["status"] != "running":
+                    break
+                await asyncio.sleep(3)
+        assert status["status"] == "completed", status
+        report = (await client.get(f"{HEALTH_REVIEW}/v1/reports/{rid}", headers=headers)).json()
+        assert (
+            report["worst_risk"] == "critical"
+        )  # under-min-ISR is a critical rule finding whatever the model says
+        assert any(e["type"] == "breach" and e["rule"] == "under-min-isr" for e in report["evidence"])
+        md = await client.get(
+            f"{HEALTH_REVIEW}/v1/reports/{rid}", headers={**headers, "Accept": "text/markdown"}
+        )
+        assert md.text.startswith("# Kafka health review: planted-under-min-isr")
+        cards = (await client.get(f"{sink}/requests")).json()
+    texts = [json.dumps(c["body"]) for c in cards]
+    assert any("Kafka health review: planted-under-min-isr" in t and rid in t for t in texts)
